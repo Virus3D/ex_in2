@@ -1,0 +1,12 @@
+{{ form_start(formSpend, {attr: {class: 'form-horizontal', 'data-turbo-frame': 'spend_frame'}}) }}
+    <div class="my-custom-class-for-errors">
+        {{ form_errors(formSpend) }}
+    </div>
+    <div class="input-group">
+        {{ form_widget(formSpend.card, {attr: {class: 'form-select'}}) }}
+        {{ form_widget(formSpend.date) }}
+        {{ form_widget(formSpend.balance, {attr: {placeholder: '0.00'}}) }}
+        {{ form_widget(formSpend.comment) }}
+        <button type="submit" class="btn btn-primary">{{ 'Add'|trans }}</button>
+    </div>
+{{ form_end(formSpend) }}

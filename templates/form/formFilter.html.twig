@@ -1,0 +1,9 @@
+{{ form_start(formFilter, {attr: {class: 'form-horizontal'}}) }}
+    <div class="input-group">
+        <span class="input-group-text">{{ form_label(formFilter.year) }}</span>
+        {{ form_widget(formFilter.year, {attr: {class: 'form-select'}}) }}
+        <span class="input-group-text">{{ form_label(formFilter.month) }}</span>
+        {{ form_widget(formFilter.month, {attr: {class: 'form-select'}}) }}
+        {{ form_widget(formFilter.submit) }}
+    </div>
+{{ form_end(formFilter) }}

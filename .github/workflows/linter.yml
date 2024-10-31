@@ -1,0 +1,51 @@
+name: PHP Code Quality
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          coverage: none
+          extensions: mbstring
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: PHP CS Fixer
+        run: |
+          vendor/bin/php-cs-fixer fix --config=.linter/.php-cs-fixer.dist.php --dry-run --diff --allow-risky=yes src
+
+      - name: PHP Code Sniffer
+        run: |
+          vendor/bin/phpcs --standard=.linter/phpcs.xml.dist src
+
+      - name: PHP Mess Detector
+        run: |
+          vendor/bin/phpmd src github .linter/phpmd.ruleset.xml --color
+  
+      - name: PHPStan
+        run: |
+          vendor/bin/phpstan analyse --ansi --configuration .linter/phpstan.dist.neon -- src || exit 1
+
+      - name: PHP Insights
+        run: |
+          vendor/bin/phpinsights analyse --ansi --config-path=.linter/phpinsights.php --format=github-action -- src

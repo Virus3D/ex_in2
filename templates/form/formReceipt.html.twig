@@ -1,0 +1,12 @@
+{{ form_start(formReceipt, {attr: {class: 'form-horizontal', 'data-turbo-frame': 'receipt_frame'}}) }}
+    <div class="my-custom-class-for-errors">
+        {{ form_errors(formReceipt) }}
+    </div>
+    <div class="input-group">
+        {{ form_widget(formReceipt.card, {attr: {class: 'form-select'}}) }}
+        {{ form_widget(formReceipt.date) }}
+        {{ form_widget(formReceipt.balance, {attr: {placeholder: '0.00'}}) }}
+        {{ form_widget(formReceipt.comment) }}
+        <button type="submit" class="btn btn-primary">{{ 'Add'|trans }}</button>
+    </div>
+{{ form_end(formReceipt) }}
