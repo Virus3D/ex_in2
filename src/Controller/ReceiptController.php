@@ -13,8 +13,7 @@ use App\Entity\Receipt;
 use App\Form\ReceiptType;
 use App\Helper\FilterDataHelper;
 use App\Service\CardService;
-use App\Service\ReceiptService;
-use App\Service\SpendService;
+use App\Service\CategoryService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +26,7 @@ final class ReceiptController extends AbstractController
     public function __construct(private EntityManagerInterface $entityManager) {}//end __construct()
 
     #[Route('/receipt/add', name: 'app_receipt_add', methods: ['POST'])]
-    public function add(Request $request, CardService $cardService, ReceiptService $receiptService, SpendService $spendService): Response
+    public function add(Request $request, CardService $cardService, CategoryService $categoryService): Response
     {
         $receipt     = new Receipt();
         $formReceipt = $this->createForm(
@@ -50,18 +49,15 @@ final class ReceiptController extends AbstractController
             {
                 FilterDataHelper::getFilterData($request);
 
-                $category     = $receipt->getCard()->getCategory();
-                $totalReceipt = $receiptService->getCardsSummary($category->getCards(), FilterDataHelper::$startDate, FilterDataHelper::$endDate);
-                $totalSpend   = $spendService->getCardsSummary($category->getCards(), FilterDataHelper::$startDate, FilterDataHelper::$endDate);
+                $category = $receipt->getCard()->getCategory();
+                $categoryService->handle($category);
 
                 // If the request comes from Turbo, set the content type as text/vnd.turbo-stream.html and only send the HTML to update
                 return $this->render(
                     'receipt/combo.html.twig',
                     [
-                        'category'     => $category,
-                        'totalReceipt' => $totalReceipt,
-                        'totalSpend'   => $totalSpend,
-                        'receiptList'  => $this->getReceiptList($request),
+                        'category'    => $category,
+                        'receiptList' => $this->getReceiptList($request),
                     ]
                 );
             }

@@ -13,8 +13,7 @@ use App\Entity\Spend;
 use App\Form\SpendType;
 use App\Helper\FilterDataHelper;
 use App\Service\CardService;
-use App\Service\ReceiptService;
-use App\Service\SpendService;
+use App\Service\CategoryService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +26,7 @@ final class SpendController extends AbstractController
     public function __construct(private EntityManagerInterface $entityManager) {}//end __construct()
 
     #[Route('/spend/add', name: 'app_spend_add', methods: ['POST'])]
-    public function add(Request $request, CardService $cardService, ReceiptService $receiptService, SpendService $spendService): Response
+    public function add(Request $request, CardService $cardService, CategoryService $categoryService): Response
     {
         $spend     = new Spend();
         $formSpend = $this->createForm(
@@ -50,18 +49,15 @@ final class SpendController extends AbstractController
             {
                 FilterDataHelper::getFilterData($request);
 
-                $category     = $spend->getCard()->getCategory();
-                $totalReceipt = $receiptService->getCardsSummary($category->getCards(), FilterDataHelper::$startDate, FilterDataHelper::$endDate);
-                $totalSpend   = $spendService->getCardsSummary($category->getCards(), FilterDataHelper::$startDate, FilterDataHelper::$endDate);
+                $category = $spend->getCard()->getCategory();
+                $categoryService->handle($category);
 
                 // If the request comes from Turbo, set the content type as text/vnd.turbo-stream.html and only send the HTML to update
                 return $this->render(
                     'spend/combo.html.twig',
                     [
-                        'category'     => $category,
-                        'totalReceipt' => $totalReceipt,
-                        'totalSpend'   => $totalSpend,
-                        'spendList'    => $this->getSpendList($request),
+                        'category'  => $category,
+                        'spendList' => $this->getSpendList($request),
                     ]
                 );
             }

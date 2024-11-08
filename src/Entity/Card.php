@@ -51,6 +51,10 @@ class Card
     #[ORM\OneToMany(targetEntity: Transfer::class, mappedBy: 'cardIn')]
     private Collection $transfersIn;
 
+    private int $totalReceipt = 0;
+
+    private int $totalSpend = 0;
+
     public function __construct()
     {
         $this->receipts     = new ArrayCollection();
@@ -215,4 +219,40 @@ class Card
 
         return $this;
     }//end removeTransfersIn()
+
+    /**
+     * Get the value of totalReceipt.
+     */
+    public function getTotalReceipt(): int
+    {
+        return $this->totalReceipt;
+    }//end getTotalReceipt()
+
+    /**
+     * Set the value of totalReceipt.
+     */
+    public function setTotalReceipt(int $totalReceipt): self
+    {
+        $this->totalReceipt = $totalReceipt;
+
+        return $this;
+    }//end setTotalReceipt()
+
+    /**
+     * Get the value of totalSpend.
+     */
+    public function getTotalSpend(): int
+    {
+        return $this->totalSpend;
+    }//end getTotalSpend()
+
+    /**
+     * Set the value of totalSpend.
+     */
+    public function setTotalSpend(int $totalSpend): self
+    {
+        $this->totalSpend = $totalSpend;
+
+        return $this;
+    }//end setTotalSpend()
 }//end class

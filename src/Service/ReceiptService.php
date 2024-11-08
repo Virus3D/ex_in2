@@ -14,46 +14,44 @@ use App\Entity\Receipt;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 
-use function count;
-
 final class ReceiptService
 {
     public function __construct(private EntityManagerInterface $entityManager) {}//end __construct()
 
     /**
      * @param Card[] $cards
-     *
-     * @return array<int, int>
      */
-    public function getCardsSummary(iterable $cards, DateTime $startDate, DateTime $endDate): array
+    public function getCardsSummary(iterable $cards, DateTime $startDate, DateTime $endDate): void
     {
-        $cardIds = [];
-
-        // Преобразуем в массив ID для карт
-        foreach ($cards as $card)
-        {
-            $cardIds[] = $card->getId();
-        }
-
         $queryBuilder = $this->entityManager->createQueryBuilder();
-        $queryBuilder->select('IDENTITY(r.card) AS cardId, SUM(r.balance) AS totalBalance')
+        $queryBuilder->select('SUM(r.balance) AS totalBalance')
             ->from(Receipt::class, 'r')
+            ->join(Card::class, 'c', 'WITH', 'r.card = c.id')
+            ->addSelect('c as card')
             ->where('r.card IN (:cardIds)')
             ->andWhere('r.date BETWEEN :startDate AND :endDate')
             ->groupBy('r.card')
-            ->setParameter('cardIds', $cardIds)
+            ->setParameter('cardIds', $cards)
             ->setParameter('startDate', $startDate)
             ->setParameter('endDate', $endDate)
         ;
 
         $results = $queryBuilder->getQuery()->getResult();
 
-        $summary = array_combine($cardIds, array_fill(0, count($cardIds), 0));
         foreach ($results as $result)
         {
-            $summary[(int) $result['cardId']] = (int) $result['totalBalance'];
-        }
+            /**
+             * @var Card $card
+             */
+            $card = $result['card'];
 
-        return $summary;
+            $totalBalance = (int) $result['totalBalance'];
+            $card->setTotalReceipt($card->getTotalReceipt() + $totalBalance);
+            if (CardService::DEBIT_CARD === $card->getType())
+            {
+                $category = $card->getCategory();
+                $category->setTotalReceipt($category->getTotalReceipt() + $totalBalance);
+            }
+        }
     }//end getCardsSummary()
 }//end class

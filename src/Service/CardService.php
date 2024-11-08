@@ -14,6 +14,14 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final class CardService
 {
+    public const DEBIT_CARD = 0;
+
+    public const CREDIT_CARD = 1;
+
+    public const SAVINGS_ACCOUNT = 2;
+
+    public const CREDIT = 3;
+
     public function __construct(private EntityManagerInterface $entityManager) {}//end __construct()
 
     public function changeBalance(Card $card, int $balance): void

@@ -4,8 +4,9 @@
             <div class="card-header">
                 <div class="row row-cols-4">
                     <div class="col">{{ category.name}}</div>
-                    {# <div class="col text-end text-success">{{ item.RECEIPT|format_currency('RUB', locale='ru') }}</div> #}
-                    {# <div class="col text-end text-danger">{{ item.SPEND|format_currency('RUB', locale='ru') }}</div> #}
+                    <div class="col text-end text-success">{{ category.totalReceipt|formatCurrency }}</div>
+                    <div class="col text-end text-danger">{{ category.totalSpend|formatCurrency }}</div>
+                    <div class="col text-end text-primary">{{ category.balance|formatCurrency }}</div>
                     <div class="col text-end"></div>
                 </div>
             </div>
@@ -15,9 +16,9 @@
                     <li class="list-group-item{% if card.type == 1 %} list-group-item-danger{% endif %}">
                         <div class="row row-cols-4">
                             <div class="col">{{ card.name }}</div>
-                            <div class="col text-end text-success">{{ (totalReceipt[card.id] / 100)|format_currency('RUB', locale='ru') }}</div>
-                            <div class="col text-end text-danger">{{ (totalSpend[card.id] / 100)|format_currency('RUB', locale='ru') }}</div>
-                            <div class="col text-end">{{ (card.balance / 100)|format_currency('RUB', locale='ru') }}</div>
+                            <div class="col text-end text-success">{{ card.totalReceipt|formatCurrency }}</div>
+                            <div class="col text-end text-danger">{{ card.totalSpend|formatCurrency }}</div>
+                            <div class="col text-end">{{ card.balance|formatCurrency }}</div>
                         </div>
                     </li>
                     {% endfor %}

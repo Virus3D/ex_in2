@@ -14,6 +14,7 @@ use App\Entity\Transfer;
 use App\Form\TransferType;
 use App\Helper\FilterDataHelper;
 use App\Service\CardService;
+use App\Service\CategoryService;
 use App\Service\ReceiptService;
 use App\Service\SpendService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,7 +31,7 @@ final class TransferController extends AbstractController
     public function __construct(private EntityManagerInterface $entityManager) {}//end __construct()
 
     #[Route('/transfer/add', name: 'app_transfer_add', methods: ['POST'])]
-    public function add(Request $request, CardService $cardService, ReceiptService $receiptService, SpendService $spendService): Response
+    public function add(Request $request, CardService $cardService, CategoryService $categoryService): Response
     {
         $transfer     = new Transfer();
         $formTransfer = $this->createForm(
@@ -47,34 +48,27 @@ final class TransferController extends AbstractController
         {
             $this->entityManager->persist($transfer);
             $this->entityManager->flush();
-            $cardService->changeBalance($transfer->getCardIn(), $transfer->getBalance());
-            $cardService->changeBalance($transfer->getCardOut(), -$transfer->getBalance());
+
+            $balance = $transfer->getBalance();
+
+            $cardService->changeBalance($transfer->getCardIn(), $balance);
+            $cardService->changeBalance($transfer->getCardOut(), -$balance);
 
             if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat())
             {
                 FilterDataHelper::getFilterData($request);
 
                 $categories = $this->getCategories($transfer);
-                $cards      = $transfer->getCardIn()->getCategory()->getCards();
-                if (2 == count($categories))
+                foreach ($categories as $category)
                 {
-                    $cardsOut = $transfer->getCardOut()->getCategory()->getCards();
-                    foreach ($cardsOut as $cardOut)
-                    {
-                        $cards->add($cardOut);
-                    }
+                    $categoryService->handle($category);
                 }
-
-                $totalReceipt = $receiptService->getCardsSummary($cards, FilterDataHelper::$startDate, FilterDataHelper::$endDate);
-                $totalSpend   = $spendService->getCardsSummary($cards, FilterDataHelper::$startDate, FilterDataHelper::$endDate);
 
                 // If the request comes from Turbo, set the content type as text/vnd.turbo-stream.html and only send the HTML to update
                 return $this->render(
                     'transfer/combo.html.twig',
                     [
                         'categories'   => $categories,
-                        'totalReceipt' => $totalReceipt,
-                        'totalSpend'   => $totalSpend,
                         'transferList' => $this->getTransferList($request),
                     ]
                 );

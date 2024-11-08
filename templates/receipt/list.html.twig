@@ -14,7 +14,7 @@
                         <small>{{ receipt.card.category.name }}</small>
                     </div>
                     <div class="col">{{ receipt.comment }}</div>
-                    <div class="col text-end">{{ (receipt.balance / 100)|format_currency('RUB', locale='ru') }}</div>
+                    <div class="col text-end">{{ receipt.balance|formatCurrency }}</div>
                     <div class="col-auto text-center">
                         {# <a href="{{ item.U_DEL }}" class="btn btn-outline-danger del_receipt">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">

@@ -11,8 +11,7 @@ namespace App\Controller;
 
 use App\Entity\CardCategory;
 use App\Helper\FilterDataHelper;
-use App\Service\ReceiptService;
-use App\Service\SpendService;
+use App\Service\CategoryService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,20 +20,12 @@ use Symfony\Component\Routing\Attribute\Route;
 final class CategoryController extends AbstractController
 {
     #[Route('/category/{id}', name: 'app_category_view')]
-    public function view(CardCategory $category, Request $request, ReceiptService $receiptService, SpendService $spendService): Response
+    public function view(CardCategory $category, Request $request, CategoryService $categoryService): Response
     {
         FilterDataHelper::getFilterData($request);
 
-        $totalReceipt = $receiptService->getCardsSummary($category->getCards(), FilterDataHelper::$startDate, FilterDataHelper::$endDate);
-        $totalSpend   = $spendService->getCardsSummary($category->getCards(), FilterDataHelper::$startDate, FilterDataHelper::$endDate);
+        $categoryService->handle($category);
 
-        return $this->render(
-            'category/view.html.twig',
-            [
-                'category'     => $category,
-                'totalReceipt' => $totalReceipt,
-                'totalSpend'   => $totalSpend,
-            ]
-        );
+        return $this->render('category/view.html.twig', ['category' => $category]);
     }//end view()
 }//end class

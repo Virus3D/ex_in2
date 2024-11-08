@@ -12,9 +12,7 @@ namespace App\Entity;
 use App\Repository\SpendRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\UX\Turbo\Attribute\Broadcast;
 
-#[Broadcast]
 #[ORM\Entity(repositoryClass: SpendRepository::class)]
 class Spend
 {

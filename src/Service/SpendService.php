@@ -23,37 +23,38 @@ final class SpendService
     /**
      * @param Card[] $cards
      *
-     * @return array<int, int>
      */
-    public function getCardsSummary(iterable $cards, DateTime $startDate, DateTime $endDate): array
+    public function getCardsSummary(iterable $cards, DateTime $startDate, DateTime $endDate): void
     {
-        $cardIds = [];
-
-        // Преобразуем в массив ID для карт
-        foreach ($cards as $card)
-        {
-            $cardIds[] = $card->getId();
-        }
-
         $queryBuilder = $this->entityManager->createQueryBuilder();
-        $queryBuilder->select('IDENTITY(s.card) AS cardId, SUM(s.balance) AS totalBalance')
+        $queryBuilder->select('SUM(s.balance) AS totalBalance')
             ->from(Spend::class, 's')
+            ->join(Card::class, 'c', 'WITH', 's.card = c.id')
+            ->addSelect('c as card')
             ->where('s.card IN (:cardIds)')
             ->andWhere('s.date BETWEEN :startDate AND :endDate')
             ->groupBy('s.card')
-            ->setParameter('cardIds', $cardIds)
+            ->setParameter('cardIds', $cards)
             ->setParameter('startDate', $startDate)
             ->setParameter('endDate', $endDate)
         ;
 
         $results = $queryBuilder->getQuery()->getResult();
 
-        $summary = array_combine($cardIds, array_fill(0, count($cardIds), 0));
         foreach ($results as $result)
         {
-            $summary[(int) $result['cardId']] = (int) $result['totalBalance'];
-        }
+            /**
+             * @var Card $card
+             */
+            $card = $result['card'];
 
-        return $summary;
+            $totalBalance = (int) $result['totalBalance'];
+            $card->setTotalSpend($card->getTotalSpend() + $totalBalance);
+            if (in_array($card->getType(), [CardService::DEBIT_CARD, CardService::CREDIT_CARD], true))
+            {
+                $category = $card->getCategory();
+                $category->setTotalSpend($category->getTotalSpend() + $totalBalance);
+            }
+        }
     }//end getCardsSummary()
 }//end class
