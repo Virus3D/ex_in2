@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\CardCategory;
+use App\Entity\Place;
 use App\Form\FilterType;
 use App\Form\ReceiptType;
 use App\Form\SpendType;
@@ -35,6 +36,7 @@ final class MainController extends AbstractController
                 'formReceipt'  => $this->formReceipt(),
                 'formSpend'    => $this->formSpend(),
                 'formTransfer' => $this->formTransfer(),
+                'placeList'    => $entityManager->getRepository(Place::class)->findAll(),
             ]
         );
     }//end index()

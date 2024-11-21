@@ -1,0 +1,12 @@
+{{ form_start(formPayment, {attr: {class: 'form-horizontal', 'data-turbo-frame': 'service_frame'~place.id}}) }}
+    <div class="my-custom-class-for-errors">
+        {{ form_errors(formPayment) }}
+    </div>
+    <div class="input-group">
+        {{ form_widget(formPayment.service, {attr: {class: 'form-select'}}) }}
+        {{ form_widget(formPayment.month, {attr: {class: 'form-select'}}) }}
+        {{ form_widget(formPayment.card, {attr: {class: 'form-select'}}) }}
+        {{ form_widget(formPayment.amount, {attr: {placeholder: '0.00'}}) }}
+        <button type="submit" class="btn btn-primary">{{ 'Add'|trans }}</button>
+    </div>
+{{ form_end(formPayment) }}

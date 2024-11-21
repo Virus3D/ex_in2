@@ -1,0 +1,11 @@
+<turbo-frame id="service_form_frame{{ place.id }}">
+<div class="alert alert-danger">
+    {{ 'Account'|trans }}
+    {% include "form/formAccount.html.twig" %}
+</div>
+
+<div class="alert alert-success">
+    {{ 'Account'|trans }}
+    {% include "form/formPayment.html.twig" %}
+</div>
+</turbo-frame>

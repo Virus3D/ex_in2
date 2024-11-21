@@ -20,8 +20,14 @@ final class FilterDataHelper
     /** @phpstan-ignore shipmonk.publicPropertyNotReadonly */
     public static DateTime $endDate;
 
+    /** @phpstan-ignore shipmonk.publicPropertyNotReadonly */
+    public static int $year;
+
+    /** @phpstan-ignore shipmonk.publicPropertyNotReadonly */
+    public static int $month;
+
     /**
-     * @return array<string, mixed>
+     * @return array<string, int|string>
      */
     public static function getFilterData(Request $request): array
     {
@@ -34,6 +40,18 @@ final class FilterDataHelper
 
         self::$startDate = new DateTime("{$filterData['year']}-{$filterData['month']}-01");
         self::$endDate   = (clone self::$startDate)->modify('last day of this month');
+        self::$year      = (int) $filterData['year'];
+        if (1 === (int) $filterData['month'])
+        {
+            // Если месяц равен 1, то переводим в год вчерашнего
+            --self::$year;
+        }
+
+        self::$month = (int) $filterData['month'] - 1;
+        if (0 == self::$month)
+        {
+            self::$month = 12;
+        }
 
         return $filterData;
     }//end getFilterData()

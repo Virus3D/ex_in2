@@ -1,0 +1,50 @@
+<turbo-frame id="service_frame{{ place.id }}" >
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>{{ 'Service'|trans }}</th>
+                {% for month in range(1, 12) %}
+                    <th>{{ (month ~ '/1')|date('F')|capitalize|trans }}</th>
+                {% endfor %}
+                <th>{{ 'All'|trans }}</th>
+                <th>{{ 'Debt'|trans }}</th>
+            </tr>
+        </thead>
+        <colgroup>
+            <col class="table-info">
+            <col span="12" class="text-end">
+            <col class="table-primary text-end">
+            <col class="table-danger text-end">
+        </colgroup>
+        <tbody>
+            {% for service in place.service %}
+            <tr>
+                <td>{{ service.name }}</td>
+                {% for month in range(1, 12) %}
+                <td class="text-end">
+                    <div class="text-danger">{{ accounts[service.id][month]|formatCurrency }}</div>
+                    <div class="text-success">
+                        {% for payment in payments[service.id][month] %}
+                        {{ payment.amount|formatCurrency }}<br/>
+                        <sup>{{ payment.date|date('Y-m-d H:i')}}</sup>
+                        {% endfor %}
+                    </div>
+                </td>
+                {% endfor %}
+                <td class="table-primary text-end">{{ total[service.id]['total']|formatCurrency }}</td>
+                <td class="table-danger text-end">{{ total[service.id]['debt']|formatCurrency }}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td> </td>
+                {% for month in range(1, 12) %}
+                <td class="text-end">
+                    {{ totalMonth[month]|formatCurrency }}
+                </td>
+                {% endfor %}
+                <td> </td>
+                <td> </td>
+            </tr>
+        </tbody>
+    </table>
+</turbo-frame>

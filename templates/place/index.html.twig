@@ -1,0 +1,11 @@
+{% for place in placeList %}
+<div class="card mb-3">
+    <div class="card-header">
+        {{ place.name }}
+    </div>
+    <div class="card-body">
+        <turbo-frame id="service_frame{{ place.id }}" src="{{ path('app_place_view', {id: place.id}) }}"></turbo-frame>
+        <turbo-frame id="service_form_frame{{ place.id }}" src="{{ path('app_place_form', {id: place.id}) }}"></turbo-frame>
+    </div>
+</div>
+{% endfor %}
