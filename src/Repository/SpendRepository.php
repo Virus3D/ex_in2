@@ -35,6 +35,7 @@ final class SpendRepository extends ServiceEntityRepository
             ->andWhere('s.date BETWEEN :startDate AND :endDate')
             ->setParameter('startDate', $startDate)
             ->setParameter('endDate', $endDate)
+            ->orderBy('s.date', 'DESC')
             ->getQuery()
             ->getResult()
         ;

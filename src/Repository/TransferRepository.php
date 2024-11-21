@@ -35,6 +35,7 @@ final class TransferRepository extends ServiceEntityRepository
             ->andWhere('t.date BETWEEN :startDate AND :endDate')
             ->setParameter('startDate', $startDate)
             ->setParameter('endDate', $endDate)
+            ->orderBy('t.date', 'DESC')
             ->getQuery()
             ->getResult()
         ;
