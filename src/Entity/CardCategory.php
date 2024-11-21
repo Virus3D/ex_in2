@@ -82,6 +82,7 @@ class CardCategory
 
         return $this;
     }//end removeCard()
+
     public function __toString(): string
     {
         return $this->name;

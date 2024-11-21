@@ -12,7 +12,6 @@ namespace App\Controller;
 use App\Entity\Receipt;
 use App\Form\ReceiptType;
 use App\Helper\FilterDataHelper;
-use App\Service\CardService;
 use App\Service\CategoryService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,7 +25,7 @@ final class ReceiptController extends AbstractController
     public function __construct(private EntityManagerInterface $entityManager) {}//end __construct()
 
     #[Route('/receipt/add', name: 'app_receipt_add', methods: ['POST'])]
-    public function add(Request $request, CardService $cardService, CategoryService $categoryService): Response
+    public function add(Request $request, CategoryService $categoryService): Response
     {
         $receipt     = new Receipt();
         $formReceipt = $this->createForm(
@@ -43,7 +42,6 @@ final class ReceiptController extends AbstractController
         {
             $this->entityManager->persist($receipt);
             $this->entityManager->flush();
-            $cardService->changeBalance($receipt->getCard(), $receipt->getBalance());
 
             if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat())
             {

@@ -11,7 +11,7 @@
                     <div class="col">{{ spend.date|date('Y-m-d') }}</div>
                     <div class="col">
                         {{ spend.card.name }}
-                        <small>{{ spend.card.category.name }}</small>
+                        <sub class="text-info">{{ spend.card.category.name }}</sub>
                     </div>
                     <div class="col">{{ spend.comment }}</div>
                     <div class="col text-end">{{ spend.balance|formatCurrency }}</div>

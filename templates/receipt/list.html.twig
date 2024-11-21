@@ -11,7 +11,7 @@
                     <div class="col">{{ receipt.date|date('Y-m-d') }}</div>
                     <div class="col">
                         {{ receipt.card.name }}
-                        <small>{{ receipt.card.category.name }}</small>
+                        <sub class="text-info">{{ receipt.card.category.name }}</sub>
                     </div>
                     <div class="col">{{ receipt.comment }}</div>
                     <div class="col text-end">{{ receipt.balance|formatCurrency }}</div>

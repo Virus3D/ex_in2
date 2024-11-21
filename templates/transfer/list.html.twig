@@ -11,11 +11,11 @@
                     <div class="col">{{ transfer.date|date('Y-m-d') }}</div>
                     <div class="col">
                         {{ transfer.cardOut.name }}
-                        <small>{{ transfer.cardOut.category.name }}</small>
+                        <sub class="text-info">{{ transfer.cardOut.category.name }}</sub>
                     </div>
                     <div class="col">
                         {{ transfer.cardIn.name }}
-                        <small>{{ transfer.cardIn.category.name }}</small>
+                        <sub class="text-info">{{ transfer.cardIn.category.name }}</sub>
                     </div>
                     <div class="col text-end">{{ transfer.balance|formatCurrency }}</div>
                     <div class="col-auto text-center">

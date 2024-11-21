@@ -13,10 +13,7 @@ use App\Entity\CardCategory;
 use App\Entity\Transfer;
 use App\Form\TransferType;
 use App\Helper\FilterDataHelper;
-use App\Service\CardService;
 use App\Service\CategoryService;
-use App\Service\ReceiptService;
-use App\Service\SpendService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,14 +21,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\UX\Turbo\TurboBundle;
 
-use function count;
-
 final class TransferController extends AbstractController
 {
     public function __construct(private EntityManagerInterface $entityManager) {}//end __construct()
 
     #[Route('/transfer/add', name: 'app_transfer_add', methods: ['POST'])]
-    public function add(Request $request, CardService $cardService, CategoryService $categoryService): Response
+    public function add(Request $request, CategoryService $categoryService): Response
     {
         $transfer     = new Transfer();
         $formTransfer = $this->createForm(
@@ -48,11 +43,6 @@ final class TransferController extends AbstractController
         {
             $this->entityManager->persist($transfer);
             $this->entityManager->flush();
-
-            $balance = $transfer->getBalance();
-
-            $cardService->changeBalance($transfer->getCardIn(), $balance);
-            $cardService->changeBalance($transfer->getCardOut(), -$balance);
 
             if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat())
             {

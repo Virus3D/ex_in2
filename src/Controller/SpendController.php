@@ -12,7 +12,6 @@ namespace App\Controller;
 use App\Entity\Spend;
 use App\Form\SpendType;
 use App\Helper\FilterDataHelper;
-use App\Service\CardService;
 use App\Service\CategoryService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,7 +25,7 @@ final class SpendController extends AbstractController
     public function __construct(private EntityManagerInterface $entityManager) {}//end __construct()
 
     #[Route('/spend/add', name: 'app_spend_add', methods: ['POST'])]
-    public function add(Request $request, CardService $cardService, CategoryService $categoryService): Response
+    public function add(Request $request, CategoryService $categoryService): Response
     {
         $spend     = new Spend();
         $formSpend = $this->createForm(
@@ -43,7 +42,6 @@ final class SpendController extends AbstractController
         {
             $this->entityManager->persist($spend);
             $this->entityManager->flush();
-            $cardService->changeBalance($spend->getCard(), -$spend->getBalance());
 
             if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat())
             {
