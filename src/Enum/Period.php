@@ -11,7 +11,7 @@ namespace App\Enum;
 
 enum Period: string
 {
-    case year = 'year';
+    case year = 'Year';
 
-    case month = 'month';
+    case month = 'Month';
 }//end enum

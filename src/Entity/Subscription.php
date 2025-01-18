@@ -9,8 +9,12 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Enum\Period;
 use App\Repository\SubscriptionRepository;
+use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SubscriptionRepository::class)]
 class Subscription
@@ -20,27 +24,33 @@ class Subscription
     #[ORM\Id]
     private ?int $id = null;
 
+    #[Assert\NotBlank]
     #[ORM\Column(length: 100)]
-    private ?string $name = null;
+    private string $name;
+
+    #[ORM\Column(options: ['unsigned' => true])]
+    private int $amount;
 
     #[ORM\Column]
-    private ?int $type = null;
+    private int $balance;
 
-    #[ORM\Column]
-    private ?int $amount = null;
+    #[ORM\Column(enumType: Period::class)]
+    private Period $period;
 
-    #[ORM\Column]
-    private ?int $day = null;
+    #[ORM\Column(name: 'next_payment_date', type: Types::DATE_MUTABLE)]
+    private DateTimeInterface $nextPaymentDate;
 
-    #[ORM\Column]
-    private ?int $month = null;
+    public function __construct()
+    {
+        $this->setBalance(0);
+    }//end __construct()
 
     public function getId(): ?int
     {
         return $this->id;
     }//end getId()
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }//end getName()
@@ -52,19 +62,7 @@ class Subscription
         return $this;
     }//end setName()
 
-    public function getType(): ?int
-    {
-        return $this->type;
-    }//end getType()
-
-    public function setType(int $type): static
-    {
-        $this->type = $type;
-
-        return $this;
-    }//end setType()
-
-    public function getAmount(): ?int
+    public function getAmount(): int
     {
         return $this->amount;
     }//end getAmount()
@@ -76,27 +74,39 @@ class Subscription
         return $this;
     }//end setAmount()
 
-    public function getDay(): ?int
+    public function getBalance(): int
     {
-        return $this->day;
-    }//end getDay()
+        return $this->balance;
+    }//end getBalance()
 
-    public function setDay(int $day): static
+    public function setBalance(?int $balance): static
     {
-        $this->day = $day;
+        $this->balance = $balance ?? 0;
 
         return $this;
-    }//end setDay()
+    }//end setBalance()
 
-    public function getMonth(): ?int
+    public function getPeriod(): Period
     {
-        return $this->month;
-    }//end getMonth()
+        return $this->period;
+    }//end getPeriod()
 
-    public function setMonth(int $month): static
+    public function setPeriod(Period $period): static
     {
-        $this->month = $month;
+        $this->period = $period;
 
         return $this;
-    }//end setMonth()
+    }//end setPeriod()
+
+    public function getNextPaymentDate(): DateTimeInterface
+    {
+        return $this->nextPaymentDate;
+    }//end getNextPaymentDate()
+
+    public function setNextPaymentDate(DateTimeInterface $nextPaymentDate): static
+    {
+        $this->nextPaymentDate = $nextPaymentDate;
+
+        return $this;
+    }//end setNextPaymentDate()
 }//end class
