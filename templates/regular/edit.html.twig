@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Regular{% endblock %}
+
+{% block body %}
+    <h1>Edit Regular</h1>
+
+    {{ include('regular/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_regular_index') }}">back to list</a>
+
+    {{ include('regular/_delete_form.html.twig') }}
+{% endblock %}

@@ -12,6 +12,7 @@ namespace App\Controller\Admin;
 use App\Entity\Card;
 use App\Entity\CardCategory;
 use App\Entity\Place;
+use App\Entity\Regular;
 use App\Entity\Service;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -39,9 +40,12 @@ final class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Card Category', 'fas fa-list', CardCategory::class);
         yield MenuItem::linkToCrud('Card', 'fas fa-list', Card::class);
-        yield MenuItem::subMenu('Communal services', 'fas fa-cogs')->setSubItems([
-            MenuItem::linkToCrud('Place', 'fas fa-list', Place::class),
-            MenuItem::linkToCrud('Service', 'fas fa-list', Service::class),
-        ]);
+        yield MenuItem::subMenu('Communal services', 'fas fa-cogs')->setSubItems(
+            [
+                MenuItem::linkToCrud('Place', 'fas fa-list', Place::class),
+                MenuItem::linkToCrud('Service', 'fas fa-list', Service::class),
+            ]
+        );
+        yield MenuItem::linkToCrud('Regular', 'fas fa-list', entityFqcn: Regular::class);
     }//end configureMenuItems()
 }//end class
