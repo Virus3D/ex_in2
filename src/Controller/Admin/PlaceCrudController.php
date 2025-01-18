@@ -26,7 +26,7 @@ final class PlaceCrudController extends AbstractCrudController
     {
         yield IdField::new('id')->hideOnForm();
         yield TextField::new('Name');
-        yield AssociationField::new('service')->setRequired(false)->setFormTypeOptions(
+        yield AssociationField::new('services')->setRequired(false)->setFormTypeOptions(
             [
                 'multiple' => true,
             ]

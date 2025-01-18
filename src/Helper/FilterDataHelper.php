@@ -38,18 +38,14 @@ final class FilterDataHelper
         $filterData['year']  ??= (int) date('Y');
         $filterData['month'] ??= (int) date('m');
 
-        self::$startDate = new DateTime("{$filterData['year']}-{$filterData['month']}-01");
-        self::$endDate   = (clone self::$startDate)->modify('last day of this month');
-        self::$year      = (int) $filterData['year'];
-        if (1 === (int) $filterData['month'])
-        {
-            // Если месяц равен 1, то переводим в год вчерашнего
-            --self::$year;
-        }
+        self::$startDate = new DateTime("{$filterData['year']}-{$filterData['month']}-01 00:00:00");
+        self::$endDate   = (clone self::$startDate)->modify('last day of this month')->setTime(23, 59, 59);
 
+        self::$year  = (int) $filterData['year'];
         self::$month = (int) $filterData['month'] - 1;
         if (0 == self::$month)
         {
+            --self::$year;
             self::$month = 12;
         }
 

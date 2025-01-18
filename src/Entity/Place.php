@@ -56,10 +56,10 @@ class Place
     /**
      * @return Collection<int, Service>
      */
-    public function getService(): Collection
+    public function getServices(): Collection
     {
         return $this->services;
-    }//end getService()
+    }//end getServices()
 
     public function addService(Service $service): static
     {

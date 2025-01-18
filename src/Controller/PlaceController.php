@@ -49,7 +49,7 @@ final class PlaceController extends AbstractController
 
     private function renderTable(Place $place): Response
     {
-        $services   = $place->getService();
+        $services   = $place->getServices();
         $account    = [];
         $payment    = [];
         $total      = [];

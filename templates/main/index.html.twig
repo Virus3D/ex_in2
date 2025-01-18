@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MainController!{% endblock %}
+{% block title %}{{ 'Expenses/Income'| trans }}{% endblock %}
 
 {% block body %}
 <div class="container">
@@ -10,7 +10,7 @@
     
     <div class="row row-cols-1 row-cols-md-2 g-4" id="card_block">
         {% for category in categories %}
-        <turbo-frame id="category_frame{{ category.id }}" src="{{ path('app_category_view', {id: category.id}) }}"></turbo-frame>
+        {{ component('Category', {'categoryID': category.id}) }}
         {% endfor %}
     </div>
     

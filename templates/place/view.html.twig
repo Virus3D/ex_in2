@@ -17,7 +17,7 @@
             <col class="table-danger text-end">
         </colgroup>
         <tbody>
-            {% for service in place.service %}
+            {% for service in place.services %}
             <tr>
                 <td>{{ service.name }}</td>
                 {% for month in range(1, 12) %}
@@ -25,8 +25,8 @@
                     <div class="text-danger">{{ accounts[service.id][month]|formatCurrency }}</div>
                     <div class="text-success">
                         {% for payment in payments[service.id][month] %}
-                        {{ payment.amount|formatCurrency }}<br/>
-                        <sup>{{ payment.date|date('Y-m-d H:i')}}</sup>
+                        {{ payment.amount|formatCurrency }}
+                        <div style="font-size:.8em">{{ payment.date|date('Y-m-d H:i')}}</div>
                         {% endfor %}
                     </div>
                 </td>

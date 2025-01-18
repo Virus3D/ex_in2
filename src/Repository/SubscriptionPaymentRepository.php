@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * @license Shareware
+ * @copyright (c) 2024 Virus3D
+ */
+
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\SubscriptionPayment;
@@ -9,12 +16,12 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<SubscriptionPayment>
  */
-class SubscriptionPaymentRepository extends ServiceEntityRepository
+final class SubscriptionPaymentRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, SubscriptionPayment::class);
-    }
+    }//end __construct()
 
     //    /**
     //     * @return SubscriptionPayment[] Returns an array of SubscriptionPayment objects
@@ -40,4 +47,4 @@ class SubscriptionPaymentRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
-}
+}//end class
