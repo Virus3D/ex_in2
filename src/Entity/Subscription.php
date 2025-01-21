@@ -11,7 +11,7 @@ namespace App\Entity;
 
 use App\Enum\Period;
 use App\Repository\SubscriptionRepository;
-use DateTimeInterface;
+use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -38,7 +38,7 @@ class Subscription
     private Period $period;
 
     #[ORM\Column(name: 'next_payment_date', type: Types::DATE_MUTABLE)]
-    private DateTimeInterface $nextPaymentDate;
+    private DateTime $nextPaymentDate;
 
     public function __construct()
     {
@@ -98,12 +98,12 @@ class Subscription
         return $this;
     }//end setPeriod()
 
-    public function getNextPaymentDate(): DateTimeInterface
+    public function getNextPaymentDate(): DateTime
     {
         return $this->nextPaymentDate;
     }//end getNextPaymentDate()
 
-    public function setNextPaymentDate(DateTimeInterface $nextPaymentDate): static
+    public function setNextPaymentDate(DateTime $nextPaymentDate): static
     {
         $this->nextPaymentDate = $nextPaymentDate;
 

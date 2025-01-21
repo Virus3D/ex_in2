@@ -1304,16 +1304,16 @@
         },
         {
             "name": "easycorp/easyadmin-bundle",
-            "version": "v4.22.2",
+            "version": "v4.23.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EasyCorp/EasyAdminBundle.git",
-                "reference": "177768e47dfe1bd758e76db4b2dbb569ec37c1f4"
+                "reference": "dbe0b3cd7d7295ae48741f910e6d8d4c25f59ff8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/177768e47dfe1bd758e76db4b2dbb569ec37c1f4",
-                "reference": "177768e47dfe1bd758e76db4b2dbb569ec37c1f4",
+                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/dbe0b3cd7d7295ae48741f910e6d8d4c25f59ff8",
+                "reference": "dbe0b3cd7d7295ae48741f910e6d8d4c25f59ff8",
                 "shasum": ""
             },
             "require": {
@@ -1393,7 +1393,7 @@
             ],
             "support": {
                 "issues": "https://github.com/EasyCorp/EasyAdminBundle/issues",
-                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v4.22.2"
+                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v4.23.1"
             },
             "funding": [
                 {
@@ -1401,7 +1401,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-01-17T19:34:55+00:00"
+            "time": "2025-01-20T19:52:16+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -10643,16 +10643,16 @@
         },
         {
             "name": "phpstan/phpstan-strict-rules",
-            "version": "2.0.1",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-strict-rules.git",
-                "reference": "ed6fea0ad4ad9c7e25f3ad2e7c4d420cf1e67fe3"
+                "reference": "02277ce4b0dd03d74f15282064f8f027d1dec9cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-strict-rules/zipball/ed6fea0ad4ad9c7e25f3ad2e7c4d420cf1e67fe3",
-                "reference": "ed6fea0ad4ad9c7e25f3ad2e7c4d420cf1e67fe3",
+                "url": "https://api.github.com/repos/phpstan/phpstan-strict-rules/zipball/02277ce4b0dd03d74f15282064f8f027d1dec9cc",
+                "reference": "02277ce4b0dd03d74f15282064f8f027d1dec9cc",
                 "shasum": ""
             },
             "require": {
@@ -10685,9 +10685,9 @@
             "description": "Extra strict and opinionated rules for PHPStan",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-strict-rules/issues",
-                "source": "https://github.com/phpstan/phpstan-strict-rules/tree/2.0.1"
+                "source": "https://github.com/phpstan/phpstan-strict-rules/tree/2.0.2"
             },
-            "time": "2024-12-12T20:21:10+00:00"
+            "time": "2025-01-19T13:03:11+00:00"
         },
         {
             "name": "phpstan/phpstan-symfony",
