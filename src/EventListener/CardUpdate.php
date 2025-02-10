@@ -29,10 +29,12 @@ final class CardUpdate
         {
             $this->cardService->changeBalance($entity->getCard(), $entity->getBalance());
         }
+
         if ($entity instanceof Spend)
         {
             $this->cardService->changeBalance($entity->getCard(), -$entity->getBalance());
         }
+
         if ($entity instanceof Transfer)
         {
             $balance = $entity->getBalance();

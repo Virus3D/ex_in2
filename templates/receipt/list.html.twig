@@ -1,6 +1,5 @@
 <turbo-frame id="receipt_frame">
     {# <div id="receipt_balance">{{ RECEIPT_SUM|format_currency('RUB', locale='ru') }}</div> #}
-    <div id="receipt_block">
     {% if receiptList is empty %}
         <p>{{ 'No receipts found.'|trans }}</p>
     {% else %}
@@ -27,5 +26,4 @@
             {% endfor %}
         </ul>
     {% endif %}
-    </div>
 </turbo-frame>

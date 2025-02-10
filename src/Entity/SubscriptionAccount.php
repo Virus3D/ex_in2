@@ -22,7 +22,7 @@ class SubscriptionAccount
     #[ORM\Id]
     private ?int $id = null;
 
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne]
     private ?Subscription $subscrip = null;
 

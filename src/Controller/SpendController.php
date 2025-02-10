@@ -50,7 +50,8 @@ final class SpendController extends AbstractController
                 $category = $spend->getCard()->getCategory();
                 $categoryService->handle($category);
 
-                // If the request comes from Turbo, set the content type as text/vnd.turbo-stream.html and only send the HTML to update
+                // If the request comes from Turbo, set the content type as text/vnd.turbo-stream.html
+                // and only send the HTML to update
                 return $this->render(
                     'spend/combo.html.twig',
                     [
@@ -82,6 +83,9 @@ final class SpendController extends AbstractController
     {
         FilterDataHelper::getFilterData($request);
 
-        return $this->entityManager->getRepository(Spend::class)->list(FilterDataHelper::$startDate, FilterDataHelper::$endDate);
+        return $this->entityManager->getRepository(Spend::class)->list(
+            FilterDataHelper::$startDate,
+            FilterDataHelper::$endDate
+        );
     }//end getSpendList()
 }//end class

@@ -22,7 +22,7 @@ class SubscriptionPayment
     #[ORM\Id]
     private ?int $id = null;
 
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne]
     private ?Subscription $subscrip = null;
 
@@ -31,6 +31,10 @@ class SubscriptionPayment
 
     #[ORM\Column]
     private ?int $amount = null;
+
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(inversedBy: 'spends')]
+    private ?Card $card = null;
 
     public function getId(): ?int
     {
@@ -72,4 +76,16 @@ class SubscriptionPayment
 
         return $this;
     }//end setAmount()
+
+    public function getCard(): ?Card
+    {
+        return $this->card;
+    }//end getCard()
+
+    public function setCard(?Card $card): static
+    {
+        $this->card = $card;
+
+        return $this;
+    }//end setCard()
 }//end class
