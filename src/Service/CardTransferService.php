@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -16,7 +18,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 use function in_array;
 
-final class TransferService
+final class CardTransferService
 {
     public function __construct(private EntityManagerInterface $entityManager) {}//end __construct()
 
@@ -35,24 +37,22 @@ final class TransferService
             )
             ->setParameter('cardIds', $cards)
             ->setParameter('startDate', $startDate)
-            ->setParameter('endDate', $endDate)
-        ;
+            ->setParameter('endDate', $endDate);
 
-        /** @var Transfer[] $results */
+        /**
+         * @var Transfer[] $results
+         */
         $results = $query->getResult();
 
-        foreach ($results as $result)
-        {
+        foreach ($results as $result) {
             $cardIn  = $result->getCardIn();
             $cardOut = $result->getCardOut();
 
             $totalBalance = $result->getBalance();
-            $cardIn->setTotalReceipt($cardIn->getTotalReceipt() + $totalBalance);
-            $cardOut->setTotalSpend($cardOut->getTotalSpend() + $totalBalance);
-            if (in_array($cardIn->getType(), [CardService::CREDIT, CardService::CREDIT_CARD], true))
-            {
-                $category = $cardOut->getCategory();
-                $category->setTotalSpend($category->getTotalSpend() + $totalBalance);
+            $cardIn->addTotalTransferAdd($totalBalance);
+            $cardOut->addTotalTransferSub($totalBalance);
+            if (in_array($cardIn->getType(), [CardService::CREDIT, CardService::CREDIT_CARD], true)) {
+                $cardOut->getCategory()?->addTotalSpend($totalBalance);
             }
         }
     }//end getCardsSummary()
