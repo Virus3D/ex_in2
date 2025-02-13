@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -20,10 +22,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\UX\Turbo\TurboBundle;
 
+/**
+ * Поступление.
+ */
 final class ReceiptController extends AbstractController
 {
     public function __construct(private EntityManagerInterface $entityManager) {}//end __construct()
 
+    /**
+     * Добавление поступления.
+     */
     #[Route('/receipt/add', name: 'app_receipt_add', methods: ['POST'])]
     public function add(Request $request, CategoryService $categoryService): Response
     {
@@ -38,19 +46,18 @@ final class ReceiptController extends AbstractController
 
         $formReceipt->handleRequest($request);
 
-        if ($formReceipt->isSubmitted() && $formReceipt->isValid())
-        {
+        if ($formReceipt->isSubmitted() && $formReceipt->isValid()) {
             $this->entityManager->persist($receipt);
             $this->entityManager->flush();
 
-            if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat())
-            {
+            if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat()) {
                 FilterDataHelper::getFilterData($request);
 
                 $category = $receipt->getCard()->getCategory();
                 $categoryService->handle($category);
 
-                // If the request comes from Turbo, set the content type as text/vnd.turbo-stream.html and only send the HTML to update
+                // If the request comes from Turbo,
+                // set the content type as text/vnd.turbo-stream.html and only send the HTML to update
                 return $this->render(
                     'receipt/combo.html.twig',
                     [
@@ -63,25 +70,4 @@ final class ReceiptController extends AbstractController
 
         return $this->redirectToRoute('app_main', [], 303);
     }//end add()
-
-    #[Route('/receipt', name: 'app_receipt_list', methods: ['GET'])]
-    public function list(Request $request): Response
-    {
-        return $this->render(
-            'receipt/list.html.twig',
-            [
-                'receiptList' => $this->getReceiptList($request),
-            ]
-        );
-    }//end list()
-
-    /**
-     * @return Receipt[]
-     */
-    private function getReceiptList(Request $request): array
-    {
-        FilterDataHelper::getFilterData($request);
-
-        return $this->entityManager->getRepository(Receipt::class)->list(FilterDataHelper::$startDate, FilterDataHelper::$endDate);
-    }//end getReceiptList()
 }//end class

@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -14,11 +16,13 @@ use App\Entity\Receipt;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 
-final class ReceiptService
+final class CardReceiptService
 {
     public function __construct(private EntityManagerInterface $entityManager) {}//end __construct()
 
     /**
+     * Подсчет поступлений на карты.
+     *
      * @param Card[] $cards
      */
     public function getCardsSummary(iterable $cards, DateTime $startDate, DateTime $endDate): void
@@ -33,24 +37,20 @@ final class ReceiptService
             ->groupBy('r.card')
             ->setParameter('cardIds', $cards)
             ->setParameter('startDate', $startDate)
-            ->setParameter('endDate', $endDate)
-        ;
+            ->setParameter('endDate', $endDate);
 
         $results = $queryBuilder->getQuery()->getResult();
 
-        foreach ($results as $result)
-        {
+        foreach ($results as $result) {
             /**
              * @var Card $card
              */
             $card = $result['card'];
 
             $totalBalance = (int) $result['totalBalance'];
-            $card->setTotalReceipt($card->getTotalReceipt() + $totalBalance);
-            if (CardService::DEBIT_CARD === $card->getType())
-            {
-                $category = $card->getCategory();
-                $category->setTotalReceipt($category->getTotalReceipt() + $totalBalance);
+            $card->addTotalReceipt($totalBalance);
+            if (CardService::DEBIT_CARD === $card->getType()) {
+                $card->getCategory()?->addTotalReceipt($totalBalance);
             }
         }
     }//end getCardsSummary()
