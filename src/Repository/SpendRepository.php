@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -9,6 +11,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\Card;
 use App\Entity\Spend;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -27,17 +30,21 @@ final class SpendRepository extends ServiceEntityRepository
     /**
      * @return Spend[]
      */
-    public function list(DateTime $startDate, DateTime $endDate): array
+    public function list(DateTime $startDate, DateTime $endDate, ?Card $card): array
     {
         $queryBuilder = $this->createQueryBuilder('s');
 
-        return $queryBuilder
+        $query = $queryBuilder
             ->andWhere('s.date BETWEEN :startDate AND :endDate')
             ->setParameter('startDate', $startDate)
             ->setParameter('endDate', $endDate)
-            ->orderBy('s.date', 'DESC')
-            ->getQuery()
-            ->getResult()
-        ;
+            ->orderBy('s.date', 'DESC');
+        if ($card) {
+            $query->andWhere('s.card = :card')
+                ->setParameter('card', $card);
+        }
+
+        return $query->getQuery()
+            ->getResult();
     }//end list()
 }//end class
