@@ -14,15 +14,21 @@ namespace App\Twig\Components;
 use App\Entity\Card;
 use App\Entity\Spend;
 use App\Helper\FilterDataHelper;
+use App\Service\CardService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
+use Symfony\UX\LiveComponent\Attribute\LiveAction;
+use Symfony\UX\LiveComponent\Attribute\LiveArg;
+use Symfony\UX\LiveComponent\Attribute\LiveListener;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
+use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
 #[AsLiveComponent]
-final class SpendListComponent
+final class SpendList
 {
+    use ComponentToolsTrait;
     use DefaultActionTrait;
 
     #[LiveProp(writable: true)]
@@ -32,8 +38,11 @@ final class SpendListComponent
 
     public int $total = 0;
 
-    public function __construct(private EntityManagerInterface $entityManager, private RequestStack $requestStack)
-    {
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private RequestStack $requestStack,
+        private CardService $cardService,
+    ) {
         $this->setSelectedCard();
     }//end __construct()
 
@@ -70,4 +79,28 @@ final class SpendListComponent
 
         return $spendList;
     }//end getSpendList()
+
+    /**
+     * Удаление записи расхода.
+     */
+    #[LiveAction]
+    public function remove(#[LiveArg()] int $id): void
+    {
+        $receipt = $this->entityManager->getRepository(Spend::class)->find($id);
+        $this->cardService->changeBalance($receipt->getCard(), $receipt->getBalance());
+        $this->entityManager->remove($receipt);
+        $this->entityManager->flush();
+
+        $this->emit('spendDeleted');
+    }//end remove()
+
+    /**
+     * Добавить расход.
+     */
+    #[LiveListener('spendAdded')]
+    #[LiveListener('updateCard')]
+    public function onSpendAdded(): void
+    {
+        $this->setSelectedCard();
+    }//end onSpendAdded()
 }//end class
