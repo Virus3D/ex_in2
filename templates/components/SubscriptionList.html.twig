@@ -1,4 +1,5 @@
-<turbo-frame id="subscription_frame" >
+<div {{ attributes }}>
+    {% set subscriptionList = this.getSubscriptionList() %}
     <table class="table table-striped">
         <thead>
             <tr>
@@ -15,7 +16,7 @@
             <col class="table-danger text-end">
         </colgroup>
         <tbody>
-            {% for subscription in subscriptions %}
+            {% for subscription in subscriptionList %}
             <tr>
                 <td>{{ subscription.name }}</td>
                 <td class="text-end">{{ subscription.nextPaymentDate|date('Y-m-d') }}</td>
@@ -25,4 +26,4 @@
             {% endfor %}
         </tbody>
     </table>
-</turbo-frame>
+</div>
