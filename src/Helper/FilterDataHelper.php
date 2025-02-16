@@ -11,19 +11,28 @@ namespace App\Helper;
 
 use DateTime;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 final class FilterDataHelper
 {
-    /** @phpstan-ignore shipmonk.publicPropertyNotReadonly */
+    /**
+     * @phpstan-ignore shipmonk.publicPropertyNotReadonly
+     */
     public static DateTime $startDate;
 
-    /** @phpstan-ignore shipmonk.publicPropertyNotReadonly */
+    /**
+     * @phpstan-ignore shipmonk.publicPropertyNotReadonly
+     */
     public static DateTime $endDate;
 
-    /** @phpstan-ignore shipmonk.publicPropertyNotReadonly */
+    /**
+     * @phpstan-ignore shipmonk.publicPropertyNotReadonly
+     */
     public static int $year;
 
-    /** @phpstan-ignore shipmonk.publicPropertyNotReadonly */
+    /**
+     * @phpstan-ignore shipmonk.publicPropertyNotReadonly
+     */
     public static int $month;
 
     /**
@@ -32,7 +41,7 @@ final class FilterDataHelper
     public static function getFilterData(Request $request): array
     {
         // Получение данных и фильтрация из сессии
-        $session    = $request->getSession();
+        $session = $request->getSession();
         $filterData = $session->get('filter_data', []);
 
         $filterData['year']  ??= (int) date('Y');
@@ -43,12 +52,11 @@ final class FilterDataHelper
 
         self::$year  = (int) $filterData['year'];
         self::$month = (int) $filterData['month'] - 1;
-        if (0 == self::$month)
-        {
+        if (0 == self::$month) {
             --self::$year;
             self::$month = 12;
         }
 
         return $filterData;
-    }//end getFilterData()
+    }//end getFilterDataSession()
 }//end class

@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -67,8 +69,7 @@ class CardCategory
 
     public function addCard(Card $card): static
     {
-        if (! $this->cards->contains($card))
-        {
+        if (! $this->cards->contains($card)) {
             $this->cards->add($card);
             $card->setCategory($this);
         }
@@ -107,6 +108,16 @@ class CardCategory
     }//end setTotalReceipt()
 
     /**
+     *Add the value of totalReceipt.
+     */
+    public function addTotalReceipt(int $receipt): self
+    {
+        $this->totalReceipt += $receipt;
+
+        return $this;
+    }//end setTotalReceipt()
+
+    /**
      * Get the value of totalSpend.
      */
     public function getTotalSpend(): int
@@ -123,6 +134,16 @@ class CardCategory
 
         return $this;
     }//end setTotalSpend()
+
+    /**
+     * Add the value of totalSpend.
+     */
+    public function addTotalSpend(int $spend): self
+    {
+        $this->totalSpend += $spend;
+
+        return $this;
+    }//end addTotalSpend()
 
     /**
      * Get the value of balance.

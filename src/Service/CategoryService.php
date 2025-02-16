@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -14,22 +16,42 @@ use App\Helper\FilterDataHelper;
 
 final class CategoryService
 {
-    public function __construct(private ReceiptService $receiptService, private SpendService $spendService, private TransferService $transferService) {}//end __construct()
+    public function __construct(
+        private CardReceiptService $receiptService,
+        private CardSpendService $spendService,
+        private CardTransferService $transferService,
+    ) {}//end __construct()
 
+    /**
+     * Получает информацию по картам категории.
+     */
     public function handle(CardCategory $category): void
     {
         $cards = $category->getCards();
+
+        $this->clear($cards);
 
         $this->receiptService->getCardsSummary($cards, FilterDataHelper::$startDate, FilterDataHelper::$endDate);
         $this->spendService->getCardsSummary($cards, FilterDataHelper::$startDate, FilterDataHelper::$endDate);
         $this->transferService->getCardsSummary($cards, FilterDataHelper::$startDate, FilterDataHelper::$endDate);
 
-        foreach ($cards as $card)
-        {
-            if (CardService::DEBIT_CARD === $card->getType())
-            {
+        $this->calcTotalBalance($category, $cards);
+    }//end handle()
+
+    private function clear(iterable $cards): void
+    {
+        foreach ($cards as $card) {
+            $card->setTotalSpend(0);
+            $card->setTotalReceipt(0);
+        }
+    }//end clear()
+
+    private function calcTotalBalance(CardCategory $category, iterable $cards): void
+    {
+        foreach ($cards as $card) {
+            if (CardService::DEBIT_CARD === $card->getType()) {
                 $category->setBalance($category->getBalance() + $card->getBalance());
             }
         }
-    }//end handle()
+    }//end clear()
 }//end class

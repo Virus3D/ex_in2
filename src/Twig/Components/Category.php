@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -15,6 +17,7 @@ use App\Service\CategoryService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
+use Symfony\UX\LiveComponent\Attribute\LiveListener;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
@@ -23,15 +26,18 @@ final class Category
 {
     use DefaultActionTrait;
 
-    #[LiveProp(writable: true)]
+    #[LiveProp]
     public int $categoryID;
 
-    public function __construct(private EntityManagerInterface $entityManager, private RequestStack $requestStack, private CategoryService $categoryService)
-    {
-        $this->entityManager = $entityManager;
-        $this->requestStack  = $requestStack;
-    }//end __construct()
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private RequestStack $requestStack,
+        private CategoryService $categoryService,
+    ) {}//end __construct()
 
+    /**
+     * Возвращает информацию по картам категории.
+     */
     public function getCategory(): ?CardCategory
     {
         $category = $this->entityManager->getRepository(CardCategory::class)->find($this->categoryID);
@@ -43,4 +49,14 @@ final class Category
 
         return $category;
     }//end getCategory()
+
+    #[LiveListener('receiptAdded')]
+    #[LiveListener('spendAdded')]
+    #[LiveListener('transferAdded')]
+    #[LiveListener('receiptDeleted')]
+    #[LiveListener('spendDeleted')]
+    #[LiveListener('transferDeleted')]
+    #[LiveListener('subscriptionAdded')]
+    public function onEvent(): void
+    {}//end onEvent()
 }//end class

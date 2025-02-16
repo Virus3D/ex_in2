@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -14,33 +16,34 @@ use App\Entity\Spend;
 use App\Entity\Transfer;
 use App\Service\CardService;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
-use Doctrine\ORM\Event\PrePersistEventArgs;
+use Doctrine\ORM\Event\PostPersistEventArgs;
 
-#[AsDoctrineListener('prePersist')]
+#[AsDoctrineListener('postPersist')]
 final class CardUpdate
 {
-    public function __construct(private CardService $cardService) {}//end __construct()
+    public function __construct(private CardService $cardService)
+    {}//end __construct()
 
-    public function prePersist(PrePersistEventArgs $event): void
+    /**
+     * После добавления.
+     */
+    public function postPersist(PostPersistEventArgs $event): void
     {
         $entity = $event->getObject();
 
-        if ($entity instanceof Receipt)
-        {
+        if ($entity instanceof Receipt) {
             $this->cardService->changeBalance($entity->getCard(), $entity->getBalance());
         }
 
-        if ($entity instanceof Spend)
-        {
+        if ($entity instanceof Spend) {
             $this->cardService->changeBalance($entity->getCard(), -$entity->getBalance());
         }
 
-        if ($entity instanceof Transfer)
-        {
+        if ($entity instanceof Transfer) {
             $balance = $entity->getBalance();
 
             $this->cardService->changeBalance($entity->getCardIn(), $balance);
             $this->cardService->changeBalance($entity->getCardOut(), -$balance);
         }
-    }//end prePersist()
+    }//end postPersist()
 }//end class
