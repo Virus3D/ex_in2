@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -11,6 +13,7 @@ namespace App\Form;
 
 use App\Entity\Card;
 use App\Entity\Receipt;
+use DateTime;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -25,7 +28,10 @@ final class ReceiptType extends AbstractType
         $builder
             ->add(
                 'date',
-                DateType::class
+                DateType::class,
+                [
+                    'data' => new DateTime(),
+                ]
             )
             ->add(
                 'balance',
@@ -46,8 +52,7 @@ final class ReceiptType extends AbstractType
                     'choice_label' => static fn (?Card $card): string => $card?->getName() ?? '',
                     'group_by'     => static fn (?Card $card): string => $card?->getCategory()->getName() ?? '',
                 ]
-            )
-        ;
+            );
     }//end buildForm()
 
     public function configureOptions(OptionsResolver $resolver): void

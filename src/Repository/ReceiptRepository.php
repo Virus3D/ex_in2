@@ -36,7 +36,8 @@ final class ReceiptRepository extends ServiceEntityRepository
             ->andWhere('r.date BETWEEN :startDate AND :endDate')
             ->setParameter('startDate', $startDate)
             ->setParameter('endDate', $endDate)
-            ->orderBy('r.date', 'DESC');
+            ->orderBy('r.date', 'DESC')
+            ->orderBy('r.id', 'DESC');
         if ($card) {
             $query->andWhere('r.card = :card')
                 ->setParameter('card', $card);
