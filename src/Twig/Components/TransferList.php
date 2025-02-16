@@ -12,18 +12,23 @@ declare(strict_types=1);
 namespace App\Twig\Components;
 
 use App\Entity\Card;
-use App\Entity\Spend;
 use App\Entity\Transfer;
 use App\Helper\FilterDataHelper;
+use App\Service\CardService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
+use Symfony\UX\LiveComponent\Attribute\LiveAction;
+use Symfony\UX\LiveComponent\Attribute\LiveArg;
+use Symfony\UX\LiveComponent\Attribute\LiveListener;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
+use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
 #[AsLiveComponent]
-final class TransferListComponent
+final class TransferList
 {
+    use ComponentToolsTrait;
     use DefaultActionTrait;
 
     #[LiveProp(writable: true)]
@@ -38,8 +43,11 @@ final class TransferListComponent
 
     public int $total = 0;
 
-    public function __construct(private EntityManagerInterface $entityManager, private RequestStack $requestStack)
-    {
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private RequestStack $requestStack,
+        private CardService $cardService,
+    ) {
         $this->setSelectedCard();
     }//end __construct()
 
@@ -64,7 +72,7 @@ final class TransferListComponent
     /**
      * Получить список переводов.
      *
-     * @return Spend[]
+     * @return Transfer[]
      */
     public function getTransferList(): array
     {
@@ -77,4 +85,29 @@ final class TransferListComponent
             $this->selectedCardIn
         );
     }//end getTransferList()
+
+    /**
+     * Удаление записи перевода.
+     */
+    #[LiveAction]
+    public function remove(#[LiveArg] int $id): void
+    {
+        $receipt = $this->entityManager->getRepository(Transfer::class)->find($id);
+        $this->cardService->changeBalance($receipt->getCardOut(), $receipt->getBalance());
+        $this->cardService->changeBalance($receipt->getCardIn(), -$receipt->getBalance());
+        $this->entityManager->remove($receipt);
+        $this->entityManager->flush();
+
+        $this->emit('transferDeleted');
+    }//end remove()
+
+    /**
+     * Добавить перевод.
+     */
+    #[LiveListener('transferAdded')]
+    #[LiveListener('updateCard')]
+    public function onTransferAdded(): void
+    {
+        $this->setSelectedCard();
+    }//end onTransferAdded()
 }//end class
