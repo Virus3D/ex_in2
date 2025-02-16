@@ -2,9 +2,10 @@ body{background-color:skyblue}
 .card-body::-webkit-scrollbar-track{-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3);background-color:#F5F5F5}
 .card-body::-webkit-scrollbar{width:12px;background-color:#F5F5F5}
 .card-body::-webkit-scrollbar-thumb{-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,.3)}
-#receipt_block::-webkit-scrollbar-thumb{background-color:#0f5132}
-#transfer_block::-webkit-scrollbar-thumb{background-color:#084298}
-#spend_block::-webkit-scrollbar-thumb{background-color:#842029}
+.scroll-success::-webkit-scrollbar-thumb{background-color:#0f5132}
+.scroll-primary::-webkit-scrollbar-thumb{background-color:#084298}
+.scroll-danger::-webkit-scrollbar-thumb{background-color:#842029}
 #receipt_block{overflow-y:scroll;height:300px}
 #transfer_block{overflow-y:scroll;height:300px}
 #spend_block{overflow-y:scroll;height:660px}
+.card-header, .card-header h5{line-height:2;margin:0}

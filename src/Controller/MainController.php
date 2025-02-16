@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -10,11 +12,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\CardCategory;
-use App\Entity\Place;
 use App\Form\FilterType;
-use App\Form\ReceiptType;
-use App\Form\SpendType;
-use App\Form\TransferType;
 use App\Helper\FilterDataHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,55 +23,43 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class MainController extends AbstractController
 {
-    #[Route('/', name: 'app_main')]
+    /**
+     * Главная страница.
+     */
+    #[Route('/', name: 'app_main', methods: ['GET'])]
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
         return $this->render(
             'main/index.html.twig',
             [
-                'formFilter'   => $this->filterForm($request),
-                'categories'   => $entityManager->getRepository(CardCategory::class)->findAll(),
-                'formReceipt'  => $this->formReceipt(),
-                'formSpend'    => $this->formSpend(),
-                'formTransfer' => $this->formTransfer(),
-                'placeList'    => $entityManager->getRepository(Place::class)->findAll(),
+                'formFilter' => $this->filterForm($request),
+                'categories' => $entityManager->getRepository(CardCategory::class)->findAll(),
             ]
         );
     }//end index()
 
-    private function formReceipt(): FormInterface
+    /**
+     * Сохраняет фильтр
+     */
+    #[Route('/', name: 'app_main_save', methods: ['POST'])]
+    public function filterFormSave(Request $request): Response
     {
-        return $this->createForm(
-            ReceiptType::class,
-            null,
-            [
-                'action' => $this->generateUrl('app_receipt_add'),
-            ]
-        );
-    }//end formReceipt()
+        $form = $this->createForm(FilterType::class);
+        $form->handleRequest($request);
 
-    private function formSpend(): FormInterface
-    {
-        return $this->createForm(
-            SpendType::class,
-            null,
-            [
-                'action' => $this->generateUrl('app_spend_add'),
-            ]
-        );
-    }//end formSpend()
+        if ($form->isSubmitted() && $form->isValid()) {
+            $filterData = $form->getData();
 
-    private function formTransfer(): FormInterface
-    {
-        return $this->createForm(
-            TransferType::class,
-            null,
-            [
-                'action' => $this->generateUrl('app_transfer_add'),
-            ]
-        );
-    }//end formTransfer()
+            $session = $request->getSession();
+            $session->set('filter_data', $filterData);
+        }
 
+        return $this->redirectToRoute('app_main');
+    }//end filterFormSave()
+
+    /**
+     * Возвращает форму фильтра.
+     */
     private function filterForm(Request $request): FormInterface
     {
         $form = $this->createForm(FilterType::class);
@@ -81,19 +67,7 @@ final class MainController extends AbstractController
 
         $filterData = FilterDataHelper::getFilterData($request);
 
-        // Обработка формы
-        if ($form->isSubmitted() && $form->isValid())
-        {
-            $filterData = $form->getData();
-            // Сохранение фильтра в сессию
-            $session = $request->getSession();
-            $session->set('filter_data', $filterData);
-        }
-
-        if (! $form->isSubmitted())
-        {
-            $form->setData($filterData);
-        }
+        $form->setData($filterData);
 
         return $form;
     }//end filterForm()

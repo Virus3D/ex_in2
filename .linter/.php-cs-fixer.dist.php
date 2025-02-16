@@ -1,10 +1,10 @@
 <?php
 
 /**
- * @see https://npowest.ru
+ * Expenses/Income
  *
  * @license Shareware
- * @copyright (c) 2019-2024 NPOWest
+ * @copyright (c) 2024 Virus3D
  */
 
 declare(strict_types=1);
@@ -25,7 +25,7 @@ return (new Config())
         '@Symfony:risky'                           => true,
         '@DoctrineAnnotation'                      => true,
 
-        'header_comment'                           => ['header' => "@license Shareware\n@copyright (c) 2024 Virus3D", 'comment_type' => 'PHPDoc', 'location' => 'after_open', 'separate' => 'both'],
+        'header_comment'                           => ['header' => "Expenses/Income\n\n@license Shareware\n@copyright (c) 2024 Virus3D", 'comment_type' => 'PHPDoc', 'location' => 'after_open', 'separate' => 'both'],
 
         /* Alias */
 
@@ -56,16 +56,16 @@ return (new Config())
             'allow_single_line_empty_anonymous_classes' => true,
             // The position of the opening brace of anonymous classes‘ body.
             // Allowed values: 'next_line_unless_newline_at_signature_end' and 'same_line'
-            'anonymous_classes_opening_brace'           => 'next_line_unless_newline_at_signature_end',
+            'anonymous_classes_opening_brace'           => 'same_line',
             // The position of the opening brace of anonymous functions‘ body.
             // Allowed values: 'next_line_unless_newline_at_signature_end' and 'same_line'
-            'anonymous_functions_opening_brace'         => 'next_line_unless_newline_at_signature_end',
+            'anonymous_functions_opening_brace'         => 'same_line',
             // The position of the opening brace of classes‘ body.
             // Allowed values: 'next_line_unless_newline_at_signature_end' and 'same_line'
             'classes_opening_brace'                     => 'next_line_unless_newline_at_signature_end',
             // The position of the opening brace of control structures‘ body.
             // Allowed values: 'next_line_unless_newline_at_signature_end' and 'same_line'
-            'control_structures_opening_brace'          => 'next_line_unless_newline_at_signature_end',
+            'control_structures_opening_brace'          => 'same_line',
             // The position of the opening brace of functions‘ body.
             // Allowed values: 'next_line_unless_newline_at_signature_end' and 'same_line'
             'functions_opening_brace'                   => 'next_line_unless_newline_at_signature_end',
@@ -244,7 +244,7 @@ return (new Config())
         /* Semicolon */
 
         // Forbid multi-line whitespace before the closing semicolon or move the semicolon to the new line for chained calls.
-        'multiline_whitespace_before_semicolons'   => ['strategy' => 'new_line_for_chained_calls'],
+        'multiline_whitespace_before_semicolons'   => ['strategy' => 'no_multi_line'],
 
         /* Strict */
 

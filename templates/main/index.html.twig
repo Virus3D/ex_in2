@@ -14,94 +14,21 @@
         {% endfor %}
     </div>
     
-    <div class="alert alert-success">
-        {{ 'Receipt'|trans }}
-        {% include "form/formReceipt.html.twig" %}
-    </div>
-    
-    <div class="alert alert-danger">
-        {{ 'Spend'|trans }}
-        {% include "form/formSpend.html.twig" %}
-    </div>
-    
-    <div class="alert alert-primary">
-        {{ 'Transfer'|trans }}
-        {% include "form/formTransfer.html.twig" %}
-    </div>
+    {{ component('ReceiptForm') }}
+    {{ component('SpendForm') }}
+    {{ component('TransferForm') }}
 
     <div class="row row-cols-1 row-cols-md-2 g-4 mb-3">
         <div class="col">
-            <div class="card mb-2">
-                <div class="card-header border-success">
-                    <div class="row row-cols-4">
-                        <div class="col"><h5 class="card-title">{{ 'Receipt'|trans }}</h5></div>
-                        {# <div class="col">
-                            <select class="form-select" id="card_receipt">
-                                <option value="0">Все</option>
-                                {{ CARD_OPT|raw }}
-                            </select>
-                        </div>
-                        <div class="col text-end text-success" id="receipt_balance"></div>
-                        <div class="col text-end"><button class="btn btn-outline-secondary" type="button" id="update_receipt"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16"><path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/><path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/></svg></button></div> #}
-                    </div>
-                </div>
-                <div class="card-body" id="receipt_block">
-                    <turbo-frame id="receipt_frame" src="{{ path('app_receipt_list') }}">
-                        <p>{{ 'No receipts found.'|trans }}</p>
-                    </turbo-frame>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header border-primary">
-                    <div class="row row-cols-4">
-                        <div class="col"><h5 class="card-title">{{ 'Transfer'|trans }}</h5></div>
-                        {# <div class="col">
-                            <select class="form-select" id="card1_transfer">
-                                <option value="0">Все</option>
-                                {{ CARD_OPT|raw }}
-                            </select>
-                        </div>
-                        <div class="col">
-                            <select class="form-select" id="card2_transfer">
-                                <option value="0">Все</option>
-                                {{ CARD_OPT|raw }}
-                            </select>
-                        </div>
-                        <div class="col text-end"><button class="btn btn-outline-secondary" type="button" id="update_transfer"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16"><path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/><path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/></svg></button></div> #}
-                    </div>
-                </div>
-                <div class="card-body" id="transfer_block">
-                    <turbo-frame id="transfer_frame" src="{{ path('app_transfer_list') }}">
-                        <p>{{ 'No transfer found.'|trans }}</p>
-                    </turbo-frame>
-                </div>
-            </div>
+            {{ component('ReceiptList') }}
+            {{ component('TransferList') }}
         </div>
         <div class="col">
-            <div class="card">
-                <div class="card-header border-danger">
-                    <div class="row row-cols-4">
-                        <div class="col"><h5 class="card-title">{{ 'Spend'|trans }}</h5></div>
-                        {# <div class="col">
-                            <select class="form-select" id="card_spend">
-                                <option value="0">Все</option>
-                                {{ CARD_OPT|raw }}
-                            </select>
-                        </div>
-                        <div class="col text-end text-danger" id="spend_balance"></div>
-                        <div class="col text-end"><button class="btn btn-outline-secondary" type="button" id="update_spend"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16"><path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/><path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/></svg></button></div> #}
-                    </div>
-                </div>
-                <div class="card-body" id="spend_block">
-                    <turbo-frame id="spend_frame" src="{{ path('app_spend_list') }}">
-                        <p>{{ 'No spend found.'|trans }}</p>
-                    </turbo-frame>
-                </div>
-            </div>
+            {{ component('SpendList') }}
         </div>
     </div>
 
-    {% include "place/index.html.twig" %}
+    {# {% include "place/index.html.twig" %} #}
 
     {% include "subscription/index.html.twig" %}
 </div>

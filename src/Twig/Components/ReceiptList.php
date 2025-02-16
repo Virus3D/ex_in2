@@ -98,6 +98,7 @@ final class ReceiptList
      * Добавить поступление.
      */
     #[LiveListener('receiptAdded')]
+    #[LiveListener('updateCard')]
     public function onReceiptAdded(): void
     {
         $this->setSelectedCard();
