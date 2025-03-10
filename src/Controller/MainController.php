@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\CardCategory;
+use App\Entity\Place;
 use App\Form\FilterType;
 use App\Helper\FilterDataHelper;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,6 +35,7 @@ final class MainController extends AbstractController
             [
                 'formFilter' => $this->filterForm($request),
                 'categories' => $entityManager->getRepository(CardCategory::class)->findAll(),
+                'placeList'    => $entityManager->getRepository(Place::class)->findAll(),
             ]
         );
     }//end index()

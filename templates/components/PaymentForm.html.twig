@@ -1,0 +1,23 @@
+<div class="alert alert-success" {{ attributes }}>
+    {{ 'Payment'|trans }}
+    {{ form_start(form, {
+        attr: {
+            class: 'form-horizontal',
+            'data-model': 'norender|*',
+            'data-action': 'live#action:prevent',
+            'data-live-action-param': 'save'
+        }
+    }) }}
+        <div class="text-danger">
+            {{ form_errors(form) }}
+        </div>
+        <div class="input-group">
+            {{ form_widget(form.service, {attr: {class: 'form-select'}}) }}
+            {{ form_widget(form.month, {attr: {class: 'form-select'}}) }}
+            {{ form_widget(form.card, {attr: {class: 'form-select'}}) }}
+            {{ form_widget(form.amount, {attr: {placeholder: '0.00'}}) }}
+            <button type="submit" class="btn btn-primary">{{ 'Add'|trans }}</button>
+        </div>
+        <input type="hidden" name="placeId" value="{{ placeId }}">
+    {{ form_end(form) }}
+</div>
