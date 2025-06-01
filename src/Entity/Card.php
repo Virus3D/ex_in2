@@ -37,27 +37,19 @@ class Card
     #[ORM\Column]
     private int $balance = 0;
 
-    /**
- * @var Collection<int, Receipt>
-*/
+    /** @var Collection<int, Receipt> */
     #[ORM\OneToMany(targetEntity: Receipt::class, mappedBy: 'card')]
     private Collection $receipts;
 
-    /**
- * @var Collection<int, Spend>
-*/
+    /** @var Collection<int, Spend> */
     #[ORM\OneToMany(targetEntity: Spend::class, mappedBy: 'card')]
     private Collection $spends;
 
-    /**
- * @var Collection<int, Transfer>
-*/
+    /** @var Collection<int, Transfer> */
     #[ORM\OneToMany(targetEntity: Transfer::class, mappedBy: 'cardOut')]
     private Collection $transfersOut;
 
-    /**
- * @var Collection<int, Transfer>
-*/
+    /** @var Collection<int, Transfer> */
     #[ORM\OneToMany(targetEntity: Transfer::class, mappedBy: 'cardIn')]
     private Collection $transfersIn;
 
@@ -340,5 +332,5 @@ class Card
         $this->totalTransferSub += $transferSub;
 
         return $this;
-    }//end addTtotalTransferSub()
+    }//end addTotalTransferSub()
 }//end class

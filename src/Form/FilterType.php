@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -20,7 +22,7 @@ final class FilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $years = range((int) date('Y'), (int) date('Y') - 10);
-        // Последние 10 лет
+
         $months = [
             'January'   => 1,
             'February'  => 2,
@@ -41,10 +43,10 @@ final class FilterType extends AbstractType
                 'year',
                 ChoiceType::class,
                 [
-                    'choices'     => array_combine($years, $years),
-                    'placeholder' => 'Choose a year',
-                    'required'    => false,
-                    'choice_label' => static fn (int $year): string => "$year",
+                    'choices'      => array_combine($years, $years),
+                    'placeholder'  => 'Choose a year',
+                    'required'     => false,
+                    'choice_label' => static fn (int $year): string => "{$year}",
                 ]
             )
             ->add(
@@ -62,8 +64,7 @@ final class FilterType extends AbstractType
                 [
                     'label' => 'Filter',
                 ]
-            )
-        ;
+            );
     }//end buildForm()
 
     public function configureOptions(OptionsResolver $resolver): void

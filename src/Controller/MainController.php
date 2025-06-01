@@ -14,6 +14,7 @@ namespace App\Controller;
 use App\Entity\CardCategory;
 use App\Entity\Place;
 use App\Form\FilterType;
+use App\Form\PdfUploadType;
 use App\Helper\FilterDataHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,9 +34,17 @@ final class MainController extends AbstractController
         return $this->render(
             'main/index.html.twig',
             [
-                'formFilter' => $this->filterForm($request),
-                'categories' => $entityManager->getRepository(CardCategory::class)->findAll(),
-                'placeList'    => $entityManager->getRepository(Place::class)->findAll(),
+                'formFilter'    => $this->filterForm($request),
+                'formPDFUpload' => $this->createForm(
+                    PdfUploadType::class,
+                    null,
+                    [
+                        'action' => $this->generateUrl('parse_pdf'),
+                        'method' => 'POST',
+                    ]
+                ),
+                'categories'    => $entityManager->getRepository(CardCategory::class)->findAll(),
+                'placeList'     => $entityManager->getRepository(Place::class)->findAll(),
             ]
         );
     }//end index()
