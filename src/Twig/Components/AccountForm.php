@@ -48,7 +48,9 @@ final class AccountForm extends AbstractController
      */
     protected function instantiateForm(): FormInterface
     {
-        return $this->createForm(ServiceAccountType::class);
+        $place = $this->entityManager->getRepository(Place::class)->find($this->placeId);
+
+        return $this->createForm(ServiceAccountType::class, options: ['place' => $place]);
     }//end instantiateForm()
 
     /**

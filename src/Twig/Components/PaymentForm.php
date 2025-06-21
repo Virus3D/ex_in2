@@ -43,14 +43,17 @@ final class PaymentForm extends AbstractController
     public function __construct(
         private EntityManagerInterface $entityManager,
         private RequestStack $requestStack,
-    ) {}//end __construct()
+    ) {
+    }//end __construct()
 
     /**
      * Инициализация формы.
      */
     protected function instantiateForm(): FormInterface
     {
-        return $this->createForm(ServicePaymentType::class);
+        $place = $this->entityManager->getRepository(Place::class)->find($this->placeId);
+
+        return $this->createForm(ServicePaymentType::class, options: ['place' => $place]);
     }//end instantiateForm()
 
     /**
@@ -83,7 +86,7 @@ final class PaymentForm extends AbstractController
             ->setDate($date)
             ->setCard($formPayment->get('card')->getData())
             ->setBalance($formPayment->get('amount')->getData())
-            ->setComment('Service: '.$formPayment->get('service')->getData()->getName());
+            ->setComment('Service: ' . $formPayment->get('service')->getData()->getName());
         $this->entityManager->persist($spend);
         $this->entityManager->flush();
 
