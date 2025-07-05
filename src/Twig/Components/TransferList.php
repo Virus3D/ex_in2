@@ -47,6 +47,7 @@ final class TransferList
         private EntityManagerInterface $entityManager,
         private RequestStack $requestStack,
         private CardService $cardService,
+        private FilterDataHelper $filterDataHelper
     ) {
         $this->setSelectedCard();
     }//end __construct()
@@ -57,7 +58,7 @@ final class TransferList
     private function setSelectedCard(): void
     {
         $request = $this->requestStack->getCurrentRequest();
-        FilterDataHelper::getFilterData($request);
+
         $cardRepository = $this->entityManager->getRepository(Card::class);
 
         $cardIdIn = $request->getSession()->get($this->fieldIn);
@@ -79,8 +80,8 @@ final class TransferList
         $this->setSelectedCard();
 
         return $this->entityManager->getRepository(Transfer::class)->list(
-            FilterDataHelper::$startDate,
-            FilterDataHelper::$endDate,
+            $this->filterDataHelper->startDate,
+            $this->filterDataHelper->endDate,
             $this->selectedCardOut,
             $this->selectedCardIn
         );

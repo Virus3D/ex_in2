@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -32,13 +34,23 @@ final class ServiceAccountService
             ->setParameter('place', $place)
             ->setParameter('year', $year)
             ->getQuery()
-            ->getResult()
-        ;
-        foreach ($result as $row)
-        {
+            ->getResult();
+        foreach ($result as $row) {
             $data[(int) $row['service_id']][(int) $row['month']] = $row['amount'];
         }
 
         return $data;
     }//end handle()
+
+    public function createAccount(
+        Place $place,
+        ServiceAccount $serviceAccount,
+        int $year,
+    ): void {
+        $serviceAccount
+            ->setPlace($place)
+            ->setYear($year);
+        $this->entityManager->persist($serviceAccount);
+        $this->entityManager->flush();
+    }//end createAccount()
 }//end class

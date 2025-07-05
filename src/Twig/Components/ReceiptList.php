@@ -42,6 +42,7 @@ final class ReceiptList
         private EntityManagerInterface $entityManager,
         private RequestStack $requestStack,
         private CardService $cardService,
+        private FilterDataHelper $filterDataHelper
     ) {
         $this->setSelectedCard();
     }//end __construct()
@@ -52,7 +53,6 @@ final class ReceiptList
     private function setSelectedCard(): void
     {
         $request = $this->requestStack->getCurrentRequest();
-        FilterDataHelper::getFilterData($request);
         $cardRepository = $this->entityManager->getRepository(Card::class);
 
         $cardId = $request->getSession()->get($this->field);
@@ -70,8 +70,8 @@ final class ReceiptList
         $this->setSelectedCard();
 
         $receiptList = $this->entityManager->getRepository(Receipt::class)->list(
-            FilterDataHelper::$startDate,
-            FilterDataHelper::$endDate,
+            $this->filterDataHelper->startDate,
+            $this->filterDataHelper->endDate,
             $this->selectedCard
         );
 

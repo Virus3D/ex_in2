@@ -29,12 +29,12 @@ final class MainController extends AbstractController
      * Главная страница.
      */
     #[Route('/', name: 'app_main', methods: ['GET'])]
-    public function index(Request $request, EntityManagerInterface $entityManager): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, FilterDataHelper $filterData): Response
     {
         return $this->render(
             'main/index.html.twig',
             [
-                'formFilter'    => $this->filterForm($request),
+                'formFilter'    => $this->filterForm($request, $filterData),
                 'formPDFUpload' => $this->createForm(
                     PdfUploadType::class,
                     null,
@@ -71,14 +71,12 @@ final class MainController extends AbstractController
     /**
      * Возвращает форму фильтра.
      */
-    private function filterForm(Request $request): FormInterface
+    private function filterForm(Request $request, FilterDataHelper $filterData): FormInterface
     {
         $form = $this->createForm(FilterType::class);
         $form->handleRequest($request);
 
-        $filterData = FilterDataHelper::getFilterData($request);
-
-        $form->setData($filterData);
+        $form->setData($filterData->toArray());
 
         return $form;
     }//end filterForm()

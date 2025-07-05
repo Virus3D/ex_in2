@@ -13,20 +13,14 @@ namespace App\Form;
 
 use App\Entity\Card;
 use App\Entity\Place;
-use App\Entity\Service;
 use App\Entity\ServicePayment;
-use App\Enum\Months;
-use App\Helper\FilterDataHelper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class ServicePaymentType extends AbstractType
+final class ServicePaymentType extends AbstractServiceFormType
 {
     /**
      * Builds the form.
@@ -38,35 +32,9 @@ final class ServicePaymentType extends AbstractType
     {
         $place = $options['place'];
 
+        $this->addCommonFields($builder, $place);
+
         $builder
-            ->add(
-                'month',
-                ChoiceType::class,
-                [
-                    'choices'     => Months::getChoices(),
-                    'placeholder' => 'Select a month',
-                    'data'        => FilterDataHelper::$month,
-                ]
-            )
-            ->add(
-                'amount',
-                MoneyType::class,
-                [
-                    'currency' => '',
-                    'divisor'  => 100,
-                    'input'    => 'integer',
-                    'scale'    => 2,
-                ]
-            )
-            ->add(
-                'service',
-                EntityType::class,
-                [
-                    'class'        => Service::class,
-                    'choices'      => $place->getServices(),
-                    'choice_label' => static fn (?Service $service): string => $service?->getName() ?? '',
-                ]
-            )
             ->add(
                 'card',
                 EntityType::class,

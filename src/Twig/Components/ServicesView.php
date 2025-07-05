@@ -72,6 +72,7 @@ final class ServicesView
         private RequestStack $requestStack,
         private ServiceAccountService $serviceAccountService,
         private ServicePaymentService $servicePaymentService,
+        private FilterDataHelper $filterDataHelper
     ) {
         $this->totalMonth = array_fill(1, 12, 0);
     }//end __construct()
@@ -84,7 +85,7 @@ final class ServicesView
     public function getServices(): Collection
     {
         $request = $this->requestStack->getCurrentRequest();
-        FilterDataHelper::getFilterData($request);
+
         $place = $this->entityManager->getRepository(Place::class)->findWithService($this->placeId);
 
         $services = $place->getServices();
@@ -94,8 +95,8 @@ final class ServicesView
         $this->total      = [];
         $this->totalMonth = array_fill(1, 12, 0);
 
-        $accountDB = $this->serviceAccountService->handle($place, FilterDataHelper::$year);
-        $paymentDB = $this->servicePaymentService->handle($place, FilterDataHelper::$year);
+        $accountDB = $this->serviceAccountService->handle($place, $this->filterDataHelper->year);
+        $paymentDB = $this->servicePaymentService->handle($place, $this->filterDataHelper->year);
 
         foreach ($services as $service) {
             $serviceId = $service->getId();

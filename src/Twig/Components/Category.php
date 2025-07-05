@@ -43,8 +43,6 @@ final class Category
         $category = $this->entityManager->getRepository(CardCategory::class)->find($this->categoryID);
         $request  = $this->requestStack->getCurrentRequest();
 
-        FilterDataHelper::getFilterData($request);
-
         $this->categoryService->handle($category);
 
         return $category;

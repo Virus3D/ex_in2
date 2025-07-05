@@ -12,20 +12,13 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Entity\Place;
-use App\Entity\Service;
 use App\Entity\ServiceAccount;
-use App\Enum\Months;
-use App\Helper\FilterDataHelper;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class ServiceAccountType extends AbstractType
+final class ServiceAccountType extends AbstractServiceFormType
 {
     /**
      * Builds the form.
@@ -37,35 +30,7 @@ final class ServiceAccountType extends AbstractType
     {
         $place = $options['place'];
 
-        $builder
-            ->add(
-                'month',
-                ChoiceType::class,
-                [
-                    'choices'     => Months::getChoices(),
-                    'placeholder' => 'Select a month',
-                    'data'        => FilterDataHelper::$month,
-                ]
-            )
-            ->add(
-                'amount',
-                MoneyType::class,
-                [
-                    'currency' => '',
-                    'divisor'  => 100,
-                    'input'    => 'integer',
-                    'scale'    => 2,
-                ]
-            )
-            ->add(
-                'service',
-                EntityType::class,
-                [
-                    'class'        => Service::class,
-                    'choices'      => $place->getServices(),
-                    'choice_label' => static fn (?Service $service): string => $service?->getName() ?? '',
-                ]
-            );
+        $this->addCommonFields($builder, $place);
 
         // Очистка данных от пробелов в поле amount.
         $builder->addEventListener(

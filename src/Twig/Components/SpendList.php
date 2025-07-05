@@ -42,6 +42,7 @@ final class SpendList
         private EntityManagerInterface $entityManager,
         private RequestStack $requestStack,
         private CardService $cardService,
+        private FilterDataHelper $filterDataHelper
     ) {
         $this->setSelectedCard();
     }//end __construct()
@@ -52,7 +53,7 @@ final class SpendList
     private function setSelectedCard(): void
     {
         $request = $this->requestStack->getCurrentRequest();
-        FilterDataHelper::getFilterData($request);
+
         $cardRepository = $this->entityManager->getRepository(Card::class);
 
         $cardId = $request->getSession()->get($this->field);
@@ -70,8 +71,8 @@ final class SpendList
         $this->setSelectedCard();
 
         $spendList = $this->entityManager->getRepository(Spend::class)->list(
-            FilterDataHelper::$startDate,
-            FilterDataHelper::$endDate,
+            $this->filterDataHelper->startDate,
+            $this->filterDataHelper->endDate,
             $this->selectedCard
         );
 

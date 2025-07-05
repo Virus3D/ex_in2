@@ -20,6 +20,7 @@ final class CategoryService
         private CardReceiptService $receiptService,
         private CardSpendService $spendService,
         private CardTransferService $transferService,
+        private FilterDataHelper $filterDataHelper
     ) {}//end __construct()
 
     /**
@@ -31,9 +32,9 @@ final class CategoryService
 
         $this->clear($cards);
 
-        $this->receiptService->getCardsSummary($cards, FilterDataHelper::$startDate, FilterDataHelper::$endDate);
-        $this->spendService->getCardsSummary($cards, FilterDataHelper::$startDate, FilterDataHelper::$endDate);
-        $this->transferService->getCardsSummary($cards, FilterDataHelper::$startDate, FilterDataHelper::$endDate);
+        $this->receiptService->getCardsSummary($cards, $this->filterDataHelper->startDate, $this->filterDataHelper->endDate);
+        $this->spendService->getCardsSummary($cards, $this->filterDataHelper->startDate, $this->filterDataHelper->endDate);
+        $this->transferService->getCardsSummary($cards, $this->filterDataHelper->startDate, $this->filterDataHelper->endDate);
 
         $this->calcTotalBalance($category, $cards);
     }//end handle()

@@ -43,8 +43,8 @@ final class PaymentForm extends AbstractController
     public function __construct(
         private EntityManagerInterface $entityManager,
         private RequestStack $requestStack,
-    ) {
-    }//end __construct()
+        private FilterDataHelper $filterDataHelper,
+    ) {}//end __construct()
 
     /**
      * Инициализация формы.
@@ -62,9 +62,6 @@ final class PaymentForm extends AbstractController
     #[LiveAction]
     public function save(): void
     {
-        $request = $this->requestStack->getCurrentRequest();
-        FilterDataHelper::getFilterData($request);
-
         $this->submitForm();
 
         $place = $this->entityManager->getRepository(Place::class)->find($this->placeId);
@@ -75,7 +72,7 @@ final class PaymentForm extends AbstractController
         $servicePayment
             ->setPlace($place)
             ->setService($formPayment->get('service')->getData())
-            ->setYear(FilterDataHelper::$year)
+            ->setYear($this->filterDataHelper->year)
             ->setMonth($formPayment->get('month')->getData())
             ->setAmount($formPayment->get('amount')->getData())
             ->setDate($date);
@@ -86,7 +83,7 @@ final class PaymentForm extends AbstractController
             ->setDate($date)
             ->setCard($formPayment->get('card')->getData())
             ->setBalance($formPayment->get('amount')->getData())
-            ->setComment('Service: ' . $formPayment->get('service')->getData()->getName());
+            ->setComment('Service: '.$formPayment->get('service')->getData()->getName());
         $this->entityManager->persist($spend);
         $this->entityManager->flush();
 

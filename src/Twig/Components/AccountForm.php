@@ -12,10 +12,10 @@ declare(strict_types=1);
 namespace App\Twig\Components;
 
 use App\Entity\Place;
-use App\Entity\ServiceAccount;
 use App\Form\ServiceAccountType;
 use App\Helper\FilterDataHelper;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\PlaceRepository;
+use App\Service\ServiceAccountService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -39,8 +39,10 @@ final class AccountForm extends AbstractController
     public int $placeId;
 
     public function __construct(
-        private EntityManagerInterface $entityManager,
         private RequestStack $requestStack,
+        private ServiceAccountService $serviceAccountService,
+        private PlaceRepository $placeRepository,
+        private FilterDataHelper $filterDataHelper,
     ) {}//end __construct()
 
     /**
@@ -48,9 +50,7 @@ final class AccountForm extends AbstractController
      */
     protected function instantiateForm(): FormInterface
     {
-        $place = $this->entityManager->getRepository(Place::class)->find($this->placeId);
-
-        return $this->createForm(ServiceAccountType::class, options: ['place' => $place]);
+        return $this->createForm(ServiceAccountType::class, options: ['place' => $this->getPlace()]);
     }//end instantiateForm()
 
     /**
@@ -59,24 +59,23 @@ final class AccountForm extends AbstractController
     #[LiveAction]
     public function save(): void
     {
-        $request = $this->requestStack->getCurrentRequest();
-        FilterDataHelper::getFilterData($request);
-
         $this->submitForm();
 
-        $place = $this->entityManager->getRepository(Place::class)->find($this->placeId);
+        $data = $this->getForm()->getData();
 
-        $formAccount    = $this->getForm();
-        $serviceAccount = new ServiceAccount();
-        $serviceAccount
-            ->setPlace($place)
-            ->setService($formAccount->get('service')->getData())
-            ->setYear(FilterDataHelper::$year)
-            ->setMonth($formAccount->get('month')->getData())
-            ->setAmount($formAccount->get('amount')->getData());
-        $this->entityManager->persist($serviceAccount);
-        $this->entityManager->flush();
+        $request = $this->requestStack->getCurrentRequest();
+
+        $this->serviceAccountService->createAccount(
+            $this->getPlace(),
+            $data,
+            $this->filterDataHelper->year
+        );
 
         $this->emit('accountAdded');
     }//end save()
+
+    private function getPlace(): Place
+    {
+        return $this->placeRepository->find($this->placeId);
+    }//end getPlace()
 }//end class
