@@ -47,4 +47,87 @@ final class SpendRepository extends ServiceEntityRepository
         return $query->getQuery()
             ->getResult();
     }//end list()
+
+    /**
+     * Получить данные для диаграммы расходов по комментариям.
+     *
+     * @return array<string, int>
+     */
+    public function getExpensesByComment(DateTime $startDate, DateTime $endDate, ?Card $card): array
+    {
+        $queryBuilder = $this->createQueryBuilder('s')
+            ->select('s.comment as comment_name, SUM(s.balance) as total_amount')
+            ->andWhere('s.date BETWEEN :startDate AND :endDate')
+            ->andWhere('s.comment IS NOT NULL')
+            ->andWhere('s.comment != :empty')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('empty', '')
+            ->groupBy('s.comment')
+            ->orderBy('total_amount', 'DESC');
+
+        if ($card) {
+            $queryBuilder->andWhere('s.card = :card')
+                ->setParameter('card', $card);
+        }
+
+        $result = $queryBuilder->getQuery()->getScalarResult();
+
+        $expenses = [];
+        foreach ($result as $row) {
+            $comment = $row['comment_name'] ?: 'Без комментария';
+
+            // Объединяем комментарии, начинающиеся с "Service".
+            if (0 === mb_stripos($comment, 'Service')) {
+                $comment = 'Service';
+            }
+
+            if (isset($expenses[$comment])) {
+                $expenses[$comment] += (int) $row['total_amount'];
+            } else {
+                $expenses[$comment] = (int) $row['total_amount'];
+            }
+        }
+
+        // Сортируем по убыванию суммы.
+        arsort($expenses);
+
+        return $expenses;
+    }//end getExpensesByComment()
+
+    /**
+     * Получить данные для диаграммы расходов по дням.
+     *
+     * @return array<string, int>
+     */
+    public function getExpensesByDay(DateTime $startDate, DateTime $endDate, ?Card $card): array
+    {
+        $queryBuilder = $this->createQueryBuilder('s')
+            ->select("s.date, SUM(s.balance) as total_amount")
+            ->andWhere('s.date BETWEEN :startDate AND :endDate')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->groupBy('s.date')
+            ->orderBy('s.date', 'ASC');
+
+        if ($card) {
+            $queryBuilder->andWhere('s.card = :card')
+                ->setParameter('card', $card);
+        }
+
+        $result = $queryBuilder->getQuery()->getScalarResult();
+
+        $expenses = [];
+        foreach ($result as $row) {
+            $date   = new DateTime($row['date']);
+            $dayKey = $date->format('d.m');
+
+            if (!isset($expenses[$dayKey])) {
+                $expenses[$dayKey] = 0;
+            }
+            $expenses[$dayKey] += (int) $row['total_amount'];
+        }
+
+        return $expenses;
+    }//end getExpensesByDay()
 }//end class

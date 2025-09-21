@@ -39,14 +39,12 @@ final class PdfUploadType extends AbstractType
                     'required'    => true,
                     'constraints' => [
                         new File(
-                            [
-                                'maxSize'          => '10M',
-                                'mimeTypes'        => [
-                                    'application/pdf',
-                                    'application/x-pdf',
-                                ],
-                                'mimeTypesMessage' => 'Пожалуйста, загрузите PDF-документ',
-                            ]
+                            maxSize: '10M',
+                            mimeTypes: [
+                                'application/pdf',
+                                'application/x-pdf',
+                            ],
+                            mimeTypesMessage: 'Пожалуйста, загрузите PDF-документ',
                         ),
                     ],
                 ]

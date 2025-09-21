@@ -48,7 +48,7 @@ final class SubscriptionForm extends AbstractController
         $this->submitForm();
 
         $form = $this->getForm();
-        $date = new DateTime();
+        $date = $form->get('date')->getData();
 
         $amount         = $form->get('amount')->getData();
         $subscription   = $form->get('subscrip')->getData();
@@ -68,7 +68,7 @@ final class SubscriptionForm extends AbstractController
             ->setDate($date)
             ->setCard($form->get('card')->getData())
             ->setBalance($amount)
-            ->setComment('Sub: '.$subscription->getName());
+            ->setComment('Sub: ' . $subscription->getName());
 
         $entityManager->persist($spend);
 

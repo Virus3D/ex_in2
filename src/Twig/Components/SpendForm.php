@@ -48,8 +48,6 @@ final class SpendForm extends AbstractController
         $entityManager->persist($spend);
         $entityManager->flush();
 
-        $this->addFlash('success', 'Post saved!');
-
         $this->emit('spendAdded');
     }//end save()
 }//end class

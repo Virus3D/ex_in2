@@ -1,7 +1,7 @@
 <div class="alert alert-danger" {{ attributes }}>
     {{ form_start(form, {
         attr: {
-            class: 'form-horizontal', 
+            class: 'form-horizontal',
             'data-model': 'norender|*',
             'data-action': 'live#action:prevent',
             'data-live-action-param': 'save'
@@ -13,6 +13,7 @@
         <div class="input-group">
             {{ form_widget(form.subscrip, {attr: {class: 'form-select'}}) }}
             {{ form_widget(form.card, {attr: {class: 'form-select'}}) }}
+            {{ form_widget(form.date) }}
             {{ form_widget(form.amount, {attr: {placeholder: '0.00'}}) }}
             <button type="submit" class="btn btn-primary">{{ 'Add'|trans }}</button>
         </div>

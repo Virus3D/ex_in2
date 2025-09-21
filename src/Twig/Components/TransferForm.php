@@ -48,8 +48,6 @@ final class TransferForm extends AbstractController
         $entityManager->persist($transfer);
         $entityManager->flush();
 
-        $this->addFlash('success', 'Post saved!');
-
         $this->emit('transferAdded');
     }//end save()
 }//end class

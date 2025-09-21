@@ -8,10 +8,6 @@
         <div class="alert alert-default mb-3">
             {% include "form/formFilter.html.twig" %}
         </div>
-
-        <div class="alert alert-default mb-3">
-            {% include "form/pdfLoader.html.twig" %}
-        </div>
     </div>
 
     <div class="row row-cols-1 row-cols-md-2 g-4" id="card_block">
@@ -19,6 +15,8 @@
         {{ component('Category', {'categoryID': category.id}) }}
         {% endfor %}
     </div>
+
+    {{ component('ExpensesChart') }}
 
     <details class="card mb-3">
         <summary class="card-header">

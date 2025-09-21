@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -46,4 +48,25 @@ final class ReceiptRepository extends ServiceEntityRepository
         return $query->getQuery()
             ->getResult();
     }//end list()
+
+    /**
+     * Получить уникальные комментарии из базы данных.
+     *
+     * @return string[]
+     */
+    public function getUniqueComments(): array
+    {
+        $queryBuilder = $this->createQueryBuilder('r');
+
+        $result = $queryBuilder
+            ->select('DISTINCT r.comment')
+            ->where('r.comment IS NOT NULL')
+            ->andWhere('r.comment != :empty')
+            ->setParameter('empty', '')
+            ->orderBy('r.comment', 'ASC')
+            ->getQuery()
+            ->getScalarResult();
+
+        return array_column($result, 'comment');
+    }//end getUniqueComments()
 }//end class

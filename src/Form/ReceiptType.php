@@ -18,11 +18,15 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ReceiptType extends AbstractType
 {
+    /**
+     * @inheritDoc
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -43,7 +47,17 @@ final class ReceiptType extends AbstractType
                     'scale'    => 2,
                 ]
             )
-            ->add('comment')
+            ->add(
+                'comment',
+                TextType::class,
+                [
+                    'required' => false,
+                    'attr'     => [
+                        'list'         => 'comment-options',
+                        'autocomplete' => 'off',
+                    ],
+                ]
+            )
             ->add(
                 'card',
                 EntityType::class,
@@ -55,6 +69,9 @@ final class ReceiptType extends AbstractType
             );
     }//end buildForm()
 
+    /**
+     * @inheritDoc
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(

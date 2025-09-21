@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -12,8 +14,10 @@ namespace App\Form;
 use App\Entity\Card;
 use App\Entity\Subscription;
 use App\Entity\SubscriptionPayment;
+use DateTime;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -22,6 +26,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class SubscriptionPaymentType extends AbstractType
 {
+    /**
+     * @inheritDoc
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -52,16 +59,20 @@ final class SubscriptionPaymentType extends AbstractType
                     'group_by'     => static fn (?Card $card): string => $card?->getCategory()->getName() ?? '',
                 ]
             )
-        ;
+            ->add(
+                'date',
+                DateType::class,
+                [
+                    'data' => new DateTime(),
+                ]
+            );
 
-        // Очистка данных от пробелов в поле amount
+        // Очистка данных от пробелов в поле amount.
         $builder->addEventListener(
             FormEvents::PRE_SUBMIT,
-            static function (FormEvent $event): void
-            {
+            static function (FormEvent $event): void {
                 $data = $event->getData();
-                if (isset($data['amount']))
-                {
+                if (isset($data['amount'])) {
                     $data['amount'] = preg_replace('/\s+/', '', $data['amount']);
                 }
 
@@ -70,6 +81,9 @@ final class SubscriptionPaymentType extends AbstractType
         );
     }//end buildForm()
 
+    /**
+     * @inheritDoc
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
