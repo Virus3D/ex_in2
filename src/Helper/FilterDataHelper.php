@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -10,45 +12,50 @@ declare(strict_types=1);
 namespace App\Helper;
 
 use DateTime;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 final class FilterDataHelper
 {
-    /** @phpstan-ignore shipmonk.publicPropertyNotReadonly */
-    public static DateTime $startDate;
+    public readonly DateTime $startDate;
 
-    /** @phpstan-ignore shipmonk.publicPropertyNotReadonly */
-    public static DateTime $endDate;
+    public readonly DateTime $endDate;
 
-    /** @phpstan-ignore shipmonk.publicPropertyNotReadonly */
-    public static int $year;
+    public readonly int $year;
 
-    /** @phpstan-ignore shipmonk.publicPropertyNotReadonly */
-    public static int $month;
+    public readonly int $month;
 
-    /**
-     * @return array<string, int|string>
-     */
-    public static function getFilterData(Request $request): array
+    public readonly int $yearPrev;
+
+    public readonly int $monthPrev;
+
+    public function __construct(RequestStack $requestStack)
     {
-        // Получение данных и фильтрация из сессии
-        $session    = $request->getSession();
+        $session = $requestStack->getSession();
         $filterData = $session->get('filter_data', []);
 
-        $filterData['year']  ??= (int) date('Y');
-        $filterData['month'] ??= (int) date('m');
+        $this->year  = (int) ($filterData['year'] ?? date('Y'));
+        $this->month = (int) ($filterData['month'] ?? date('m'));
 
-        self::$startDate = new DateTime("{$filterData['year']}-{$filterData['month']}-01 00:00:00");
-        self::$endDate   = (clone self::$startDate)->modify('last day of this month')->setTime(23, 59, 59);
+        $this->startDate = new DateTime("{$this->year}-{$this->month}-01 00:00:00");
+        $this->endDate   = (clone $this->startDate)->modify('last day of this month')->setTime(23, 59, 59);
 
-        self::$year  = (int) $filterData['year'];
-        self::$month = (int) $filterData['month'] - 1;
-        if (0 == self::$month)
-        {
-            --self::$year;
-            self::$month = 12;
+        $yearPrev  = $this->year;
+        $monthPrev = $this->month - 1;
+
+        if (0 == $monthPrev) {
+            --$yearPrev;
+            $monthPrev = 12;
         }
 
-        return $filterData;
-    }//end getFilterData()
+        $this->yearPrev  = $yearPrev;
+        $this->monthPrev = $monthPrev;
+    }//end __construct()
+
+    public function toArray(): array
+    {
+        return [
+            'year'      => $this->year,
+            'month'     => $this->month,
+        ];
+    }
 }//end class

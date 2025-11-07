@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -12,9 +14,7 @@ namespace App\Controller;
 use App\Entity\CardCategory;
 use App\Entity\Place;
 use App\Form\FilterType;
-use App\Form\ReceiptType;
-use App\Form\SpendType;
-use App\Form\TransferType;
+use App\Form\PdfUploadType;
 use App\Helper\FilterDataHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,75 +25,58 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class MainController extends AbstractController
 {
-    #[Route('/', name: 'app_main')]
-    public function index(Request $request, EntityManagerInterface $entityManager): Response
+    /**
+     * Главная страница.
+     */
+    #[Route('/', name: 'app_main', methods: ['GET'])]
+    public function index(Request $request, EntityManagerInterface $entityManager, FilterDataHelper $filterData): Response
     {
         return $this->render(
             'main/index.html.twig',
             [
-                'formFilter'   => $this->filterForm($request),
-                'categories'   => $entityManager->getRepository(CardCategory::class)->findAll(),
-                'formReceipt'  => $this->formReceipt(),
-                'formSpend'    => $this->formSpend(),
-                'formTransfer' => $this->formTransfer(),
-                'placeList'    => $entityManager->getRepository(Place::class)->findAll(),
+                'formFilter'    => $this->filterForm($request, $filterData),
+                'formPDFUpload' => $this->createForm(
+                    PdfUploadType::class,
+                    null,
+                    [
+                        'action' => $this->generateUrl('parse_pdf'),
+                        'method' => 'POST',
+                    ]
+                ),
+                'categories'    => $entityManager->getRepository(CardCategory::class)->findAll(),
+                'placeList'     => $entityManager->getRepository(Place::class)->findAll(),
             ]
         );
     }//end index()
 
-    private function formReceipt(): FormInterface
-    {
-        return $this->createForm(
-            ReceiptType::class,
-            null,
-            [
-                'action' => $this->generateUrl('app_receipt_add'),
-            ]
-        );
-    }//end formReceipt()
-
-    private function formSpend(): FormInterface
-    {
-        return $this->createForm(
-            SpendType::class,
-            null,
-            [
-                'action' => $this->generateUrl('app_spend_add'),
-            ]
-        );
-    }//end formSpend()
-
-    private function formTransfer(): FormInterface
-    {
-        return $this->createForm(
-            TransferType::class,
-            null,
-            [
-                'action' => $this->generateUrl('app_transfer_add'),
-            ]
-        );
-    }//end formTransfer()
-
-    private function filterForm(Request $request): FormInterface
+    /**
+     * Сохраняет фильтр
+     */
+    #[Route('/', name: 'app_main_save', methods: ['POST'])]
+    public function filterFormSave(Request $request): Response
     {
         $form = $this->createForm(FilterType::class);
         $form->handleRequest($request);
 
-        $filterData = FilterDataHelper::getFilterData($request);
-
-        // Обработка формы
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $filterData = $form->getData();
-            // Сохранение фильтра в сессию
+
             $session = $request->getSession();
             $session->set('filter_data', $filterData);
         }
 
-        if (! $form->isSubmitted())
-        {
-            $form->setData($filterData);
-        }
+        return $this->redirectToRoute('app_main');
+    }//end filterFormSave()
+
+    /**
+     * Возвращает форму фильтра.
+     */
+    private function filterForm(Request $request, FilterDataHelper $filterData): FormInterface
+    {
+        $form = $this->createForm(FilterType::class);
+        $form->handleRequest($request);
+
+        $form->setData($filterData->toArray());
 
         return $form;
     }//end filterForm()

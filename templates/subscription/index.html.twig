@@ -3,7 +3,7 @@
         {{ 'Subscriptions'|trans }}
     </summary>
     <div class="card-body">
-        <turbo-frame id="subscription_frame" src="{{ path('app_subscription_view') }}"></turbo-frame>
-        <turbo-frame id="subscription_form_frame" src="{{ path('app_subscription_form') }}"></turbo-frame>
+        {{ component('SubscriptionList') }}
+        {{ component('SubscriptionForm') }}
     </div>
 </details>

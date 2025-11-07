@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -9,6 +11,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\Card;
 use App\Entity\Receipt;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -27,17 +30,43 @@ final class ReceiptRepository extends ServiceEntityRepository
     /**
      * @return Receipt[]
      */
-    public function list(DateTime $startDate, DateTime $endDate): array
+    public function list(DateTime $startDate, DateTime $endDate, ?Card $card): array
     {
         $queryBuilder = $this->createQueryBuilder('r');
 
-        return $queryBuilder
+        $query = $queryBuilder
             ->andWhere('r.date BETWEEN :startDate AND :endDate')
             ->setParameter('startDate', $startDate)
             ->setParameter('endDate', $endDate)
             ->orderBy('r.date', 'DESC')
-            ->getQuery()
-            ->getResult()
-        ;
+            ->orderBy('r.id', 'DESC');
+        if ($card) {
+            $query->andWhere('r.card = :card')
+                ->setParameter('card', $card);
+        }
+
+        return $query->getQuery()
+            ->getResult();
     }//end list()
+
+    /**
+     * Получить уникальные комментарии из базы данных.
+     *
+     * @return string[]
+     */
+    public function getUniqueComments(): array
+    {
+        $queryBuilder = $this->createQueryBuilder('r');
+
+        $result = $queryBuilder
+            ->select('DISTINCT r.comment')
+            ->where('r.comment IS NOT NULL')
+            ->andWhere('r.comment != :empty')
+            ->setParameter('empty', '')
+            ->orderBy('r.comment', 'ASC')
+            ->getQuery()
+            ->getScalarResult();
+
+        return array_column($result, 'comment');
+    }//end getUniqueComments()
 }//end class

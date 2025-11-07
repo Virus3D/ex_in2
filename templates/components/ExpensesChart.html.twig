@@ -1,0 +1,172 @@
+<div class="card mb-3">
+    <div class="card-header">
+                    <h5 class="mb-0">
+                <i class="fas fa-chart-pie me-2"></i>
+                Диаграмма расходов по комментариям
+                <small class="text-muted">
+                    ({{ this.getFormattedTotalExpenses() }} ₽)
+                </small>
+            </h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h6 class="text-center mb-3">Расходы по комментариям</h6>
+                <div style="position: relative; height: 300px;">
+                    <canvas id="expensesPieChart"></canvas>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h6 class="text-center mb-3">Расходы по дням</h6>
+                <div style="position: relative; height: 300px;">
+                    <canvas id="expensesLineChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    // Проверяем, что Chart.js загружен
+    console.log('Chart.js available:', typeof Chart);
+    if (typeof Chart === 'undefined') {
+        console.error('Chart.js не загружен');
+        return;
+    }
+            // Данные для круговой диаграммы
+    const pieData = {{ this.getCommentData()|json_encode|raw }};
+
+        // Данные для линейной диаграммы
+    const lineData = {{ this.getDailyData()|json_encode|raw }};
+
+        // Проверяем, что данные существуют и корректны
+    if (!pieData || !lineData) {
+        console.error('Данные для диаграммы не загружены');
+        return;
+    }
+
+    if (!pieData.labels || !pieData.data || !lineData.labels || !lineData.data) {
+        console.error('Структура данных некорректна');
+        return;
+    }
+
+    // Круговая диаграмма
+    const pieCtx = document.getElementById('expensesPieChart');
+    if (pieCtx) {
+        new Chart(pieCtx, {
+            type: 'pie',
+            data: {
+                labels: pieData.labels,
+                datasets: [{
+                    data: pieData.data,
+                    backgroundColor: pieData.colors,
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            usePointStyle: true,
+                            generateLabels: function(chart) {
+                                const data = chart.data;
+                                if (data.labels.length && data.datasets.length) {
+                                    return data.labels.map(function(label, i) {
+                                        const dataset = data.datasets[0];
+                                        const value = dataset.data[i];
+                                        const total = dataset.data.reduce((a, b) => a + b, 0);
+                                        const percentage = ((value / total) * 100).toFixed(1);
+                                        const shortLabel = label.length > 15 ? label.substring(0, 15) + '...' : label;
+                                        return {
+                                            text: shortLabel + ' (' + percentage + '%)',
+                                            fillStyle: dataset.backgroundColor[i],
+                                            strokeStyle: dataset.borderColor,
+                                            lineWidth: dataset.borderWidth,
+                                            hidden: false,
+                                            index: i
+                                        };
+                                    });
+                                }
+                                return [];
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const value = context.parsed;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((value / total) * 100).toFixed(1);
+                                let comment = context.label;
+
+                                if (comment === 'Service') {
+                                    comment = 'Service (все сервисы)';
+                                } else if (comment.length > 20) {
+                                    comment = comment.substring(0, 20) + '...';
+                                }
+
+                                return comment + ': ' + (value / 100).toFixed(2) + ' ₽ (' + percentage + '%)';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Линейная диаграмма
+    const lineCtx = document.getElementById('expensesLineChart');
+    if (lineCtx && lineData.labels.length > 0) {
+        console.log('Creating line chart with data:', lineData);
+        new Chart(lineCtx, {
+            type: 'line',
+            data: {
+                labels: lineData.labels,
+                datasets: [{
+                    label: 'Расходы',
+                    data: lineData.data,
+                    borderColor: '#36A2EB',
+                    backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'Расходы: ' + (context.parsed.y / 100).toFixed(2) + ' ₽';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return (value / 100).toFixed(0) + ' ₽';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    } else {
+        console.error('Line chart canvas not found or no data');
+    }
+})();
+</script>

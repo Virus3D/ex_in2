@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -54,6 +56,10 @@ class Card
     private int $totalReceipt = 0;
 
     private int $totalSpend = 0;
+
+    private int $totalTransferAdd = 0;
+
+    private int $totalTransferSub = 0;
 
     public function __construct()
     {
@@ -126,8 +132,7 @@ class Card
 
     public function addReceipt(Receipt $receipt): static
     {
-        if (! $this->receipts->contains($receipt))
-        {
+        if (! $this->receipts->contains($receipt)) {
             $this->receipts->add($receipt);
             $receipt->setCard($this);
         }
@@ -152,8 +157,7 @@ class Card
 
     public function addSpend(Spend $spend): static
     {
-        if (! $this->spends->contains($spend))
-        {
+        if (! $this->spends->contains($spend)) {
             $this->spends->add($spend);
             $spend->setCard($this);
         }
@@ -178,8 +182,7 @@ class Card
 
     public function addTransfersOut(Transfer $transfersOut): static
     {
-        if (! $this->transfersOut->contains($transfersOut))
-        {
+        if (! $this->transfersOut->contains($transfersOut)) {
             $this->transfersOut->add($transfersOut);
             $transfersOut->setCardOut($this);
         }
@@ -204,8 +207,7 @@ class Card
 
     public function addTransfersIn(Transfer $transfersIn): static
     {
-        if (! $this->transfersIn->contains($transfersIn))
-        {
+        if (! $this->transfersIn->contains($transfersIn)) {
             $this->transfersIn->add($transfersIn);
             $transfersIn->setCardIn($this);
         }
@@ -239,6 +241,16 @@ class Card
     }//end setTotalReceipt()
 
     /**
+     * Add the value of totalReceipt.
+     */
+    public function addTotalReceipt(int $receipt): self
+    {
+        $this->totalReceipt += $receipt;
+
+        return $this;
+    }//end addTotalReceipt()
+
+    /**
      * Get the value of totalSpend.
      */
     public function getTotalSpend(): int
@@ -255,4 +267,70 @@ class Card
 
         return $this;
     }//end setTotalSpend()
+
+    /**
+     * Add the value of totalSpend.
+     */
+    public function addTotalSpend(int $spend): self
+    {
+        $this->totalSpend += $spend;
+
+        return $this;
+    }//end addTotalSpend()
+
+    /**
+     * Get the value of totalTransferAdd.
+     */
+    public function getTotalTransferAdd(): int
+    {
+        return $this->totalTransferAdd;
+    }//end getTotalTransferAdd()
+
+    /**
+     * Set the value of totalTransferAdd.
+     */
+    public function setTotalTransferAdd(int $totalTransferAdd): self
+    {
+        $this->totalTransferAdd = $totalTransferAdd;
+
+        return $this;
+    }//end setTotalTransferAdd()
+
+    /**
+     * Add the value of totalTransferAdd.
+     */
+    public function addTotalTransferAdd(int $transferAdd): self
+    {
+        $this->totalTransferAdd += $transferAdd;
+
+        return $this;
+    }//end addTotalTransferAdd()
+
+    /**
+     * Get the value of totalTransferSub.
+     */
+    public function getTotalTransferSub(): int
+    {
+        return $this->totalTransferSub;
+    }//end getTotalTransferSub()
+
+    /**
+     * Set the value of totalTransferSub.
+     */
+    public function setTotalTransferSub(int $totalTransferSub): self
+    {
+        $this->totalTransferSub = $totalTransferSub;
+
+        return $this;
+    }//end setTotalTransferSub()
+
+    /**
+     * Add the value of totalTransferSub.
+     */
+    public function addTotalTransferSub(int $transferSub): self
+    {
+        $this->totalTransferSub += $transferSub;
+
+        return $this;
+    }//end addTotalTransferSub()
 }//end class

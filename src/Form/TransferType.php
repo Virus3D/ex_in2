@@ -11,6 +11,7 @@ namespace App\Form;
 
 use App\Entity\Card;
 use App\Entity\Transfer;
+use DateTime;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -23,7 +24,13 @@ final class TransferType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('date', DateType::class)
+            ->add(
+                'date',
+                DateType::class,
+                [
+                    'data' => new DateTime(),
+                ]
+            )
             ->add(
                 'balance',
                 MoneyType::class,

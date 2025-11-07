@@ -1,0 +1,14 @@
+<div {{ attributes }} data-loading="addClass(opacity-50) addAttribute(disabled)">
+    <select class="form-select form-control" data-model="selectedCardId">
+        <option>{{ 'Select'|trans }}</option>
+        {% for category, cards in this.getCards() %}
+            <optgroup label="{{ category }}">
+                {% for card in cards %}
+                    <option value="{{ card.id }}" {% if this.selectedCardId == card.id %}selected{% endif %}>
+                        {{ card.name }}
+                    </option>
+                {% endfor %}
+            </optgroup>
+        {% endfor %}
+    </select>
+</div>

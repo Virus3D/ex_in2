@@ -24,6 +24,7 @@ final class AppExtension extends AbstractExtension
     {
         return [
             new TwigFilter('formatCurrency', [$this, 'formatCurrency']),
+            new TwigFilter('group_by', [$this, 'groupBy']),
         ];
     }//end getFilters()
 
@@ -37,4 +38,18 @@ final class AppExtension extends AbstractExtension
 
         return $formatter->format($money->getAmount() / 100);
     }//end formatCurrency()
+
+    public function groupBy(array $items, string $key): array
+    {
+        $result = [];
+
+        foreach ($items as $item) {
+            $groupKey = $item[$key] ?? null;
+            if ($groupKey) {
+                $result[$groupKey][] = $item;
+            }
+        }
+
+        return $result;
+    }
 }//end class

@@ -1,0 +1,54 @@
+<div class="scroll-primary service-view" {{ attributes }}>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">{{ 'Service'|trans }}</th>
+                {% for month in range(1, 12) %}
+                    <th scope="col">{{ (month ~ '/1')|date('F')|capitalize|trans }}</th>
+                {% endfor %}
+                <th scope="col">{{ 'All'|trans }}</th>
+                <th scope="col">{{ 'Debt'|trans }}</th>
+            </tr>
+        </thead>
+        <colgroup>
+            <col class="table-info">
+            <col span="12" class="text-end">
+            <col class="table-primary text-end">
+            <col class="table-danger text-end">
+        </colgroup>
+        <tbody>
+            {% for service in this.getServices() %}
+            <tr>
+                <td>{{ service.name }}</td>
+                {% for month in range(1, 12) %}
+                <td class="text-end">
+                    <div class="text-danger">{{ this.accounts[service.id][month]|formatCurrency }}</div>
+                    <div class="text-success">
+                        {% for payment in this.payments[service.id][month] %}
+                        {{ payment.amount|formatCurrency }}
+                        <div style="font-size:.8em">{{ payment.date|date('Y-m-d H:i')}}</div>
+                        {% endfor %}
+                    </div>
+                </td>
+                {% endfor %}
+                <td class="table-primary text-end">{{ this.total[service.id]['total']|formatCurrency }}</td>
+                <td class="table-danger text-end">{{ this.total[service.id]['debt']|formatCurrency }}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td> </td>
+                {% for month in range(1, 12) %}
+                <td class="text-end">
+                    <em>{{ this.totalMonth[month]|formatCurrency }}</em>
+                </td>
+                {% endfor %}
+                <td class="table-primary text-end">
+                    <strong>{{ this.totalTotal|formatCurrency }}</strong>
+                </td>
+                <td class="table-danger text-end">
+                    <strong>{{ this.totalDebt|formatCurrency }}</strong>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

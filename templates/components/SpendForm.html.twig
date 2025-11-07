@@ -1,0 +1,22 @@
+<div class="alert alert-danger" {{ attributes }} data-loading="addClass(opacity-50) addAttribute(disabled)">
+    {{ 'Spend'|trans }}
+    {{ form_start(form, {
+        attr: {
+            class: 'form-horizontal', 
+            'data-model': 'norender|*',
+            'data-action': 'live#action:prevent',
+            'data-live-action-param': 'save'
+        }
+    }) }}
+        <div class="text-danger">
+            {{ form_errors(form) }}
+        </div>
+        <div class="input-group">
+            {{ form_widget(form.card, {attr: {class: 'form-select'}}) }}
+            {{ form_widget(form.date) }}
+            {{ form_widget(form.balance, {attr: {placeholder: '0.00'}}) }}
+            {{ form_widget(form.comment) }}
+            <button type="submit" class="btn btn-primary">{{ 'Add'|trans }}</button>
+        </div>
+    {{ form_end(form) }}
+</div>

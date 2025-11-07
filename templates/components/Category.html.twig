@@ -1,5 +1,5 @@
-<div {{ attributes }}>
-    {% set category = this.getCategory()%}
+<div {{ attributes }} data-loading="addClass(opacity-50) addAttribute(disabled)">
+    {% set category = this.getCategory() %}
     <div class="col mb-3">
         <div class="card">
             <div class="card-header">
@@ -13,7 +13,9 @@
                         </button>
                         {{ category.name}}
                     </div>
-                    <div class="col text-end text-success">{{ category.totalReceipt|formatCurrency }}</div>
+                    <div class="col text-end text-success">
+                        {{ category.totalReceipt|formatCurrency }}
+                    </div>
                     <div class="col text-end text-danger">{{ category.totalSpend|formatCurrency }}</div>
                     <div class="col text-end text-primary">{{ category.balance|formatCurrency }}</div>
                     <div class="col text-end"></div>
@@ -25,8 +27,14 @@
                     <li class="list-group-item{% if card.type == 1 %} list-group-item-danger{% endif %}">
                         <div class="row row-cols-4">
                             <div class="col">{{ card.name }}</div>
-                            <div class="col text-end text-success">{{ card.totalReceipt|formatCurrency }}</div>
-                            <div class="col text-end text-danger">{{ card.totalSpend|formatCurrency }}</div>
+                            <div class="col text-end text-success">
+                                {{ card.totalReceipt|formatCurrency }}<br/>
+                                {% if card.totalTransferAdd %}+ {{ card.totalTransferAdd|formatCurrency }}{% endif %}
+                                </div>
+                            <div class="col text-end text-danger">
+                                {{ card.totalSpend|formatCurrency }}<br/>
+                                {% if card.totalTransferSub %} - {{ card.totalTransferSub|formatCurrency }}{% endif %}
+                            </div>
                             <div class="col text-end">{{ card.balance|formatCurrency }}</div>
                         </div>
                     </li>

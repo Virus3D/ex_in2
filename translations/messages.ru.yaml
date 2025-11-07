@@ -31,7 +31,7 @@ Service: Услуга
 Debt: Задолженность
 All: Всего
 
-Subscription: Подписки
+Subscriptions: Подписки
 Dashboard: Дашборд
 Card Category: Категория карты
 Card: Карта
@@ -45,3 +45,6 @@ Period: Период
 Next Payment Date: Дата следующего платежа
 year: Год
 month: Месяц
+Select: Выбери
+Payment: Оплата
+Account: Счет
