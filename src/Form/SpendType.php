@@ -16,6 +16,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -41,7 +42,16 @@ final class SpendType extends AbstractType
                     'scale'    => 2,
                 ]
             )
-            ->add('comment')
+            ->add(
+                'comment',
+                TextType::class,
+                [
+                    'attr'     => [
+                        'list'         => 'spend-comment-options',
+                        'autocomplete' => 'off',
+                    ],
+                ]
+            )
             ->add(
                 'card',
                 EntityType::class,

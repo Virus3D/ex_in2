@@ -18,7 +18,7 @@
             {{ form_widget(form.comment) }}
             <button type="submit" class="btn btn-primary">{{ 'Add'|trans }}</button>
         </div>
-        <datalist id="comment-options">
+        <datalist id="receipt-comment-options">
             {% for comment in this.getExistingComments() %}
                 <option value="{{ comment }}">
             {% endfor %}

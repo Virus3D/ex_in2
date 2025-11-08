@@ -2,7 +2,7 @@
     {{ 'Spend'|trans }}
     {{ form_start(form, {
         attr: {
-            class: 'form-horizontal', 
+            class: 'form-horizontal',
             'data-model': 'norender|*',
             'data-action': 'live#action:prevent',
             'data-live-action-param': 'save'
@@ -18,5 +18,10 @@
             {{ form_widget(form.comment) }}
             <button type="submit" class="btn btn-primary">{{ 'Add'|trans }}</button>
         </div>
+        <datalist id="spend-comment-options">
+            {% for comment in this.getExistingComments() %}
+                <option value="{{ comment }}">
+            {% endfor %}
+        </datalist>
     {{ form_end(form) }}
 </div>

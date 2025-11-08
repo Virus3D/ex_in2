@@ -51,9 +51,8 @@ final class ReceiptType extends AbstractType
                 'comment',
                 TextType::class,
                 [
-                    'required' => false,
                     'attr'     => [
-                        'list'         => 'comment-options',
+                        'list'         => 'receipt-comment-options',
                         'autocomplete' => 'off',
                     ],
                 ]

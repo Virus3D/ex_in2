@@ -49,6 +49,27 @@ final class SpendRepository extends ServiceEntityRepository
     }//end list()
 
     /**
+     * Получить уникальные комментарии из базы данных.
+     *
+     * @return string[]
+     */
+    public function getUniqueComments(): array
+    {
+        $queryBuilder = $this->createQueryBuilder('s');
+
+        $result = $queryBuilder
+            ->select('DISTINCT s.comment')
+            ->where('s.comment IS NOT NULL')
+            ->andWhere('s.comment != :empty')
+            ->setParameter('empty', '')
+            ->orderBy('s.comment', 'ASC')
+            ->getQuery()
+            ->getScalarResult();
+
+        return array_column($result, 'comment');
+    }//end getUniqueComments()
+
+    /**
      * Получить данные для диаграммы расходов по комментариям.
      *
      * @return array<string, int>
