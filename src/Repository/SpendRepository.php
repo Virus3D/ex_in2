@@ -25,7 +25,7 @@ final class SpendRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Spend::class);
-    }//end __construct()
+    }// end __construct()
 
     /**
      * @return Spend[]
@@ -38,7 +38,8 @@ final class SpendRepository extends ServiceEntityRepository
             ->andWhere('s.date BETWEEN :startDate AND :endDate')
             ->setParameter('startDate', $startDate)
             ->setParameter('endDate', $endDate)
-            ->orderBy('s.date', 'DESC');
+            ->orderBy('s.date', 'DESC')
+            ->addOrderBy('s.id', 'DESC');
         if ($card) {
             $query->andWhere('s.card = :card')
                 ->setParameter('card', $card);
@@ -46,7 +47,7 @@ final class SpendRepository extends ServiceEntityRepository
 
         return $query->getQuery()
             ->getResult();
-    }//end list()
+    }// end list()
 
     /**
      * Получить уникальные комментарии из базы данных.
@@ -67,7 +68,7 @@ final class SpendRepository extends ServiceEntityRepository
             ->getScalarResult();
 
         return array_column($result, 'comment');
-    }//end getUniqueComments()
+    }// end getUniqueComments()
 
     /**
      * Получить данные для диаграммы расходов по комментариям.
@@ -114,7 +115,7 @@ final class SpendRepository extends ServiceEntityRepository
         arsort($expenses);
 
         return $expenses;
-    }//end getExpensesByComment()
+    }// end getExpensesByComment()
 
     /**
      * Получить данные для диаграммы расходов по дням.
@@ -150,5 +151,5 @@ final class SpendRepository extends ServiceEntityRepository
         }
 
         return $expenses;
-    }//end getExpensesByDay()
-}//end class
+    }// end getExpensesByDay()
+}// end class

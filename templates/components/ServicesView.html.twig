@@ -29,6 +29,18 @@
                         <div style="font-size:.8em">{{ payment.date|date('Y-m-d H:i')}}</div>
                         {% endfor %}
                     </div>
+                    {% if service.hasMeter %}
+                        {% if this.meterReadings[service.id][month] is defined and this.meterReadings[service.id][month] > 0 %}
+                            <div class="text-info" style="font-size:.85em; margin-top: 0.25rem;">
+                                <strong>{{ 'Reading'|trans }}:</strong> {{ this.meterReadings[service.id][month] }}
+                            </div>
+                            {% if this.consumption[service.id][month] is not null %}
+                                <div class="text-primary" style="font-size:.85em;">
+                                    <strong>{{ 'Consumption'|trans }}:</strong> {{ this.consumption[service.id][month] }}
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
                 </td>
                 {% endfor %}
                 <td class="table-primary text-end">{{ this.total[service.id]['total']|formatCurrency }}</td>

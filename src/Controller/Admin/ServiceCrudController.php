@@ -11,6 +11,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Service;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
@@ -25,5 +26,6 @@ final class ServiceCrudController extends AbstractCrudController
     {
         yield IdField::new('id')->hideOnForm();
         yield TextField::new('Name');
+        yield BooleanField::new('hasMeter', 'Has Meter');
     }//end configureFields()
 }//end class

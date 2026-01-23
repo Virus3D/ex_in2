@@ -15,6 +15,7 @@ use App\Entity\Place;
 use App\Entity\Service;
 use App\Helper\FilterDataHelper;
 use App\Service\ServiceAccountService;
+use App\Service\ServiceMeterReadingService;
 use App\Service\ServicePaymentService;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -67,11 +68,26 @@ final class ServicesView
 
     public int $totalDebt = 0;
 
+    /**
+     * Показания счетчиков по месяцам
+     *
+     * @var array<int, array<int, int>>
+     */
+    public array $meterReadings = [];
+
+    /**
+     * Расход за месяц на основе показаний счетчиков
+     *
+     * @var array<int, array<int, int|null>>
+     */
+    public array $consumption = [];
+
     public function __construct(
         private EntityManagerInterface $entityManager,
         private RequestStack $requestStack,
         private ServiceAccountService $serviceAccountService,
         private ServicePaymentService $servicePaymentService,
+        private ServiceMeterReadingService $serviceMeterReadingService,
         private FilterDataHelper $filterDataHelper
     ) {
         $this->totalMonth = array_fill(1, 12, 0);
@@ -94,15 +110,25 @@ final class ServicesView
         $this->payments   = [];
         $this->total      = [];
         $this->totalMonth = array_fill(1, 12, 0);
+        $this->meterReadings = [];
+        $this->consumption = [];
 
         $accountDB = $this->serviceAccountService->handle($place, $this->filterDataHelper->year);
         $paymentDB = $this->servicePaymentService->handle($place, $this->filterDataHelper->year);
+        $readingsDB = $this->serviceMeterReadingService->getReadings($place, $this->filterDataHelper->year);
+        $consumptionDB = $this->serviceMeterReadingService->calculateConsumption(
+            $readingsDB,
+            $place,
+            $this->filterDataHelper->year
+        );
 
         foreach ($services as $service) {
             $serviceId = $service->getId();
 
             $this->accounts[$serviceId] = ($accountDB[$serviceId] ?? []) + array_fill(1, 12, 0);
             $this->payments[$serviceId] = ($paymentDB[$serviceId] ?? []) + array_fill(1, 12, []);
+            $this->meterReadings[$serviceId] = ($readingsDB[$serviceId] ?? []) + array_fill(1, 12, 0);
+            $this->consumption[$serviceId] = ($consumptionDB[$serviceId] ?? []) + array_fill(1, 12, null);
 
             $paymentTotal = 0;
             foreach ($this->payments[$serviceId] as $month => $payments) {
@@ -132,5 +158,6 @@ final class ServicesView
      */
     #[LiveListener('accountAdded')]
     #[LiveListener('paymentAdded')]
-    public function onAdded(): void {}//end onSubscriptionAdded()
+    #[LiveListener('meterReadingAdded')]
+    public function onAdded(): void {}//end onAdded()
 }//end class

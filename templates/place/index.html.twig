@@ -6,6 +6,7 @@
     <div class="card-body">
         {{ component('ServicesView', {'placeId': place.id}) }}
         {{ component('AccountForm', {'placeId': place.id}) }}
+        {{ component('MeterReadingForm', {'placeId': place.id}) }}
         {{ component('PaymentForm', {'placeId': place.id}) }}
     </div>
 </details>

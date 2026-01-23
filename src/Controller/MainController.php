@@ -16,6 +16,7 @@ use App\Entity\Place;
 use App\Form\FilterType;
 use App\Form\PdfUploadType;
 use App\Helper\FilterDataHelper;
+use App\Service\StaticDataCache;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -29,8 +30,12 @@ final class MainController extends AbstractController
      * Главная страница.
      */
     #[Route('/', name: 'app_main', methods: ['GET'])]
-    public function index(Request $request, EntityManagerInterface $entityManager, FilterDataHelper $filterData): Response
-    {
+    public function index(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        FilterDataHelper $filterData,
+        StaticDataCache $staticCache
+    ): Response {
         return $this->render(
             'main/index.html.twig',
             [
@@ -43,11 +48,11 @@ final class MainController extends AbstractController
                         'method' => 'POST',
                     ]
                 ),
-                'categories'    => $entityManager->getRepository(CardCategory::class)->findAll(),
-                'placeList'     => $entityManager->getRepository(Place::class)->findAll(),
+                'categories'    => $staticCache->getCategories(),
+                'placeList'     => $staticCache->getPlaces(),
             ]
         );
-    }//end index()
+    }// end index()
 
     /**
      * Сохраняет фильтр
@@ -66,7 +71,7 @@ final class MainController extends AbstractController
         }
 
         return $this->redirectToRoute('app_main');
-    }//end filterFormSave()
+    }// end filterFormSave()
 
     /**
      * Возвращает форму фильтра.
@@ -79,5 +84,5 @@ final class MainController extends AbstractController
         $form->setData($filterData->toArray());
 
         return $form;
-    }//end filterForm()
-}//end class
+    }// end filterForm()
+}// end class

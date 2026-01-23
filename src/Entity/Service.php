@@ -23,6 +23,9 @@ class Service
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
+    #[ORM\Column(options: ['default' => false])]
+    private bool $hasMeter = false;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -39,6 +42,18 @@ class Service
 
         return $this;
     }//end setName()
+
+    public function getHasMeter(): bool
+    {
+        return $this->hasMeter;
+    }//end getHasMeter()
+
+    public function setHasMeter(bool $hasMeter): static
+    {
+        $this->hasMeter = $hasMeter;
+
+        return $this;
+    }//end setHasMeter()
 
     public function __toString(): string
     {

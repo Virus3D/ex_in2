@@ -25,7 +25,7 @@ final class ReceiptRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Receipt::class);
-    }//end __construct()
+    }// end __construct()
 
     /**
      * @return Receipt[]
@@ -39,7 +39,7 @@ final class ReceiptRepository extends ServiceEntityRepository
             ->setParameter('startDate', $startDate)
             ->setParameter('endDate', $endDate)
             ->orderBy('r.date', 'DESC')
-            ->orderBy('r.id', 'DESC');
+            ->addOrderBy('r.id', 'DESC');
         if ($card) {
             $query->andWhere('r.card = :card')
                 ->setParameter('card', $card);
@@ -47,7 +47,7 @@ final class ReceiptRepository extends ServiceEntityRepository
 
         return $query->getQuery()
             ->getResult();
-    }//end list()
+    }// end list()
 
     /**
      * Получить уникальные комментарии из базы данных.
@@ -68,5 +68,5 @@ final class ReceiptRepository extends ServiceEntityRepository
             ->getScalarResult();
 
         return array_column($result, 'comment');
-    }//end getUniqueComments()
-}//end class
+    }// end getUniqueComments()
+}// end class

@@ -18,7 +18,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final class CardReceiptService
 {
-    public function __construct(private EntityManagerInterface $entityManager) {}//end __construct()
+    public function __construct(private EntityManagerInterface $entityManager)
+    {
+    }// end __construct()
 
     /**
      * Подсчет поступлений на карты.
@@ -42,9 +44,6 @@ final class CardReceiptService
         $results = $queryBuilder->getQuery()->getResult();
 
         foreach ($results as $result) {
-            /**
-             * @var Card $card
-             */
             $card = $result['card'];
 
             $totalBalance = (int) $result['totalBalance'];
@@ -53,5 +52,5 @@ final class CardReceiptService
                 $card->getCategory()?->addTotalReceipt($totalBalance);
             }
         }
-    }//end getCardsSummary()
-}//end class
+    }// end getCardsSummary()
+}// end class

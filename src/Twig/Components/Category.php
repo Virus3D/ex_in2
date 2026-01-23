@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace App\Twig\Components;
 
 use App\Entity\CardCategory;
-use App\Helper\FilterDataHelper;
 use App\Service\CategoryService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -33,7 +32,8 @@ final class Category
         private EntityManagerInterface $entityManager,
         private RequestStack $requestStack,
         private CategoryService $categoryService,
-    ) {}//end __construct()
+    ) {
+    }// end __construct()
 
     /**
      * Возвращает информацию по картам категории.
@@ -41,13 +41,15 @@ final class Category
     public function getCategory(): ?CardCategory
     {
         $category = $this->entityManager->getRepository(CardCategory::class)->find($this->categoryID);
-        $request  = $this->requestStack->getCurrentRequest();
 
         $this->categoryService->handle($category);
 
         return $category;
-    }//end getCategory()
+    }// end getCategory()
 
+    /**
+     * @inheritDoc
+     */
     #[LiveListener('receiptAdded')]
     #[LiveListener('spendAdded')]
     #[LiveListener('transferAdded')]
@@ -56,5 +58,6 @@ final class Category
     #[LiveListener('transferDeleted')]
     #[LiveListener('subscriptionAdded')]
     public function onEvent(): void
-    {}//end onEvent()
-}//end class
+    {
+    }// end onEvent()
+}// end class

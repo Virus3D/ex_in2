@@ -25,7 +25,7 @@ final class TransferRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Transfer::class);
-    }//end __construct()
+    }// end __construct()
 
     /**
      * @return Transfer[]
@@ -38,7 +38,8 @@ final class TransferRepository extends ServiceEntityRepository
             ->andWhere('t.date BETWEEN :startDate AND :endDate')
             ->setParameter('startDate', $startDate)
             ->setParameter('endDate', $endDate)
-            ->orderBy('t.date', 'DESC');
+            ->orderBy('t.date', 'DESC')
+            ->addOrderBy('t.id', 'DESC');
         if ($cardOut) {
             $query->andWhere('t.cardOut = :cardOut')
                 ->setParameter('cardOut', $cardOut);
@@ -50,5 +51,5 @@ final class TransferRepository extends ServiceEntityRepository
 
         return $query->getQuery()
             ->getResult();
-    }//end list()
-}//end class
+    }// end list()
+}// end class
