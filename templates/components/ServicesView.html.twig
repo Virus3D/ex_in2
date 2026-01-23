@@ -26,7 +26,7 @@
                     <div class="text-success">
                         {% for payment in this.payments[service.id][month] %}
                         {{ payment.amount|formatCurrency }}
-                        <div style="font-size:.8em">{{ payment.date|date('Y-m-d H:i')}}</div>
+                        <div style="font-size:.8em">{{ payment.date|date_timezone('Y-m-d H:i')}}</div>
                         {% endfor %}
                     </div>
                     {% if service.hasMeter %}
