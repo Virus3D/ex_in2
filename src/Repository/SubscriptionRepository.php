@@ -15,6 +15,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Репозиторий для работы с подписками.
+ *
  * @extends ServiceEntityRepository<Subscription>
  */
 final class SubscriptionRepository extends ServiceEntityRepository
@@ -22,7 +24,7 @@ final class SubscriptionRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Subscription::class);
-    }//end __construct()
+    }// end __construct()
 
     /**
      * Найти все подписки, у которых дата следующего платежа наступила или прошла.
@@ -35,9 +37,10 @@ final class SubscriptionRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('s')
             ->where('s.nextPaymentDate <= :date')
+            ->andWhere('s.isActive = :isActive')
             ->setParameter('date', $date)
+            ->setParameter('isActive', true)
             ->getQuery()
-            ->getResult()
-        ;
-    }//end findAllDueSubscriptions()
-}//end class
+            ->getResult();
+    }// end findAllDueSubscriptions()
+}// end class

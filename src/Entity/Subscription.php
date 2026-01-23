@@ -40,6 +40,9 @@ class Subscription
     #[ORM\Column(name: 'next_payment_date', type: Types::DATE_MUTABLE)]
     private DateTime $nextPaymentDate;
 
+    #[ORM\Column(name: 'is_active', options: ['default' => true])]
+    private bool $isActive = true;
+
     public function __construct()
     {
         $this->setBalance(0);
@@ -109,4 +112,16 @@ class Subscription
 
         return $this;
     }//end setNextPaymentDate()
+
+    public function getIsActive(): bool
+    {
+        return $this->isActive;
+    }//end getIsActive()
+
+    public function setIsActive(bool $isActive): static
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }//end setIsActive()
 }//end class
