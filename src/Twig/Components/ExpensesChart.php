@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Expenses/Income
+ * Expenses/Income.
  *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
@@ -14,7 +14,6 @@ namespace App\Twig\Components;
 use App\Entity\Card;
 use App\Helper\FilterDataHelper;
 use App\Repository\SpendRepository;
-use DateTime;
 use Exception;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
@@ -26,7 +25,8 @@ final class ExpensesChart
     public function __construct(
         private readonly SpendRepository $spendRepository,
         private readonly FilterDataHelper $filterDataHelper,
-    ) {}//end __construct()
+    ) {
+    }// end __construct()
 
     /**
      * Получить данные для диаграммы по комментариям.
@@ -59,15 +59,14 @@ final class ExpensesChart
                 'data'   => $data,
                 'colors' => $colors,
             ];
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             return [
                 'labels' => ['Ошибка загрузки'],
                 'data'   => [0],
                 'colors' => ['#dc3545'],
             ];
-        }//end try
-    }//end getCommentData()
+        }// end try
+    }// end getCommentData()
 
     /**
      * Получить данные для диаграммы по дням.
@@ -97,16 +96,15 @@ final class ExpensesChart
                 'labels' => $labels,
                 'data'   => $data,
             ];
-        }
-        catch (Exception $e) {
-            error_log('Error in getDailyData: '.$e->getMessage());
+        } catch (Exception $e) {
+            error_log('Error in getDailyData: ' . $e->getMessage());
 
             return [
-                'labels' => ['Ошибка загрузки'.$e->getMessage()],
+                'labels' => ['Ошибка загрузки' . $e->getMessage()],
                 'data'   => [0],
             ];
-        }//end try
-    }//end getDailyData()
+        }// end try
+    }// end getDailyData()
 
     /**
      * Получить общую сумму расходов.
@@ -120,7 +118,7 @@ final class ExpensesChart
         );
 
         return array_sum($expenses) ?: 0;
-    }//end getTotalExpenses()
+    }// end getTotalExpenses()
 
     /**
      * Получить отформатированную общую сумму расходов.
@@ -130,7 +128,7 @@ final class ExpensesChart
         $total = $this->getTotalExpenses($card);
 
         return number_format($total / 100, 2, ',', ' ');
-    }//end getFormattedTotalExpenses()
+    }// end getFormattedTotalExpenses()
 
     /**
      * Генерировать цвета для диаграммы.
@@ -158,5 +156,5 @@ final class ExpensesChart
         }
 
         return $result;
-    }//end generateColors()
-}//end class
+    }// end generateColors()
+}// end class

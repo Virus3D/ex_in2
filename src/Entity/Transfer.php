@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -38,53 +40,53 @@ class Transfer
     public function getId(): ?int
     {
         return $this->id;
-    }//end getId()
+    }// end getId()
 
     public function getCardOut(): ?Card
     {
         return $this->cardOut;
-    }//end getCardOut()
+    }// end getCardOut()
 
     public function setCardOut(?Card $cardOut): static
     {
         $this->cardOut = $cardOut;
 
         return $this;
-    }//end setCardOut()
+    }// end setCardOut()
 
     public function getCardIn(): ?Card
     {
         return $this->cardIn;
-    }//end getCardIn()
+    }// end getCardIn()
 
     public function setCardIn(?Card $cardIn): static
     {
         $this->cardIn = $cardIn;
 
         return $this;
-    }//end setCardIn()
+    }// end setCardIn()
 
     public function getDate(): ?DateTime
     {
         return $this->date;
-    }//end getDate()
+    }// end getDate()
 
     public function setDate(DateTime $date): static
     {
         $this->date = $date;
 
         return $this;
-    }//end setDate()
+    }// end setDate()
 
     public function getBalance(): int
     {
         return $this->balance;
-    }//end getBalance()
+    }// end getBalance()
 
     public function setBalance(int $balance): static
     {
         $this->balance = $balance;
 
         return $this;
-    }//end setBalance()
-}//end class
+    }// end setBalance()
+}// end class

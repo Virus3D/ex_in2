@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Expenses/Income
+ * Expenses/Income.
  *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
@@ -42,10 +42,10 @@ final class SpendList
         private EntityManagerInterface $entityManager,
         private RequestStack $requestStack,
         private CardService $cardService,
-        private FilterDataHelper $filterDataHelper
+        private FilterDataHelper $filterDataHelper,
     ) {
         $this->setSelectedCard();
-    }//end __construct()
+    }// end __construct()
 
     /**
      * Задать карты для фильтра.
@@ -59,7 +59,7 @@ final class SpendList
         $cardId = $request->getSession()->get($this->field);
 
         $this->selectedCard = $cardId ? $cardRepository->find($cardId) : null;
-    }//end setSelectedCard()
+    }// end setSelectedCard()
 
     /**
      * Получить список расходов.
@@ -79,13 +79,13 @@ final class SpendList
         $this->total = array_reduce($spendList, static fn ($carry, $spend) => $carry + $spend->getBalance(), 0);
 
         return $spendList;
-    }//end getSpendList()
+    }// end getSpendList()
 
     /**
      * Удаление записи расхода.
      */
     #[LiveAction]
-    public function remove(#[LiveArg()] int $id): void
+    public function remove(#[LiveArg] int $id): void
     {
         $receipt = $this->entityManager->getRepository(Spend::class)->find($id);
         $this->cardService->changeBalance($receipt->getCard(), $receipt->getBalance());
@@ -93,7 +93,7 @@ final class SpendList
         $this->entityManager->flush();
 
         $this->emit('spendDeleted');
-    }//end remove()
+    }// end remove()
 
     /**
      * Добавить расход.
@@ -103,5 +103,5 @@ final class SpendList
     public function onSpendAdded(): void
     {
         $this->setSelectedCard();
-    }//end onSpendAdded()
-}//end class
+    }// end onSpendAdded()
+}// end class

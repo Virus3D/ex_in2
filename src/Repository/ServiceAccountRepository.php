@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -21,5 +23,5 @@ final class ServiceAccountRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ServiceAccount::class);
-    }//end __construct()
-}//end class
+    }// end __construct()
+}// end class

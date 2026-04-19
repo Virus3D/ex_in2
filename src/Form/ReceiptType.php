@@ -51,7 +51,7 @@ final class ReceiptType extends AbstractType
                 'comment',
                 TextType::class,
                 [
-                    'attr'     => [
+                    'attr' => [
                         'list'         => 'receipt-comment-options',
                         'autocomplete' => 'off',
                     ],
@@ -66,7 +66,7 @@ final class ReceiptType extends AbstractType
                     'group_by'     => static fn (?Card $card): string => $card?->getCategory()->getName() ?? '',
                 ]
             );
-    }//end buildForm()
+    }// end buildForm()
 
     /**
      * @inheritDoc
@@ -78,5 +78,5 @@ final class ReceiptType extends AbstractType
                 'data_class' => Receipt::class,
             ]
         );
-    }//end configureOptions()
-}//end class
+    }// end configureOptions()
+}// end class

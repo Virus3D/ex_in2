@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -12,24 +14,28 @@ namespace App\Controller\Admin;
 use App\Entity\Place;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 final class PlaceCrudController extends AbstractCrudController
 {
+    /**
+     * @inheritDoc
+     */
     public static function getEntityFqcn(): string
     {
         return Place::class;
-    }//end getEntityFqcn()
+    }// end getEntityFqcn()
 
+    /**
+     * @inheritDoc
+     */
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm();
         yield TextField::new('Name');
-        yield AssociationField::new('services')->setRequired(false)->setFormTypeOptions(
-            [
-                'multiple' => true,
-            ]
-        );
-    }//end configureFields()
-}//end class
+        yield AssociationField::new('services')->setRequired(false)->setFormTypeOptions(['multiple' => true]);
+        yield BooleanField::new('isActive', 'Is Active');
+    }// end configureFields()
+}// end class

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Expenses/Income
+ * Expenses/Income.
  *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
@@ -28,7 +28,7 @@ final class SubscriptionList
         private DueSubscriptionService $dueSubscriptionService,
     ) {
         $this->dueSubscriptionService->execute();
-    }//end __construct()
+    }// end __construct()
 
     /**
      * Получить список подписок.
@@ -41,7 +41,7 @@ final class SubscriptionList
             ['isActive' => true],
             ['nextPaymentDate' => 'asc']
         );
-    }//end getSubscriptionList()
+    }// end getSubscriptionList()
 
     /**
      * Добавить расход.
@@ -50,5 +50,5 @@ final class SubscriptionList
     public function onSubscriptionAdded(): void
     {
         $this->dueSubscriptionService->execute();
-    }//end onSubscriptionAdded()
-}//end class
+    }// end onSubscriptionAdded()
+}// end class

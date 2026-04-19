@@ -11,26 +11,28 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity\Card;
 use App\Entity\Transfer;
 use DateTime;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 
 use function in_array;
 
 final class CardTransferService
 {
-    public function __construct(private EntityManagerInterface $entityManager) {}//end __construct()
+    public function __construct(private EntityManagerInterface $entityManager)
+    {
+    }// end __construct()
 
     /**
-     * @param Card[] $cards
+     * Суммы транзакций по картам.
      */
-    public function getCardsSummary(iterable $cards, DateTime $startDate, DateTime $endDate): void
+    public function getCardsSummary(Collection $cards, DateTime $startDate, DateTime $endDate): void
     {
         $query = $this->entityManager
             ->createQuery(
                 'SELECT t, cIn, cOut
-                    FROM App\Entity\Transfer t
+                    FROM ' . Transfer::class . ' t
                     JOIN t.cardIn cIn
                     JOIN t.cardOut cOut
                     WHERE (t.cardIn IN (:cardIds) or t.cardOut IN (:cardIds)) AND t.date BETWEEN :startDate AND :endDate'
@@ -39,9 +41,6 @@ final class CardTransferService
             ->setParameter('startDate', $startDate)
             ->setParameter('endDate', $endDate);
 
-        /**
-         * @var Transfer[] $results
-         */
         $results = $query->getResult();
 
         foreach ($results as $result) {
@@ -55,5 +54,5 @@ final class CardTransferService
                 $cardOut->getCategory()?->addTotalSpend($totalBalance);
             }
         }
-    }//end getCardsSummary()
-}//end class
+    }// end getCardsSummary()
+}// end class

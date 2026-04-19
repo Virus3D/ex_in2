@@ -17,9 +17,13 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final class ServiceAccountService
 {
-    public function __construct(private EntityManagerInterface $entityManager) {}//end __construct()
+    public function __construct(private EntityManagerInterface $entityManager)
+    {
+    }// end __construct()
 
     /**
+     * Обработчик.
+     *
      * @return array<int, array<int, array<string, mixed>>>
      */
     public function handle(Place $place, int $year): array
@@ -40,8 +44,11 @@ final class ServiceAccountService
         }
 
         return $data;
-    }//end handle()
+    }// end handle()
 
+    /**
+     * Добавление на год.
+     */
     public function createAccount(
         Place $place,
         ServiceAccount $serviceAccount,
@@ -52,5 +59,5 @@ final class ServiceAccountService
             ->setYear($year);
         $this->entityManager->persist($serviceAccount);
         $this->entityManager->flush();
-    }//end createAccount()
-}//end class
+    }// end createAccount()
+}// end class

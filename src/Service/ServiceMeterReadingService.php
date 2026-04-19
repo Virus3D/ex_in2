@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Expenses/Income
+ * Expenses/Income.
  *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
@@ -19,7 +19,7 @@ final class ServiceMeterReadingService
 {
     public function __construct(private EntityManagerInterface $entityManager)
     {
-    }//end __construct()
+    }// end __construct()
 
     /**
      * Получить показания счетчиков по году и месту.
@@ -45,14 +45,14 @@ final class ServiceMeterReadingService
         }
 
         return $data;
-    }//end getReadings()
+    }// end getReadings()
 
     /**
      * Рассчитать расход за месяц на основе показаний счетчиков.
      *
      * @param array<int, array<int, int>> $readings Показания счетчиков [service_id][month] => reading
-     * @param Place                       $place     Место
-     * @param int                         $year      Год
+     * @param Place                       $place    Место
+     * @param int                         $year     Год
      *
      * @return array<int, array<int, int|null>> Массив [service_id][month] => consumption (null если нет данных)
      */
@@ -64,33 +64,33 @@ final class ServiceMeterReadingService
             $consumption[$serviceId] = [];
 
             foreach ($months as $month => $reading) {
-                $previousMonth = $month === 1 ? 12 : ($month - 1);
-                $previousYear  = $month === 1 ? ($year - 1) : $year;
+                $previousMonth = 1 === $month ? 12 : ($month - 1);
+                $previousYear  = 1 === $month ? ($year - 1) : $year;
 
                 // Ищем предыдущее показание.
                 $previousReading = null;
                 if (isset($readings[$serviceId][$previousMonth]) && $previousYear === $year) {
                     // В пределах одного года.
                     $previousReading = $readings[$serviceId][$previousMonth];
-                } else if ($previousYear < $year) {
+                } elseif ($previousYear < $year) {
                     // Для января нужно получить показание за декабрь предыдущего года.
                     $previousYearReadings = $this->getReadings($place, $previousYear);
                     if (isset($previousYearReadings[$serviceId][12])) {
                         $previousReading = $previousYearReadings[$serviceId][12];
                     }
-                }//end if
+                }// end if
 
                 // Если есть предыдущее показание, рассчитываем расход.
-                if ($previousReading !== null) {
+                if (null !== $previousReading) {
                     $consumption[$serviceId][$month] = $reading - $previousReading;
                 } else {
                     $consumption[$serviceId][$month] = null;
-                }//end if
-            }//end foreach
-        }
+                }// end if
+            }// end foreach
+        }// end foreach
 
         return $consumption;
-    }//end calculateConsumption()
+    }// end calculateConsumption()
 
     /**
      * Сохранить показание счетчика.
@@ -110,15 +110,15 @@ final class ServiceMeterReadingService
             ]
         );
 
-        if ($existing !== null) {
+        if (null !== $existing) {
             $existing->setReading($meterReading->getReading());
         } else {
             $meterReading
                 ->setPlace($place)
                 ->setYear($year);
             $this->entityManager->persist($meterReading);
-        }//end if
+        }
 
         $this->entityManager->flush();
-    }//end saveReading()
-}//end class
+    }// end saveReading()
+}// end class

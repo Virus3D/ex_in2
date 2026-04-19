@@ -61,5 +61,5 @@ final class Months
             'November'  => self::NOVEMBER,
             'December'  => self::DECEMBER,
         ];
-    }//end getChoices()
-}//end class
+    }// end getChoices()
+}// end class

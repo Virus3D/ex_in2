@@ -11,8 +11,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\CardCategory;
-use App\Entity\Place;
 use App\Form\FilterType;
 use App\Form\PdfUploadType;
 use App\Helper\FilterDataHelper;

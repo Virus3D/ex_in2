@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Expenses/Income
+ * Expenses/Income.
  *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
@@ -47,10 +47,10 @@ final class TransferList
         private EntityManagerInterface $entityManager,
         private RequestStack $requestStack,
         private CardService $cardService,
-        private FilterDataHelper $filterDataHelper
+        private FilterDataHelper $filterDataHelper,
     ) {
         $this->setSelectedCard();
-    }//end __construct()
+    }// end __construct()
 
     /**
      * Задать карты для фильтра.
@@ -68,7 +68,7 @@ final class TransferList
         $cardIdOut = $request->getSession()->get($this->fieldOut);
 
         $this->selectedCardOut = $cardIdOut ? $cardRepository->find($cardIdOut) : null;
-    }//end setSelectedCard()
+    }// end setSelectedCard()
 
     /**
      * Получить список переводов.
@@ -85,7 +85,7 @@ final class TransferList
             $this->selectedCardOut,
             $this->selectedCardIn
         );
-    }//end getTransferList()
+    }// end getTransferList()
 
     /**
      * Удаление записи перевода.
@@ -100,7 +100,7 @@ final class TransferList
         $this->entityManager->flush();
 
         $this->emit('transferDeleted');
-    }//end remove()
+    }// end remove()
 
     /**
      * Добавить перевод.
@@ -110,5 +110,5 @@ final class TransferList
     public function onTransferAdded(): void
     {
         $this->setSelectedCard();
-    }//end onTransferAdded()
-}//end class
+    }// end onTransferAdded()
+}// end class

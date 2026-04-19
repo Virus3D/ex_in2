@@ -14,18 +14,21 @@ namespace App\Service;
 use App\Entity\Card;
 use App\Entity\Spend;
 use DateTime;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 
 use function in_array;
 
 final class CardSpendService
 {
-    public function __construct(private EntityManagerInterface $entityManager) {}//end __construct()
+    public function __construct(private EntityManagerInterface $entityManager)
+    {
+    }// end __construct()
 
     /**
-     * @param Card[] $cards
+     * Суммы расходов по картам
      */
-    public function getCardsSummary(iterable $cards, DateTime $startDate, DateTime $endDate): void
+    public function getCardsSummary(Collection $cards, DateTime $startDate, DateTime $endDate): void
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder->select('SUM(s.balance) AS totalBalance')
@@ -42,9 +45,6 @@ final class CardSpendService
         $results = $queryBuilder->getQuery()->getResult();
 
         foreach ($results as $result) {
-            /**
-             * @var Card $card
-             */
             $card = $result['card'];
 
             $totalBalance = (int) $result['totalBalance'];
@@ -53,5 +53,5 @@ final class CardSpendService
                 $card->getCategory()?->addTotalSpend($totalBalance);
             }
         }
-    }//end getCardsSummary()
-}//end class
+    }// end getCardsSummary()
+}// end class

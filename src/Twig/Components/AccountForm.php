@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Expenses/Income
+ * Expenses/Income.
  *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
@@ -43,7 +43,8 @@ final class AccountForm extends AbstractController
         private ServiceAccountService $serviceAccountService,
         private PlaceRepository $placeRepository,
         private FilterDataHelper $filterDataHelper,
-    ) {}//end __construct()
+    ) {
+    }// end __construct()
 
     /**
      * Инициализация формы.
@@ -51,7 +52,7 @@ final class AccountForm extends AbstractController
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(ServiceAccountType::class, options: ['place' => $this->getPlace()]);
-    }//end instantiateForm()
+    }// end instantiateForm()
 
     /**
      * Сохранение формы.
@@ -72,10 +73,13 @@ final class AccountForm extends AbstractController
         );
 
         $this->emit('accountAdded');
-    }//end save()
+    }// end save()
 
+    /**
+     * Get place.
+     */
     private function getPlace(): Place
     {
         return $this->placeRepository->find($this->placeId);
-    }//end getPlace()
-}//end class
+    }// end getPlace()
+}// end class

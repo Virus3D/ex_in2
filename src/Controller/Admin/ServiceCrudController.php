@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -17,15 +19,21 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 final class ServiceCrudController extends AbstractCrudController
 {
+    /**
+     * @inheritDoc
+     */
     public static function getEntityFqcn(): string
     {
         return Service::class;
-    }//end getEntityFqcn()
+    }// end getEntityFqcn()
 
+    /**
+     * @inheritDoc
+     */
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm();
         yield TextField::new('Name');
         yield BooleanField::new('hasMeter', 'Has Meter');
-    }//end configureFields()
-}//end class
+    }// end configureFields()
+}// end class

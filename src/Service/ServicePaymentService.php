@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -15,9 +17,13 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final class ServicePaymentService
 {
-    public function __construct(private EntityManagerInterface $entityManager) {}//end __construct()
+    public function __construct(private EntityManagerInterface $entityManager)
+    {
+    }// end __construct()
 
     /**
+     * Обработчик.
+     *
      * @return array<int, array<int, array<array<string, mixed>>>>
      */
     public function handle(Place $place, int $year): array
@@ -32,13 +38,14 @@ final class ServicePaymentService
             ->setParameter('place', $place)
             ->setParameter('year', $year)
             ->getQuery()
-            ->getResult()
-        ;
-        foreach ($result as $row)
-        {
-            $data[(int) $row['service_id']][(int) $row['month']][] = ['amount' => $row['amount'], 'date' => $row['date']];
+            ->getResult();
+        foreach ($result as $row) {
+            $data[(int) $row['service_id']][(int) $row['month']][] = [
+                'amount' => $row['amount'],
+                'date'   => $row['date'],
+            ];
         }
 
         return $data;
-    }//end handle()
-}//end class
+    }// end handle()
+}// end class

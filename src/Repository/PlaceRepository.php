@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -21,8 +23,11 @@ final class PlaceRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Place::class);
-    }//end __construct()
+    }// end __construct()
 
+    /**
+     * Summary of findWithService
+     */
     public function findWithService(int $id): ?Place
     {
         return $this->createQueryBuilder('p')
@@ -31,7 +36,6 @@ final class PlaceRepository extends ServiceEntityRepository
             ->where('p.id = :id')
             ->setParameter('id', $id)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }//end findWithService()
-}//end class
+            ->getOneOrNullResult();
+    }// end findWithService()
+}// end class

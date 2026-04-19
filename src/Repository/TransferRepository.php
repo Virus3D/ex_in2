@@ -28,6 +28,8 @@ final class TransferRepository extends ServiceEntityRepository
     }// end __construct()
 
     /**
+     * Список.
+     *
      * @return Transfer[]
      */
     public function list(DateTime $startDate, DateTime $endDate, ?Card $cardOut, ?Card $cardIn): array

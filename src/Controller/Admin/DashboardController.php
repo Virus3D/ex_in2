@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -24,19 +26,27 @@ final class DashboardController extends AbstractDashboardController
 {
     private const string ICON_LIST = 'fas fa-list';
 
+    /**
+     * @inheritDoc
+     */
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
         return $this->render('admin/index.html.twig');
-    }//end index()
+    }// end index()
 
+    /**
+     * @inheritDoc
+     */
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Ex In2')
-        ;
-    }//end configureDashboard()
+            ->setTitle('Ex In2');
+    }// end configureDashboard()
 
+    /**
+     * @inheritDoc
+     */
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
@@ -49,5 +59,5 @@ final class DashboardController extends AbstractDashboardController
             ]
         );
         yield MenuItem::linkToCrud('Subscription', self::ICON_LIST, entityFqcn: Subscription::class);
-    }//end configureMenuItems()
-}//end class
+    }// end configureMenuItems()
+}// end class

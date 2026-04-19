@@ -19,7 +19,9 @@ use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 
 final class PdfParserService
 {
-    public function __construct(private readonly Parser $parser) {}//end __construct()
+    public function __construct(private readonly Parser $parser)
+    {
+    }// end __construct()
 
     /**
      * Парсинг файла PDF.
@@ -34,9 +36,8 @@ final class PdfParserService
             $pdf = $this->parser->parseFile($file->getPathname());
 
             return $pdf->getText();
+        } catch (Exception $e) {
+            throw new RuntimeException('Error PDF parser: ' . $e->getMessage());
         }
-        catch (Exception $e) {
-            throw new RuntimeException('Error PDF parser: '.$e->getMessage());
-        }
-    }//end parsePdf()
-}//end class
+    }// end parsePdf()
+}// end class

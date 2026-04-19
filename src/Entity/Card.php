@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Expenses/Income
+ * Expenses/Income.
  *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
@@ -37,19 +37,35 @@ class Card
     #[ORM\Column]
     private int $balance = 0;
 
-    /** @var Collection<int, Receipt> */
+    /**
+     * Поступления.
+     *
+     * @var Collection<int, Receipt>
+     */
     #[ORM\OneToMany(targetEntity: Receipt::class, mappedBy: 'card')]
     private Collection $receipts;
 
-    /** @var Collection<int, Spend> */
+    /**
+     * Рвсходы.
+     *
+     * @var Collection<int, Spend>
+     */
     #[ORM\OneToMany(targetEntity: Spend::class, mappedBy: 'card')]
     private Collection $spends;
 
-    /** @var Collection<int, Transfer> */
+    /**
+     * Транзакции.
+     *
+     * @var Collection<int, Transfer>
+     */
     #[ORM\OneToMany(targetEntity: Transfer::class, mappedBy: 'cardOut')]
     private Collection $transfersOut;
 
-    /** @var Collection<int, Transfer> */
+    /**
+     * Транзакции.
+     *
+     * @var Collection<int, Transfer>
+     */
     #[ORM\OneToMany(targetEntity: Transfer::class, mappedBy: 'cardIn')]
     private Collection $transfersIn;
 
@@ -67,69 +83,101 @@ class Card
         $this->spends       = new ArrayCollection();
         $this->transfersOut = new ArrayCollection();
         $this->transfersIn  = new ArrayCollection();
-    }//end __construct()
+    }// end __construct()
 
+    /**
+     * Get the value of Id.
+     */
     public function getId(): ?int
     {
         return $this->id;
-    }//end getId()
+    }// end getId()
 
+    /**
+     * Get the value of category.
+     */
     public function getCategory(): ?CardCategory
     {
         return $this->category;
-    }//end getCategory()
+    }// end getCategory()
 
+    /**
+     * Set the value of category.
+     */
     public function setCategory(?CardCategory $category): static
     {
         $this->category = $category;
 
         return $this;
-    }//end setCategory()
+    }// end setCategory()
 
+    /**
+     * Get the value of name.
+     */
     public function getName(): ?string
     {
         return $this->name;
-    }//end getName()
+    }// end getName()
 
+    /**
+     * Set the value of name.
+     */
     public function setName(string $name): static
     {
         $this->name = $name;
 
         return $this;
-    }//end setName()
+    }// end setName()
 
+    /**
+     * Get the value of type.
+     */
     public function getType(): ?int
     {
         return $this->type;
-    }//end getType()
+    }// end getType()
 
+    /**
+     * Set the value of type.
+     */
     public function setType(int $type): static
     {
         $this->type = $type;
 
         return $this;
-    }//end setType()
+    }// end setType()
 
+    /**
+     * Get the value of balance.
+     */
     public function getBalance(): int
     {
         return $this->balance;
-    }//end getBalance()
+    }// end getBalance()
 
+    /**
+     * Set the value of balance.
+     */
     public function setBalance(int $balance): static
     {
         $this->balance = $balance;
 
         return $this;
-    }//end setBalance()
+    }// end setBalance()
 
     /**
+     * Поступления.
+     *
      * @return Collection<int, Receipt>
      */
     public function getReceipts(): Collection
     {
         return $this->receipts;
-    }//end getReceipts()
+    }// end getReceipts()
 
+    /**
+     * Добавить постиупление.
+     */
     public function addReceipt(Receipt $receipt): static
     {
         if (! $this->receipts->contains($receipt)) {
@@ -138,23 +186,31 @@ class Card
         }
 
         return $this;
-    }//end addReceipt()
+    }// end addReceipt()
 
+    /**
+     * Удалить поступление.
+     */
     public function removeReceipt(Receipt $receipt): static
     {
         $this->receipts->removeElement($receipt);
 
         return $this;
-    }//end removeReceipt()
+    }// end removeReceipt()
 
     /**
+     * Расходы.
+     *
      * @return Collection<int, Spend>
      */
     public function getSpends(): Collection
     {
         return $this->spends;
-    }//end getSpends()
+    }// end getSpends()
 
+    /**
+     * Добавить расход.
+     */
     public function addSpend(Spend $spend): static
     {
         if (! $this->spends->contains($spend)) {
@@ -163,23 +219,31 @@ class Card
         }
 
         return $this;
-    }//end addSpend()
+    }// end addSpend()
 
+    /**
+     * Удалить расход.
+     */
     public function removeSpend(Spend $spend): static
     {
         $this->spends->removeElement($spend);
 
         return $this;
-    }//end removeSpend()
+    }// end removeSpend()
 
     /**
+     * Траннннзакции.
+     *
      * @return Collection<int, Transfer>
      */
     public function getTransfersOut(): Collection
     {
         return $this->transfersOut;
-    }//end getTransfersOut()
+    }// end getTransfersOut()
 
+    /**
+     * Добавить транзакцию.
+     */
     public function addTransfersOut(Transfer $transfersOut): static
     {
         if (! $this->transfersOut->contains($transfersOut)) {
@@ -188,23 +252,31 @@ class Card
         }
 
         return $this;
-    }//end addTransfersOut()
+    }// end addTransfersOut()
 
+    /**
+     * Удалить транзакцию.
+     */
     public function removeTransfersOut(Transfer $transfersOut): static
     {
         $this->transfersOut->removeElement($transfersOut);
 
         return $this;
-    }//end removeTransfersOut()
+    }// end removeTransfersOut()
 
     /**
+     * Траннннзакции.
+     *
      * @return Collection<int, Transfer>
      */
     public function getTransfersIn(): Collection
     {
         return $this->transfersIn;
-    }//end getTransfersIn()
+    }// end getTransfersIn()
 
+    /**
+     * Добавить транзакцию.
+     */
     public function addTransfersIn(Transfer $transfersIn): static
     {
         if (! $this->transfersIn->contains($transfersIn)) {
@@ -213,14 +285,17 @@ class Card
         }
 
         return $this;
-    }//end addTransfersIn()
+    }// end addTransfersIn()
 
+    /**
+     * Удалить транзакцию.
+     */
     public function removeTransfersIn(Transfer $transfersIn): static
     {
         $this->transfersIn->removeElement($transfersIn);
 
         return $this;
-    }//end removeTransfersIn()
+    }// end removeTransfersIn()
 
     /**
      * Get the value of totalReceipt.
@@ -228,7 +303,7 @@ class Card
     public function getTotalReceipt(): int
     {
         return $this->totalReceipt;
-    }//end getTotalReceipt()
+    }// end getTotalReceipt()
 
     /**
      * Set the value of totalReceipt.
@@ -238,7 +313,7 @@ class Card
         $this->totalReceipt = $totalReceipt;
 
         return $this;
-    }//end setTotalReceipt()
+    }// end setTotalReceipt()
 
     /**
      * Add the value of totalReceipt.
@@ -248,7 +323,7 @@ class Card
         $this->totalReceipt += $receipt;
 
         return $this;
-    }//end addTotalReceipt()
+    }// end addTotalReceipt()
 
     /**
      * Get the value of totalSpend.
@@ -256,7 +331,7 @@ class Card
     public function getTotalSpend(): int
     {
         return $this->totalSpend;
-    }//end getTotalSpend()
+    }// end getTotalSpend()
 
     /**
      * Set the value of totalSpend.
@@ -266,7 +341,7 @@ class Card
         $this->totalSpend = $totalSpend;
 
         return $this;
-    }//end setTotalSpend()
+    }// end setTotalSpend()
 
     /**
      * Add the value of totalSpend.
@@ -276,7 +351,7 @@ class Card
         $this->totalSpend += $spend;
 
         return $this;
-    }//end addTotalSpend()
+    }// end addTotalSpend()
 
     /**
      * Get the value of totalTransferAdd.
@@ -284,7 +359,7 @@ class Card
     public function getTotalTransferAdd(): int
     {
         return $this->totalTransferAdd;
-    }//end getTotalTransferAdd()
+    }// end getTotalTransferAdd()
 
     /**
      * Set the value of totalTransferAdd.
@@ -294,7 +369,7 @@ class Card
         $this->totalTransferAdd = $totalTransferAdd;
 
         return $this;
-    }//end setTotalTransferAdd()
+    }// end setTotalTransferAdd()
 
     /**
      * Add the value of totalTransferAdd.
@@ -304,7 +379,7 @@ class Card
         $this->totalTransferAdd += $transferAdd;
 
         return $this;
-    }//end addTotalTransferAdd()
+    }// end addTotalTransferAdd()
 
     /**
      * Get the value of totalTransferSub.
@@ -312,7 +387,7 @@ class Card
     public function getTotalTransferSub(): int
     {
         return $this->totalTransferSub;
-    }//end getTotalTransferSub()
+    }// end getTotalTransferSub()
 
     /**
      * Set the value of totalTransferSub.
@@ -322,7 +397,7 @@ class Card
         $this->totalTransferSub = $totalTransferSub;
 
         return $this;
-    }//end setTotalTransferSub()
+    }// end setTotalTransferSub()
 
     /**
      * Add the value of totalTransferSub.
@@ -332,5 +407,5 @@ class Card
         $this->totalTransferSub += $transferSub;
 
         return $this;
-    }//end addTotalTransferSub()
-}//end class
+    }// end addTotalTransferSub()
+}// end class

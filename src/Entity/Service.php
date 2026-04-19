@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -29,34 +31,34 @@ class Service
     public function getId(): ?int
     {
         return $this->id;
-    }//end getId()
+    }// end getId()
 
     public function getName(): ?string
     {
         return $this->name;
-    }//end getName()
+    }// end getName()
 
     public function setName(string $name): static
     {
         $this->name = $name;
 
         return $this;
-    }//end setName()
+    }// end setName()
 
     public function getHasMeter(): bool
     {
         return $this->hasMeter;
-    }//end getHasMeter()
+    }// end getHasMeter()
 
     public function setHasMeter(bool $hasMeter): static
     {
         $this->hasMeter = $hasMeter;
 
         return $this;
-    }//end setHasMeter()
+    }// end setHasMeter()
 
     public function __toString(): string
     {
         return $this->name;
-    }//end __toString()
-}//end class
+    }// end __toString()
+}// end class

@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -37,53 +39,53 @@ class Receipt
     public function getId(): ?int
     {
         return $this->id;
-    }//end getId()
+    }// end getId()
 
     public function getCard(): ?Card
     {
         return $this->card;
-    }//end getCard()
+    }// end getCard()
 
     public function setCard(?Card $card): static
     {
         $this->card = $card;
 
         return $this;
-    }//end setCard()
+    }// end setCard()
 
     public function getDate(): ?DateTime
     {
         return $this->date;
-    }//end getDate()
+    }// end getDate()
 
     public function setDate(DateTime $date): static
     {
         $this->date = $date;
 
         return $this;
-    }//end setDate()
+    }// end setDate()
 
     public function getBalance(): ?int
     {
         return $this->balance;
-    }//end getBalance()
+    }// end getBalance()
 
     public function setBalance(int $balance): static
     {
         $this->balance = $balance;
 
         return $this;
-    }//end setBalance()
+    }// end setBalance()
 
     public function getComment(): ?string
     {
         return $this->comment;
-    }//end getComment()
+    }// end getComment()
 
     public function setComment(string $comment): static
     {
         $this->comment = $comment;
 
         return $this;
-    }//end setComment()
-}//end class
+    }// end setComment()
+}// end class

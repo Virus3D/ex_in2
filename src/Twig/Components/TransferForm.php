@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Expenses/Income
+ * Expenses/Income.
  *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
@@ -34,7 +34,7 @@ final class TransferForm extends AbstractController
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(TransferType::class);
-    }//end instantiateForm()
+    }// end instantiateForm()
 
     /**
      * Сохранение формы.
@@ -49,5 +49,5 @@ final class TransferForm extends AbstractController
         $entityManager->flush();
 
         $this->emit('transferAdded');
-    }//end save()
-}//end class
+    }// end save()
+}// end class

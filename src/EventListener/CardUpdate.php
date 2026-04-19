@@ -22,7 +22,8 @@ use Doctrine\ORM\Event\PostPersistEventArgs;
 final class CardUpdate
 {
     public function __construct(private CardService $cardService)
-    {}//end __construct()
+    {
+    }// end __construct()
 
     /**
      * После добавления.
@@ -45,5 +46,5 @@ final class CardUpdate
             $this->cardService->changeBalance($entity->getCardIn(), $balance);
             $this->cardService->changeBalance($entity->getCardOut(), -$balance);
         }
-    }//end postPersist()
-}//end class
+    }// end postPersist()
+}// end class

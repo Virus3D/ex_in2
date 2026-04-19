@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -46,82 +48,82 @@ class Subscription
     public function __construct()
     {
         $this->setBalance(0);
-    }//end __construct()
+    }// end __construct()
 
     public function getId(): ?int
     {
         return $this->id;
-    }//end getId()
+    }// end getId()
 
     public function getName(): string
     {
         return $this->name;
-    }//end getName()
+    }// end getName()
 
     public function setName(string $name): static
     {
         $this->name = $name;
 
         return $this;
-    }//end setName()
+    }// end setName()
 
     public function getAmount(): int
     {
         return $this->amount;
-    }//end getAmount()
+    }// end getAmount()
 
     public function setAmount(int $amount): static
     {
         $this->amount = $amount;
 
         return $this;
-    }//end setAmount()
+    }// end setAmount()
 
     public function getBalance(): int
     {
         return $this->balance;
-    }//end getBalance()
+    }// end getBalance()
 
     public function setBalance(?int $balance): static
     {
         $this->balance = $balance ?? 0;
 
         return $this;
-    }//end setBalance()
+    }// end setBalance()
 
     public function getPeriod(): Period
     {
         return $this->period;
-    }//end getPeriod()
+    }// end getPeriod()
 
     public function setPeriod(Period $period): static
     {
         $this->period = $period;
 
         return $this;
-    }//end setPeriod()
+    }// end setPeriod()
 
     public function getNextPaymentDate(): DateTime
     {
         return $this->nextPaymentDate;
-    }//end getNextPaymentDate()
+    }// end getNextPaymentDate()
 
     public function setNextPaymentDate(DateTime $nextPaymentDate): static
     {
         $this->nextPaymentDate = $nextPaymentDate;
 
         return $this;
-    }//end setNextPaymentDate()
+    }// end setNextPaymentDate()
 
     public function getIsActive(): bool
     {
         return $this->isActive;
-    }//end getIsActive()
+    }// end getIsActive()
 
     public function setIsActive(bool $isActive): static
     {
         $this->isActive = $isActive;
 
         return $this;
-    }//end setIsActive()
-}//end class
+    }// end setIsActive()
+}// end class

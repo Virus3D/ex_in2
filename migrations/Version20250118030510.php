@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -17,14 +19,19 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20250118030510 extends AbstractMigration
 {
+    /**
+     * @inheritDoc
+     */
     public function getDescription(): string
     {
         return '';
-    }//end getDescription()
+    }// end getDescription()
 
+    /**
+     * @inheritDoc
+     */
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
         $this->addSql(
             'CREATE TABLE subscription (
                 id INT AUTO_INCREMENT NOT NULL,
@@ -65,15 +72,17 @@ final class Version20250118030510 extends AbstractMigration
             'ALTER TABLE subscription_payment ADD CONSTRAINT FK_1E3D6496D6C4A7A3
             FOREIGN KEY (subscrip_id) REFERENCES subscription (id) ON DELETE CASCADE'
         );
-    }//end up()
+    }// end up()
 
+    /**
+     * @inheritDoc
+     */
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE subscription_account DROP FOREIGN KEY FK_E23B63FD6C4A7A3');
         $this->addSql('ALTER TABLE subscription_payment DROP FOREIGN KEY FK_1E3D6496D6C4A7A3');
         $this->addSql('DROP TABLE subscription');
         $this->addSql('DROP TABLE subscription_account');
         $this->addSql('DROP TABLE subscription_payment');
-    }//end down()
-}//end class
+    }// end down()
+}// end class

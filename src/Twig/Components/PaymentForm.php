@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Expenses/Income
+ * Expenses/Income.
  *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
@@ -44,7 +44,8 @@ final class PaymentForm extends AbstractController
         private EntityManagerInterface $entityManager,
         private RequestStack $requestStack,
         private FilterDataHelper $filterDataHelper,
-    ) {}//end __construct()
+    ) {
+    }// end __construct()
 
     /**
      * Инициализация формы.
@@ -54,7 +55,7 @@ final class PaymentForm extends AbstractController
         $place = $this->entityManager->getRepository(Place::class)->find($this->placeId);
 
         return $this->createForm(ServicePaymentType::class, options: ['place' => $place]);
-    }//end instantiateForm()
+    }// end instantiateForm()
 
     /**
      * Сохранение формы.
@@ -83,11 +84,11 @@ final class PaymentForm extends AbstractController
             ->setDate($date)
             ->setCard($formPayment->get('card')->getData())
             ->setBalance($formPayment->get('amount')->getData())
-            ->setComment('Service: '.$formPayment->get('service')->getData()->getName());
+            ->setComment('Service: ' . $formPayment->get('service')->getData()->getName());
         $this->entityManager->persist($spend);
         $this->entityManager->flush();
 
         $this->emit('paymentAdded');
         $this->emit('spendAdded');
-    }//end save()
-}//end class
+    }// end save()
+}// end class

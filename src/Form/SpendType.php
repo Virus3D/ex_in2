@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -22,6 +24,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class SpendType extends AbstractType
 {
+    /**
+     * @inheritDoc
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -46,7 +51,7 @@ final class SpendType extends AbstractType
                 'comment',
                 TextType::class,
                 [
-                    'attr'     => [
+                    'attr' => [
                         'list'         => 'spend-comment-options',
                         'autocomplete' => 'off',
                     ],
@@ -60,10 +65,12 @@ final class SpendType extends AbstractType
                     'choice_label' => static fn (?Card $card): string => $card?->getName() ?? '',
                     'group_by'     => static fn (?Card $card): string => $card?->getCategory()->getName() ?? '',
                 ]
-            )
-        ;
-    }//end buildForm()
+            );
+    }// end buildForm()
 
+    /**
+     * @inheritDoc
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
@@ -71,5 +78,5 @@ final class SpendType extends AbstractType
                 'data_class' => Spend::class,
             ]
         );
-    }//end configureOptions()
-}//end class
+    }// end configureOptions()
+}// end class

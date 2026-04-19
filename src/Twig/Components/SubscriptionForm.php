@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Expenses/Income
+ * Expenses/Income.
  *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
@@ -14,7 +14,6 @@ namespace App\Twig\Components;
 use App\Entity\Spend;
 use App\Entity\SubscriptionPayment;
 use App\Form\SubscriptionPaymentType;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -37,7 +36,7 @@ final class SubscriptionForm extends AbstractController
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(SubscriptionPaymentType::class);
-    }//end instantiateForm()
+    }// end instantiateForm()
 
     /**
      * Сохранение формы.
@@ -75,5 +74,5 @@ final class SubscriptionForm extends AbstractController
         $entityManager->flush();
 
         $this->emit('subscriptionAdded');
-    }//end save()
-}//end class
+    }// end save()
+}// end class

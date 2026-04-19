@@ -49,13 +49,18 @@ final class FilterDataHelper
 
         $this->yearPrev  = $yearPrev;
         $this->monthPrev = $monthPrev;
-    }//end __construct()
+    }// end __construct()
 
+    /**
+     * Summary of toArray
+     *
+     * @return array{month: int, year: int}
+     */
     public function toArray(): array
     {
         return [
-            'year'      => $this->year,
-            'month'     => $this->month,
+            'year'  => $this->year,
+            'month' => $this->month,
         ];
-    }
-}//end class
+    }// end toArray()
+}// end class

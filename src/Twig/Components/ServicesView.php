@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Expenses/Income
+ * Expenses/Income.
  *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
@@ -76,7 +76,7 @@ final class ServicesView
     public array $meterReadings = [];
 
     /**
-     * Расход за месяц на основе показаний счетчиков
+     * Расход за месяц на основе показаний счетчиков.
      *
      * @var array<int, array<int, int|null>>
      */
@@ -88,10 +88,10 @@ final class ServicesView
         private ServiceAccountService $serviceAccountService,
         private ServicePaymentService $servicePaymentService,
         private ServiceMeterReadingService $serviceMeterReadingService,
-        private FilterDataHelper $filterDataHelper
+        private FilterDataHelper $filterDataHelper,
     ) {
         $this->totalMonth = array_fill(1, 12, 0);
-    }//end __construct()
+    }// end __construct()
 
     /**
      * Получить список.
@@ -106,16 +106,16 @@ final class ServicesView
 
         $services = $place->getServices();
 
-        $this->accounts   = [];
-        $this->payments   = [];
-        $this->total      = [];
-        $this->totalMonth = array_fill(1, 12, 0);
+        $this->accounts      = [];
+        $this->payments      = [];
+        $this->total         = [];
+        $this->totalMonth    = array_fill(1, 12, 0);
         $this->meterReadings = [];
-        $this->consumption = [];
+        $this->consumption   = [];
 
-        $accountDB = $this->serviceAccountService->handle($place, $this->filterDataHelper->year);
-        $paymentDB = $this->servicePaymentService->handle($place, $this->filterDataHelper->year);
-        $readingsDB = $this->serviceMeterReadingService->getReadings($place, $this->filterDataHelper->year);
+        $accountDB     = $this->serviceAccountService->handle($place, $this->filterDataHelper->year);
+        $paymentDB     = $this->servicePaymentService->handle($place, $this->filterDataHelper->year);
+        $readingsDB    = $this->serviceMeterReadingService->getReadings($place, $this->filterDataHelper->year);
         $consumptionDB = $this->serviceMeterReadingService->calculateConsumption(
             $readingsDB,
             $place,
@@ -125,10 +125,10 @@ final class ServicesView
         foreach ($services as $service) {
             $serviceId = $service->getId();
 
-            $this->accounts[$serviceId] = ($accountDB[$serviceId] ?? []) + array_fill(1, 12, 0);
-            $this->payments[$serviceId] = ($paymentDB[$serviceId] ?? []) + array_fill(1, 12, []);
+            $this->accounts[$serviceId]      = ($accountDB[$serviceId] ?? []) + array_fill(1, 12, 0);
+            $this->payments[$serviceId]      = ($paymentDB[$serviceId] ?? []) + array_fill(1, 12, []);
             $this->meterReadings[$serviceId] = ($readingsDB[$serviceId] ?? []) + array_fill(1, 12, 0);
-            $this->consumption[$serviceId] = ($consumptionDB[$serviceId] ?? []) + array_fill(1, 12, null);
+            $this->consumption[$serviceId]   = ($consumptionDB[$serviceId] ?? []) + array_fill(1, 12, null);
 
             $paymentTotal = 0;
             foreach ($this->payments[$serviceId] as $month => $payments) {
@@ -145,13 +145,13 @@ final class ServicesView
             foreach ($this->accounts[$serviceId] as $month => $value) {
                 $this->totalMonth[$month] += $value;
             }
-        }//end foreach
+        }// end foreach
 
         $this->totalTotal = array_sum(array_column($this->total, 'total'));
         $this->totalDebt  = array_sum(array_column($this->total, 'debt'));
 
         return $services;
-    }//end getServices()
+    }// end getServices()
 
     /**
      * Обновить таблицу.
@@ -159,5 +159,7 @@ final class ServicesView
     #[LiveListener('accountAdded')]
     #[LiveListener('paymentAdded')]
     #[LiveListener('meterReadingAdded')]
-    public function onAdded(): void {}//end onAdded()
-}//end class
+    public function onAdded(): void
+    {
+    }// end onAdded()
+}// end class

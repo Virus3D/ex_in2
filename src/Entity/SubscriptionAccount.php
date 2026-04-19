@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -35,41 +37,41 @@ class SubscriptionAccount
     public function getId(): ?int
     {
         return $this->id;
-    }//end getId()
+    }// end getId()
 
     public function getSubscrip(): ?Subscription
     {
         return $this->subscrip;
-    }//end getSubscrip()
+    }// end getSubscrip()
 
     public function setSubscrip(?Subscription $subscrip): static
     {
         $this->subscrip = $subscrip;
 
         return $this;
-    }//end setSubscrip()
+    }// end setSubscrip()
 
     public function getDate(): ?DateTimeInterface
     {
         return $this->date;
-    }//end getDate()
+    }// end getDate()
 
     public function setDate(DateTimeInterface $date): static
     {
         $this->date = $date;
 
         return $this;
-    }//end setDate()
+    }// end setDate()
 
     public function getAmount(): ?int
     {
         return $this->amount;
-    }//end getAmount()
+    }// end getAmount()
 
     public function setAmount(int $amount): static
     {
         $this->amount = $amount;
 
         return $this;
-    }//end setAmount()
-}//end class
+    }// end setAmount()
+}// end class

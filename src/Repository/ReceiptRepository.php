@@ -28,6 +28,8 @@ final class ReceiptRepository extends ServiceEntityRepository
     }// end __construct()
 
     /**
+     * Список.
+     *
      * @return Receipt[]
      */
     public function list(DateTime $startDate, DateTime $endDate, ?Card $card): array

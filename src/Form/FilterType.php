@@ -21,10 +21,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class FilterType extends AbstractType
 {
     /**
-     * Builds the form.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array<string, mixed> $options The options
+     * @inheritDoc
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -55,15 +52,13 @@ final class FilterType extends AbstractType
                 SubmitType::class,
                 ['label' => 'Filter']
             );
-    }//end buildForm()
+    }// end buildForm()
 
     /**
-     * Configures the options for this type.
-     *
-     * @param OptionsResolver $resolver The resolver for the options
+     * @inheritDoc
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([]);
-    }//end configureOptions()
-}//end class
+    }// end configureOptions()
+}// end class

@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -27,31 +29,38 @@ class Place
     #[ORM\Column(length: 100)]
     private string $name = '';
 
-    /** @var Collection<int, Service> */
+    /**
+     * Сервисы.
+     *
+     * @var Collection<int, Service>
+     */
     #[ORM\ManyToMany(targetEntity: Service::class)]
     private Collection $services;
+
+    #[ORM\Column(name: 'is_active', options: ['default' => true])]
+    private bool $isActive = true;
 
     public function __construct()
     {
         $this->services = new ArrayCollection();
-    }//end __construct()
+    }// end __construct()
 
     public function getId(): ?int
     {
         return $this->id;
-    }//end getId()
+    }// end getId()
 
     public function getName(): string
     {
         return $this->name;
-    }//end getName()
+    }// end getName()
 
     public function setName(string $name): static
     {
         $this->name = $name;
 
         return $this;
-    }//end setName()
+    }// end setName()
 
     /**
      * @return Collection<int, Service>
@@ -59,27 +68,38 @@ class Place
     public function getServices(): Collection
     {
         return $this->services;
-    }//end getServices()
+    }// end getServices()
 
     public function addService(Service $service): static
     {
-        if (! $this->services->contains($service))
-        {
+        if (! $this->services->contains($service)) {
             $this->services->add($service);
         }
 
         return $this;
-    }//end addService()
+    }// end addService()
 
     public function removeService(Service $service): static
     {
         $this->services->removeElement($service);
 
         return $this;
-    }//end removeService()
+    }// end removeService()
+
+    public function getIsActive(): bool
+    {
+        return $this->isActive;
+    }// end getIsActive()
+
+    public function setIsActive(bool $isActive): static
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }// end setIsActive()
 
     public function __toString(): string
     {
         return $this->name;
-    }//end __toString()
-}//end class
+    }// end __toString()
+}// end class

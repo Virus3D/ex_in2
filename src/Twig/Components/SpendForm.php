@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Expenses/Income
+ * Expenses/Income.
  *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
@@ -39,7 +39,7 @@ final class SpendForm extends AbstractController
     public function __construct(
         private readonly SpendRepository $spendRepository,
     ) {
-    }//end __construct()
+    }// end __construct()
 
     /**
      * Инициализация формы.
@@ -49,7 +49,7 @@ final class SpendForm extends AbstractController
         $this->existingComments = $this->spendRepository->getUniqueComments();
 
         return $this->createForm(SpendType::class);
-    }//end instantiateForm()
+    }// end instantiateForm()
 
     /**
      * Метод для получения существующих комментариев (доступен в шаблоне).
@@ -59,7 +59,7 @@ final class SpendForm extends AbstractController
     public function getExistingComments(): array
     {
         return $this->existingComments;
-    }//end getExistingComments()
+    }// end getExistingComments()
 
     /**
      * Сохранение формы.
@@ -74,5 +74,5 @@ final class SpendForm extends AbstractController
         $entityManager->flush();
 
         $this->emit('spendAdded');
-    }//end save()
-}//end class
+    }// end save()
+}// end class

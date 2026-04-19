@@ -79,7 +79,7 @@ final class SubscriptionPaymentType extends AbstractType
                 $event->setData($data);
             }
         );
-    }//end buildForm()
+    }// end buildForm()
 
     /**
      * @inheritDoc
@@ -91,5 +91,5 @@ final class SubscriptionPaymentType extends AbstractType
                 'data_class' => SubscriptionPayment::class,
             ]
         );
-    }//end configureOptions()
-}//end class
+    }// end configureOptions()
+}// end class

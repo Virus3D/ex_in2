@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -21,6 +23,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class TransferType extends AbstractType
 {
+    /**
+     * @inheritDoc
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -58,10 +63,12 @@ final class TransferType extends AbstractType
                     'choice_label' => static fn (?Card $card): string => $card?->getName() ?? '',
                     'group_by'     => static fn (?Card $card): string => $card?->getCategory()->getName() ?? '',
                 ]
-            )
-        ;
-    }//end buildForm()
+            );
+    }// end buildForm()
 
+    /**
+     * @inheritDoc
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
@@ -69,5 +76,5 @@ final class TransferType extends AbstractType
                 'data_class' => Transfer::class,
             ]
         );
-    }//end configureOptions()
-}//end class
+    }// end configureOptions()
+}// end class

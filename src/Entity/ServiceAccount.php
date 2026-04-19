@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -40,65 +42,65 @@ class ServiceAccount
     public function getId(): ?int
     {
         return $this->id;
-    }//end getId()
+    }// end getId()
 
     public function getService(): ?Service
     {
         return $this->service;
-    }//end getService()
+    }// end getService()
 
     public function setService(?Service $service): static
     {
         $this->service = $service;
 
         return $this;
-    }//end setService()
+    }// end setService()
 
     public function getYear(): ?int
     {
         return $this->year;
-    }//end getYear()
+    }// end getYear()
 
     public function setYear(int $year): static
     {
         $this->year = $year;
 
         return $this;
-    }//end setYear()
+    }// end setYear()
 
     public function getMonth(): ?int
     {
         return $this->month;
-    }//end getMonth()
+    }// end getMonth()
 
     public function setMonth(int $month): static
     {
         $this->month = $month;
 
         return $this;
-    }//end setMonth()
+    }// end setMonth()
 
     public function getAmount(): ?int
     {
         return $this->amount;
-    }//end getAmount()
+    }// end getAmount()
 
     public function setAmount(int $amount): static
     {
         $this->amount = $amount;
 
         return $this;
-    }//end setAmount()
+    }// end setAmount()
 
     public function getPlace(): ?Place
     {
         return $this->place;
-    }//end getPlace()
+    }// end getPlace()
 
     public function setPlace(?Place $place): static
     {
         $this->place = $place;
 
         return $this;
-    }//end setPlace()
-}//end class
+    }// end setPlace()
+}// end class

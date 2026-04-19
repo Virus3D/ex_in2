@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Expenses/Income
+ * Expenses/Income.
  *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
@@ -42,23 +42,23 @@ final class ReceiptList
         private EntityManagerInterface $entityManager,
         private RequestStack $requestStack,
         private CardService $cardService,
-        private FilterDataHelper $filterDataHelper
+        private FilterDataHelper $filterDataHelper,
     ) {
         $this->setSelectedCard();
-    }//end __construct()
+    }// end __construct()
 
     /**
      * Задать карты для фильтра.
      */
     private function setSelectedCard(): void
     {
-        $request = $this->requestStack->getCurrentRequest();
+        $request        = $this->requestStack->getCurrentRequest();
         $cardRepository = $this->entityManager->getRepository(Card::class);
 
         $cardId = $request->getSession()->get($this->field);
 
         $this->selectedCard = $cardId ? $cardRepository->find($cardId) : null;
-    }//end setSelectedCard()
+    }// end setSelectedCard()
 
     /**
      * Получить список поступлений.
@@ -78,7 +78,7 @@ final class ReceiptList
         $this->total = array_reduce($receiptList, static fn ($carry, $receipt) => $carry + $receipt->getBalance(), 0);
 
         return $receiptList;
-    }//end getReceiptList()
+    }// end getReceiptList()
 
     /**
      * Удаление записи поступления.
@@ -92,7 +92,7 @@ final class ReceiptList
         $this->entityManager->flush();
 
         $this->emit('receiptDeleted');
-    }//end remove()
+    }// end remove()
 
     /**
      * Добавить поступление.
@@ -102,5 +102,5 @@ final class ReceiptList
     public function onReceiptAdded(): void
     {
         $this->setSelectedCard();
-    }//end onReceiptAdded()
-}//end class
+    }// end onReceiptAdded()
+}// end class

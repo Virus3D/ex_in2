@@ -58,5 +58,5 @@ abstract class AbstractServiceFormType extends AbstractType
                     'choice_label' => static fn (?Service $service): string => $service?->getName() ?? '',
                 ]
             );
-    }//end addCommonFields()
-}//end class
+    }// end addCommonFields()
+}// end class

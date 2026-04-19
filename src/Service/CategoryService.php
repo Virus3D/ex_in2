@@ -11,9 +11,9 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity\Card;
 use App\Entity\CardCategory;
 use App\Helper\FilterDataHelper;
+use Doctrine\Common\Collections\Collection;
 
 final class CategoryService
 {
@@ -31,7 +31,6 @@ final class CategoryService
     public function handle(CardCategory $category): void
     {
         $cards = $category->getCards();
-
         $this->clear($cards);
 
         $this->receiptService->getCardsSummary(
@@ -56,18 +55,20 @@ final class CategoryService
     /**
      * Resets total spend and total receipt of all cards.
      */
-    private function clear(iterable $cards): void
+    private function clear(Collection $cards): void
     {
         foreach ($cards as $card) {
             $card->setTotalSpend(0);
             $card->setTotalReceipt(0);
+            $card->setTotalTransferAdd(0);
+            $card->setTotalTransferSub(0);
         }
     }// end clear()
 
     /**
      * Calculates and sets the total balance for the given category from its debit cards.
      */
-    private function calcTotalBalance(CardCategory $category, iterable $cards): void
+    private function calcTotalBalance(CardCategory $category, Collection $cards): void
     {
         $totalBalance = 0;
         foreach ($cards as $card) {

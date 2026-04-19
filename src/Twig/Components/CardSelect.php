@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Expenses/Income
+ * Expenses/Income.
  *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
@@ -35,7 +35,8 @@ final class CardSelect
     public string $field = '';
 
     public function __construct(private CardRepository $cardRepository, private RequestStack $requestStack)
-    {}//end __construct()
+    {
+    }// end __construct()
 
     /**
      * Возвращает список карт.
@@ -45,7 +46,7 @@ final class CardSelect
     public function getCards(): array
     {
         return $this->groupBy($this->cardRepository->findAll());
-    }//end getCards()
+    }// end getCards()
 
     /**
      * Группировка.
@@ -66,7 +67,7 @@ final class CardSelect
         }
 
         return $result;
-    }//end groupBy()
+    }// end groupBy()
 
     /**
      * Обновление выбранной карты.
@@ -79,5 +80,5 @@ final class CardSelect
             $session->set($this->field, $this->selectedCardId);
             $this->emitUp('updateCard');
         }
-    }//end onUpdatedSelectedCardId()
-}//end class
+    }// end onUpdatedSelectedCardId()
+}// end class

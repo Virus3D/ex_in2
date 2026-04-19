@@ -25,10 +25,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 final class ServiceMeterReadingType extends AbstractType
 {
     /**
-     * Builds the form.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array<string, mixed> $options The options
+     * @inheritDoc
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -48,9 +45,7 @@ final class ServiceMeterReadingType extends AbstractType
                 IntegerType::class,
                 [
                     'label' => 'Reading',
-                    'attr'  => [
-                        'placeholder' => '0',
-                    ],
+                    'attr'  => ['placeholder' => '0'],
                 ]
             )
             ->add(
@@ -64,12 +59,10 @@ final class ServiceMeterReadingType extends AbstractType
                     'choice_label' => static fn (?Service $service): string => $service?->getName() ?? '',
                 ]
             );
-    }//end buildForm()
+    }// end buildForm()
 
     /**
-     * Configures the options for this type.
-     *
-     * @param OptionsResolver $resolver The resolver for the options
+     * @inheritDoc
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
@@ -80,5 +73,5 @@ final class ServiceMeterReadingType extends AbstractType
                 'data_class' => ServiceMeterReading::class,
             ]
         );
-    }//end configureOptions()
-}//end class
+    }// end configureOptions()
+}// end class

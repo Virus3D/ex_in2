@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -23,10 +25,10 @@ final class AppExtension extends AbstractExtension
     public function __construct(
         private readonly ?ParameterBagInterface $parameterBag = null
     ) {
-    }//end __construct()
+    }// end __construct()
 
     /**
-     * @return array<TwigFilter>
+     * @inheritDoc
      */
     public function getFilters(): array
     {
@@ -35,19 +37,29 @@ final class AppExtension extends AbstractExtension
             new TwigFilter('group_by', [$this, 'groupBy']),
             new TwigFilter('date_timezone', [$this, 'dateTimezone']),
         ];
-    }//end getFilters()
+    }// end getFilters()
 
+    /**
+     * Фотмат суммы
+     */
     public function formatCurrency(int $amount, string $currency = 'RUB', string $locale = 'ru_RU'): string|false
     {
-        // Создаем объект Money, где сумма переведена из копеек в рубли
+        // Создаем объект Money, где сумма переведена из копеек в рубли.
         $money = new Money($amount, new Currency($currency));
 
-        // Настраиваем форматирование
+        // Настраиваем форматирование.
         $formatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
 
         return $formatter->format($money->getAmount() / 100);
-    }//end formatCurrency()
+    }// end formatCurrency()
 
+    /**
+     * Группировка.
+     *
+     * @param array<mixed> $items
+     *
+     * @return array<mixed>
+     */
     public function groupBy(array $items, string $key): array
     {
         $result = [];
@@ -60,14 +72,14 @@ final class AppExtension extends AbstractExtension
         }
 
         return $result;
-    }//end groupBy()
+    }// end groupBy()
 
     /**
      * Форматировать дату с учетом часового пояса пользователя.
      *
-     * @param DateTimeInterface|string|null $date   Дата для форматирования
-     * @param string                         $format Формат даты (по умолчанию 'Y-m-d H:i')
-     * @param string|null                    $timezone Часовой пояс (по умолчанию из конфигурации или 'UTC')
+     * @param DateTimeInterface|string|null $date     Дата для форматирования
+     * @param string                        $format   Формат даты (по умолчанию 'Y-m-d H:i')
+     * @param string|null                   $timezone Часовой пояс (по умолчанию из конфигурации или 'UTC')
      *
      * @return string Отформатированная дата
      */
@@ -80,27 +92,27 @@ final class AppExtension extends AbstractExtension
             return '';
         }
 
-        // Получаем часовой пояс из параметра или используем переданный
+        // Получаем часовой пояс из параметра или используем переданный.
         $userTimezone = $timezone ?? $this->parameterBag?->get('app.user_timezone') ?? 'UTC';
 
         try {
             $timezoneObj = new DateTimeZone($userTimezone);
         } catch (\Exception $e) {
-            // Если часовой пояс невалидный, используем UTC
+            // Если часовой пояс невалидный, используем UTC.
             $timezoneObj = new DateTimeZone('UTC');
         }
 
-        // Преобразуем дату в объект DateTime, если это строка
+        // Преобразуем дату в объект DateTime, если это строка.
         if (is_string($date)) {
             $dateObj = new \DateTime($date);
         } else {
-            // Создаем новый объект DateTime из DateTimeInterface
+            // Создаем новый объект DateTime из DateTimeInterface.
             $dateObj = \DateTime::createFromInterface($date);
         }
 
-        // Устанавливаем часовой пояс
+        // Устанавливаем часовой пояс.
         $dateObj->setTimezone($timezoneObj);
 
         return $dateObj->format($format);
-    }//end dateTimezone()
-}//end class
+    }// end dateTimezone()
+}// end class

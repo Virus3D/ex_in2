@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -18,33 +20,33 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 final class SubscriptionCrudController extends AbstractCrudController
 {
-    public function __construct(private RequestStack $requestStack) {}//end __construct()
-
+    /**
+     * @inheritDoc
+     */
     public static function getEntityFqcn(): string
     {
         return Subscription::class;
-    }//end getEntityFqcn()
+    }// end getEntityFqcn()
 
+    /**
+     * @inheritDoc
+     */
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm();
         yield TextField::new('name');
         yield MoneyField::new('amount')->setCurrency('RUB');
         yield MoneyField::new('balance')->setCurrency('RUB')->setFormTypeOptions(
-            [
-                'required' => false,
-            ]
+            ['required' => false]
         );
         yield ChoiceField::new('period')
             ->setChoices(Period::cases())
             ->allowMultipleChoices(false)
-            ->setEmptyData(Period::month)
-        ;
+            ->setEmptyData(Period::month);
         yield DateField::new('nextPaymentDate');
         yield BooleanField::new('isActive', 'Is Active');
-    }//end configureFields()
-}//end class
+    }// end configureFields()
+}// end class

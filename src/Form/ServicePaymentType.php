@@ -23,10 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class ServicePaymentType extends AbstractServiceFormType
 {
     /**
-     * Builds the form.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array<string, mixed> $options The options
+     * @inheritDoc
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -57,12 +54,10 @@ final class ServicePaymentType extends AbstractServiceFormType
                 $event->setData($data);
             }
         );
-    }//end buildForm()
+    }// end buildForm()
 
     /**
-     * Configures the options for this type.
-     *
-     * @param OptionsResolver $resolver The resolver for the options
+     * @inheritDoc
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
@@ -73,5 +68,5 @@ final class ServicePaymentType extends AbstractServiceFormType
                 'data_class' => ServicePayment::class,
             ]
         );
-    }//end configureOptions()
-}//end class
+    }// end configureOptions()
+}// end class

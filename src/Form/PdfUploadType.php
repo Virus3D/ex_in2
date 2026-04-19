@@ -27,6 +27,9 @@ use Symfony\Component\Validator\Constraints\File;
 
 final class PdfUploadType extends AbstractType
 {
+    /**
+     * @inheritDoc
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -52,14 +55,15 @@ final class PdfUploadType extends AbstractType
             ->add(
                 'submit',
                 SubmitType::class,
-                [
-                    'label' => 'Filter',
-                ]
+                ['label' => 'Filter']
             );
-    }//end buildForm()
+    }// end buildForm()
 
+    /**
+     * @inheritDoc
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([]);
-    }//end configureOptions()
-}//end class
+    }// end configureOptions()
+}// end class

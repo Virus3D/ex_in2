@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -14,4 +16,4 @@ enum Period: string
     case year = 'Year';
 
     case month = 'Month';
-}//end enum
+}// end enum

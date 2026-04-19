@@ -27,7 +27,11 @@ class CardCategory
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
-    /** @var Collection<int, Card> */
+    /**
+     * Карты.
+     *
+     * @var Collection<int, Card>
+     */
     #[ORM\OneToMany(targetEntity: Card::class, mappedBy: 'category')]
     private Collection $cards;
 
@@ -40,24 +44,24 @@ class CardCategory
     public function __construct()
     {
         $this->cards = new ArrayCollection();
-    }//end __construct()
+    }// end __construct()
 
     public function getId(): ?int
     {
         return $this->id;
-    }//end getId()
+    }// end getId()
 
     public function getName(): ?string
     {
         return $this->name;
-    }//end getName()
+    }// end getName()
 
     public function setName(string $name): static
     {
         $this->name = $name;
 
         return $this;
-    }//end setName()
+    }// end setName()
 
     /**
      * @return Collection<int, Card>
@@ -65,7 +69,7 @@ class CardCategory
     public function getCards(): Collection
     {
         return $this->cards;
-    }//end getCards()
+    }// end getCards()
 
     public function addCard(Card $card): static
     {
@@ -75,19 +79,19 @@ class CardCategory
         }
 
         return $this;
-    }//end addCard()
+    }// end addCard()
 
     public function removeCard(Card $card): static
     {
         $this->cards->removeElement($card);
 
         return $this;
-    }//end removeCard()
+    }// end removeCard()
 
     public function __toString(): string
     {
         return $this->name;
-    }//end __toString()
+    }// end __toString()
 
     /**
      * Get the value of totalReceipt.
@@ -95,7 +99,7 @@ class CardCategory
     public function getTotalReceipt(): int
     {
         return $this->totalReceipt;
-    }//end getTotalReceipt()
+    }// end getTotalReceipt()
 
     /**
      * Set the value of totalReceipt.
@@ -105,17 +109,17 @@ class CardCategory
         $this->totalReceipt = $totalReceipt;
 
         return $this;
-    }//end setTotalReceipt()
+    }// end setTotalReceipt()
 
     /**
-     *Add the value of totalReceipt.
+     * Add the value of totalReceipt.
      */
     public function addTotalReceipt(int $receipt): self
     {
         $this->totalReceipt += $receipt;
 
         return $this;
-    }//end setTotalReceipt()
+    }// end addTotalReceipt()
 
     /**
      * Get the value of totalSpend.
@@ -123,7 +127,7 @@ class CardCategory
     public function getTotalSpend(): int
     {
         return $this->totalSpend;
-    }//end getTotalSpend()
+    }// end getTotalSpend()
 
     /**
      * Set the value of totalSpend.
@@ -133,7 +137,7 @@ class CardCategory
         $this->totalSpend = $totalSpend;
 
         return $this;
-    }//end setTotalSpend()
+    }// end setTotalSpend()
 
     /**
      * Add the value of totalSpend.
@@ -143,7 +147,7 @@ class CardCategory
         $this->totalSpend += $spend;
 
         return $this;
-    }//end addTotalSpend()
+    }// end addTotalSpend()
 
     /**
      * Get the value of balance.
@@ -151,7 +155,7 @@ class CardCategory
     public function getBalance(): int
     {
         return $this->balance;
-    }//end getBalance()
+    }// end getBalance()
 
     /**
      * Set the value of balance.
@@ -161,5 +165,5 @@ class CardCategory
         $this->balance = $balance;
 
         return $this;
-    }//end setBalance()
-}//end class
+    }// end setBalance()
+}// end class

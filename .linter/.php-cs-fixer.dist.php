@@ -25,7 +25,7 @@ return (new Config())
             '@Symfony:risky'                           => true,
         // '@DoctrineAnnotation'                      => true,
             'header_comment'                           => [
-                'header'       => "Expenses/Income\n\n@license Shareware\n@copyright (c) 2024-" . date('Y') . " Virus3D",
+                'header'       => "ExIn\n\nExpenses/Income\n\n@license Shareware\n@copyright (c) 2024-" . date('Y') . " Virus3D",
                 'comment_type' => 'PHPDoc',
                 'location'     => 'after_open',
                 'separate'     => 'both',

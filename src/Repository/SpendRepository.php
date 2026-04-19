@@ -28,6 +28,8 @@ final class SpendRepository extends ServiceEntityRepository
     }// end __construct()
 
     /**
+     * Список.
+     *
      * @return Spend[]
      */
     public function list(DateTime $startDate, DateTime $endDate, ?Card $card): array

@@ -14,6 +14,7 @@ namespace App\Service;
 use App\Entity\Card;
 use App\Entity\Receipt;
 use DateTime;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 
 final class CardReceiptService
@@ -24,10 +25,8 @@ final class CardReceiptService
 
     /**
      * Подсчет поступлений на карты.
-     *
-     * @param Card[] $cards
      */
-    public function getCardsSummary(iterable $cards, DateTime $startDate, DateTime $endDate): void
+    public function getCardsSummary(Collection $cards, DateTime $startDate, DateTime $endDate): void
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder->select('SUM(r.balance) AS totalBalance')

@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Expenses/Income
+ *
  * @license Shareware
  * @copyright (c) 2024 Virus3D
  */
@@ -22,11 +24,16 @@ final class CardService
 
     public const CREDIT = 3;
 
-    public function __construct(private EntityManagerInterface $entityManager) {}//end __construct()
+    public function __construct(private EntityManagerInterface $entityManager)
+    {
+    }// end __construct()
 
+    /**
+     * Изменение баланса карты.
+     */
     public function changeBalance(Card $card, int $balance): void
     {
         $card->setBalance($card->getBalance() + $balance);
         $this->entityManager->flush();
-    }//end changeBalance()
-}//end class
+    }// end changeBalance()
+}// end class
