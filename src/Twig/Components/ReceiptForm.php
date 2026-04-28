@@ -75,6 +75,8 @@ final class ReceiptForm extends AbstractController
         $entityManager->persist($receipt);
         $entityManager->flush();
 
+        $this->existingComments = $this->receiptRepository->getUniqueComments();
+
         $this->emit('receiptAdded');
     }// end save()
 }// end class
