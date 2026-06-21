@@ -33,7 +33,7 @@ final class ServiceCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm();
-        yield TextField::new('Name');
-        yield BooleanField::new('hasMeter', 'Has Meter');
+        yield TextField::new('name');
+        yield BooleanField::new('hasMeter');
     }// end configureFields()
 }// end class

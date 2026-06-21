@@ -39,9 +39,9 @@ final class SubscriptionRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('s')
             ->where('s.nextPaymentDate <= :date')
-            ->andWhere('s.isActive = :isActive')
+            ->andWhere('s.active = :active')
             ->setParameter('date', $date)
-            ->setParameter('isActive', true)
+            ->setParameter('active', true)
             ->getQuery()
             ->getResult();
     }// end findAllDueSubscriptions()

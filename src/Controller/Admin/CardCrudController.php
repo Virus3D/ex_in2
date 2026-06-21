@@ -36,14 +36,14 @@ final class CardCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm();
-        yield TextField::new('Name');
+        yield TextField::new('name');
         yield AssociationField::new('category');
         yield ChoiceField::new('type')->setChoices(
             [
-                'Debit card'      => CardService::DEBIT_CARD,
-                'Credit card'     => CardService::CREDIT_CARD,
-                'Savings account' => CardService::SAVINGS_ACCOUNT,
-                'Credit'          => CardService::CREDIT,
+                'type.debit_card'      => CardService::DEBIT_CARD,
+                'type.credit_card'     => CardService::CREDIT_CARD,
+                'type.savings_account' => CardService::SAVINGS_ACCOUNT,
+                'type.credit'          => CardService::CREDIT,
             ]
         );
         yield MoneyField::new('balance')->setCurrency('RUB');

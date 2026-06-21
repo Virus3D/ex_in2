@@ -1,10 +1,10 @@
 {% set _style = 'success' %}
 <div class="card mb-2" {{ attributes }} data-loading="addClass(opacity-50) addAttribute(disabled)">
-    {% set receiptList = this.getReceiptList() %}
+    {% set receipt_list = this.getReceiptList() %}
     <div class="card-header border-{{ _style }}">
         <div class="row row-cols-4">
             <div class="col">
-                <h5 class="card-title text-{{ _style }}">{{ 'Receipt'|trans }}</h5>
+                <h5 class="card-title text-{{ _style }}">{{ 'header.receipt'|trans }}</h5>
             </div>
             <div class="col">
                 {{ component('CardSelect', {selectedCardId: selectedCard.id ?? null, field: field}) }}
@@ -20,11 +20,11 @@
         </div>
     </div>
     <div class="card-body scroll-{{ _style }}" id="receipt_block">
-    {% if receiptList is empty %}
-        <p>{{ 'No receipts found.'|trans }}</p>
+    {% if receipt_list is empty %}
+        <p>{{ 'messages.not_found.receipts'|trans }}</p>
     {% else %}
         <ul class="list-group list-group-flush">
-            {% for receipt in receiptList %}
+            {% for receipt in receipt_list %}
             <li class="list-group-item">
                 <div class="row">
                     <div class="col">{{ receipt.date|date('Y-m-d') }}</div>

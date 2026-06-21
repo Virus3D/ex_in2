@@ -1,12 +1,12 @@
 <div {{ attributes }}>
-    {% set subscriptionList = this.getSubscriptionList() %}
+    {% set subscription_list = this.getSubscriptionList() %}
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>{{ 'Subscription'|trans }}</th>
-                <th>{{ 'Next date'|trans }}</th>
-                <th>{{ 'Cost'|trans }}</th>
-                <th>{{ 'Balance'|trans }}</th>
+                <th>{{ 'label.subscription'|trans }}</th>
+                <th>{{ 'label.next_date'|trans }}</th>
+                <th>{{ 'label.cost'|trans }}</th>
+                <th>{{ 'label.balance'|trans }}</th>
             </tr>
         </thead>
         <colgroup>
@@ -16,7 +16,7 @@
             <col class="table-danger text-end">
         </colgroup>
         <tbody>
-            {% for subscription in subscriptionList %}
+            {% for subscription in subscription_list %}
             <tr>
                 <td>{{ subscription.name }}</td>
                 <td class="text-end">{{ subscription.nextPaymentDate|date('Y-m-d') }}</td>

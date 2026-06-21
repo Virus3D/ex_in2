@@ -1,5 +1,4 @@
 <div class="alert alert-success" {{ attributes }}>
-    {{ 'Payment'|trans }}
     {{ form_start(form, {
         attr: {
             class: 'form-horizontal',
@@ -8,16 +7,17 @@
             'data-live-action-param': 'save'
         }
     }) }}
-        <div class="text-danger">
-            {{ form_errors(form) }}
-        </div>
         <div class="input-group">
+            <span class="input-group-text" style="width:200px">{{ 'header.payment'|trans }}</span>
             {{ form_widget(form.service, {attr: {class: 'form-select'}}) }}
             {{ form_widget(form.year, {attr: {class: 'form-select'}}) }}
             {{ form_widget(form.month, {attr: {class: 'form-select'}}) }}
             {{ form_widget(form.card, {attr: {class: 'form-select'}}) }}
             {{ form_widget(form.amount, {attr: {placeholder: '0.00'}}) }}
-            <button type="submit" class="btn btn-primary">{{ 'Add'|trans }}</button>
+            <button type="submit" class="btn btn-primary">{{ 'action.add'|trans }}</button>
+        </div>
+        <div class="text-danger">
+            {{ form_errors(form) }}
         </div>
         <input type="hidden" name="placeId" value="{{ placeId }}">
     {{ form_end(form) }}

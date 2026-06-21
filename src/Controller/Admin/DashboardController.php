@@ -11,25 +11,26 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use App\Entity\Card;
-use App\Entity\CardCategory;
-use App\Entity\Place;
-use App\Entity\Service;
-use App\Entity\Subscription;
+use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
+#[AdminDashboard(routePath: '/admin', routeName: 'app_admin')]
 final class DashboardController extends AbstractDashboardController
 {
     private const string ICON_LIST = 'fas fa-list';
 
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+    ) {
+    }// end __construct()
+
     /**
      * @inheritDoc
      */
-    #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
         return $this->render('admin/index.html.twig');
@@ -41,7 +42,9 @@ final class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Ex In2');
+            ->setTitle($this->translator->trans('title'))
+            ->setTranslationDomain('admin')
+            ->useEntityTranslations();
     }// end configureDashboard()
 
     /**
@@ -50,14 +53,14 @@ final class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('Card Category', self::ICON_LIST, CardCategory::class);
-        yield MenuItem::linkToCrud('Card', self::ICON_LIST, Card::class);
+        yield MenuItem::linkTo(CardCategoryCrudController::class, 'Card Category', self::ICON_LIST);
+        yield MenuItem::linkTo(CardCrudController::class, 'Card', self::ICON_LIST);
         yield MenuItem::subMenu('Communal services', 'fas fa-cogs')->setSubItems(
             [
-                MenuItem::linkToCrud('Place', self::ICON_LIST, Place::class),
-                MenuItem::linkToCrud('Service', self::ICON_LIST, Service::class),
+                MenuItem::linkTo(PlaceCrudController::class, 'Place', self::ICON_LIST),
+                MenuItem::linkTo(ServiceCrudController::class, 'Services', self::ICON_LIST),
             ]
         );
-        yield MenuItem::linkToCrud('Subscription', self::ICON_LIST, entityFqcn: Subscription::class);
+        yield MenuItem::linkTo(SubscriptionCrudController::class, 'Subscriptions', self::ICON_LIST);
     }// end configureMenuItems()
 }// end class

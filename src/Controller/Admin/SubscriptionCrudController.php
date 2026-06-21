@@ -47,6 +47,6 @@ final class SubscriptionCrudController extends AbstractCrudController
             ->allowMultipleChoices(false)
             ->setEmptyData(Period::month);
         yield DateField::new('nextPaymentDate');
-        yield BooleanField::new('isActive', 'Is Active');
+        yield BooleanField::new('active');
     }// end configureFields()
 }// end class

@@ -38,7 +38,7 @@ class Place
     private Collection $services;
 
     #[ORM\Column(name: 'is_active', options: ['default' => true])]
-    private bool $isActive = true;
+    private bool $active = true;
 
     public function __construct()
     {
@@ -86,17 +86,17 @@ class Place
         return $this;
     }// end removeService()
 
-    public function getIsActive(): bool
+    public function isActive(): bool
     {
-        return $this->isActive;
-    }// end getIsActive()
+        return $this->active;
+    }// end isActive()
 
-    public function setIsActive(bool $isActive): static
+    public function setActive(bool $active): static
     {
-        $this->isActive = $isActive;
+        $this->active = $active;
 
         return $this;
-    }// end setIsActive()
+    }// end setActive()
 
     public function __toString(): string
     {

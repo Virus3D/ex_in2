@@ -2,12 +2,12 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th scope="col">{{ 'Service'|trans }}</th>
+                <th scope="col">{{ 'label.service'|trans }}</th>
                 {% for month in range(1, 12) %}
-                    <th scope="col">{{ (month ~ '/1')|date('F')|capitalize|trans }}</th>
+                    <th scope="col">{{ ('month.' ~ (month ~ '/1')|date('F')|capitalize)|trans }}</th>
                 {% endfor %}
                 <th scope="col">{{ 'All'|trans }}</th>
-                <th scope="col">{{ 'Debt'|trans }}</th>
+                <th scope="col">{{ 'label.debit'|trans }}</th>
             </tr>
         </thead>
         <colgroup>
@@ -26,17 +26,17 @@
                     <div class="text-success">
                         {% for payment in this.payments[service.id][month] %}
                         {{ payment.amount|formatCurrency }}
-                        <div style="font-size:.8em">{{ payment.date|date_timezone('Y-m-d H:i')}}</div>
+                        <div style="font-size:.8em">{{ payment.date|date_timezone('Y-m-d H:i') }}</div>
                         {% endfor %}
                     </div>
                     {% if service.hasMeter %}
                         {% if this.meterReadings[service.id][month] is defined and this.meterReadings[service.id][month] > 0 %}
                             <div class="text-info" style="font-size:.85em; margin-top: 0.25rem;">
-                                <strong>{{ 'Reading'|trans }}:</strong> {{ this.meterReadings[service.id][month] }}
+                                <strong>{{ 'label.reading'|trans }}:</strong> {{ this.meterReadings[service.id][month] }}
                             </div>
                             {% if this.consumption[service.id][month] is not null %}
                                 <div class="text-primary" style="font-size:.85em;">
-                                    <strong>{{ 'Consumption'|trans }}:</strong> {{ this.consumption[service.id][month] }}
+                                    <strong>{{ 'label.consumption'|trans }}:</strong> {{ this.consumption[service.id][month] }}
                                 </div>
                             {% endif %}
                         {% endif %}

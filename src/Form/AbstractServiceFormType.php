@@ -59,7 +59,7 @@ abstract class AbstractServiceFormType extends AbstractType
                 [
                     'choices'                   => $this->getYearChoices(),
                     'data'                      => $yearData,
-                    'placeholder'               => 'Choose a year',
+                    'placeholder'               => 'choose.year',
                     'choice_translation_domain' => false,
                 ]
             )
@@ -68,7 +68,7 @@ abstract class AbstractServiceFormType extends AbstractType
                 ChoiceType::class,
                 [
                     'choices'     => Months::getChoices(),
-                    'placeholder' => 'Select a month',
+                    'placeholder' => 'choose.month',
                     'data'        => $monthData,
                 ]
             )

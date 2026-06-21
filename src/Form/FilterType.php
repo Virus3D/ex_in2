@@ -33,7 +33,8 @@ final class FilterType extends AbstractType
                 ChoiceType::class,
                 [
                     'choices'                   => array_combine($years, $years),
-                    'placeholder'               => 'Choose a year',
+                    'label'                     => 'label.year',
+                    'placeholder'               => 'choose.year',
                     'required'                  => false,
                     'choice_label'              => static fn (int $year): string => "{$year}",
                     'choice_translation_domain' => false,
@@ -44,14 +45,15 @@ final class FilterType extends AbstractType
                 ChoiceType::class,
                 [
                     'choices'     => Months::getChoices(),
-                    'placeholder' => 'Select a month',
+                    'label'       => 'label.month',
+                    'placeholder' => 'choose.month',
                     'required'    => false,
                 ]
             )
             ->add(
                 'submit',
                 SubmitType::class,
-                ['label' => 'Filter']
+                ['label' => 'action.filtred']
             );
     }// end buildForm()
 

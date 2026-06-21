@@ -8,12 +8,12 @@
         }
     }) }}
         <div class="input-group">
-            <span class="input-group-text" style="width:125px">{{ 'Transfer'|trans }}</span>
+            <span class="input-group-text" style="width:125px">{{ 'header.transfer'|trans }}</span>
             {{ form_widget(form.cardOut, {attr: {class: 'form-select'}}) }}
             {{ form_widget(form.cardIn, {attr: {class: 'form-select'}}) }}
             {{ form_widget(form.date) }}
             {{ form_widget(form.balance, {attr: {placeholder: '0.00'}}) }}
-            <button type="submit" class="btn btn-primary">{{ 'Add'|trans }}</button>
+            <button type="submit" class="btn btn-primary">{{ 'action.add'|trans }}</button>
         </div>
         <div class="text-danger">
             {{ form_errors(form) }}

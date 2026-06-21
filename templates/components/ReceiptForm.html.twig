@@ -8,12 +8,12 @@
         }
     }) }}
         <div class="input-group">
-            <span class="input-group-text" style="width:125px">{{ 'Receipt'|trans }}</span>
+            <span class="input-group-text" style="width:125px">{{ 'header.receipt'|trans }}</span>
             {{ form_widget(form.card, {attr: {class: 'form-select'}}) }}
             {{ form_widget(form.date) }}
             {{ form_widget(form.balance, {attr: {placeholder: '0.00'}}) }}
             {{ form_widget(form.comment) }}
-            <button type="submit" class="btn btn-primary">{{ 'Add'|trans }}</button>
+            <button type="submit" class="btn btn-primary">{{ 'action.add'|trans }}</button>
         </div>
         <datalist id="receipt-comment-options">
             {% for comment in this.getExistingComments() %}

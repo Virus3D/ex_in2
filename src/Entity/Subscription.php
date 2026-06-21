@@ -43,7 +43,7 @@ class Subscription
     private DateTime $nextPaymentDate;
 
     #[ORM\Column(name: 'is_active', options: ['default' => true])]
-    private bool $isActive = true;
+    private bool $active = true;
 
     public function __construct()
     {
@@ -115,15 +115,15 @@ class Subscription
         return $this;
     }// end setNextPaymentDate()
 
-    public function getIsActive(): bool
+    public function isActive(): bool
     {
-        return $this->isActive;
-    }// end getIsActive()
+        return $this->active;
+    }// end isActive()
 
-    public function setIsActive(bool $isActive): static
+    public function setActive(bool $active): static
     {
-        $this->isActive = $isActive;
+        $this->active = $active;
 
         return $this;
-    }// end setIsActive()
+    }// end setActive()
 }// end class

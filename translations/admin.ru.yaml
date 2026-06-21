@@ -1,0 +1,63 @@
+Subscriptions: Подписки
+Dashboard: Дашборд
+Card Category: Категория карты
+Card: Карта
+Communal services: Коммунальные услуги
+Place: Объект
+Services: Сервисы
+
+entities:
+  App\Entity\CardCategory:
+    plural: Категории
+    singular: Категория
+    properties:
+      id: ID
+      name: Название
+
+  App\Entity\Card:
+    plural: Карты
+    singular: Карта
+    properties:
+      id: ID
+      name: Название
+      category: Категории
+      type: Тип
+      balance: Баланс
+
+  App\Entity\Place:
+    plural: Объекты
+    singular: Объект
+    properties:
+      id: ID
+      name: Название
+      services: Сервисы
+      active: Активный
+
+  App\Entity\Service:
+    plural: Сервисы
+    singular: Сервис
+    properties:
+      id: ID
+      name: Название
+      hasMeter: Имеет счетчик
+
+  App\Entity\Subscription:
+    plural: Подписки
+    singular: Подписка
+    properties:
+      id: ID
+      name: Название
+      amount: Сумма
+      balance: Баланс
+      period: Период
+      nextPaymentDate: "Дата следующего платежа"
+      active: Активный
+
+type:
+  debit_card: "Дебетовая карта"
+  credit_card: "Кредитная карта"
+  savings_account: "Накопительный счет"
+  credit: Кредит
+
+year: Год
+month: Месяц

@@ -34,8 +34,8 @@ final class PlaceCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm();
-        yield TextField::new('Name');
+        yield TextField::new('name');
         yield AssociationField::new('services')->setRequired(false)->setFormTypeOptions(['multiple' => true]);
-        yield BooleanField::new('isActive', 'Is Active');
+        yield BooleanField::new('active');
     }// end configureFields()
 }// end class

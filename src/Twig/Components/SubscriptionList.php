@@ -38,8 +38,8 @@ final class SubscriptionList
     public function getSubscriptionList(): array
     {
         return $this->entityManager->getRepository(Subscription::class)->findBy(
-            ['isActive' => true],
-            ['nextPaymentDate' => 'asc']
+            ['active' => true],
+            ['nextPaymentDate' => 'ASC']
         );
     }// end getSubscriptionList()
 

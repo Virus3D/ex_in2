@@ -82,8 +82,8 @@ class StaticDataCache
                 // 1 год
                     return $this->em->getRepository(Place::class)
                         ->createQueryBuilder('p')
-                        ->where('p.isActive = :isActive')
-                        ->setParameter('isActive', true)
+                        ->where('p.active = :active')
+                        ->setParameter('active', true)
                         ->orderBy('p.name', 'ASC')
                         ->getQuery()
                         ->getArrayResult();

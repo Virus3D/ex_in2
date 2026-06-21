@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'Expenses/Income'|trans }}{% endblock %}
+{% block title %}{{ 'title'|trans }}{% endblock %}
 
 {% block body %}
 <div class="container">
@@ -21,7 +21,7 @@
 
     <details class="card mb-3">
         <summary class="card-header">
-            {{ 'Transaction'|trans }}
+            {{ 'header.transaction'|trans }}
         </summary>
         <div class="card-body">
             {{ component('ReceiptForm') }}

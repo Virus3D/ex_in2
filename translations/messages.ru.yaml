@@ -1,61 +1,57 @@
-Expenses/Income: Расходы/Доходы
-Year: Год
-Month: Месяц
-Receipt: Поступление
-Add: Добавить
-January: Январь
-February: Февраль
-March: Март
-April: Апрель
-May: Май
-June: Июнь
-July: Июль
-August: Август
-September: Сентябрь
-October: Октябрь
-November: Ноябрь
-December: Декабрь
-Choose a year: Выберите год
-Select a month: Выберите месяц
-Filter: Фильтровать
-Spend: Расход
-No receipts found.: Поступления не найдены.
-No spends found.: Расходы не найден.
-No transfers found.: Переводы не найден.
-Transfer: Перевод
-Debit card: Дебетовая карта
-Credit card: Кредитная карта
-Savings account: Накопительный счет
-Credit: Кредит
-Service: Услуга
-Debt: Задолженность
+title: Расходы/Доходы
+
 All: Всего
 
-Subscriptions: Подписки
-Dashboard: Дашборд
-Card Category: Категория карты
-Card: Карта
-Communal services: Коммунальные услуги
-Place: Объект
-ID: ID
-Name: Название
-Amount: Сумма
-Balance: Баланс
-Period: Период
-Next Payment Date: Дата следующего платежа
-year: Год
-month: Месяц
-Select: Выбери
-Payment: Оплата
-Account: Счет
-Subscription: Подписки
-Has Meter: Имеет счетчик
-Transaction: Транзакции
-Next date: Следующая дата
-Cost: Стоимость
-Meter Reading: Показания счетчиков
-Reading: Показания
-Consumption: Расход
+label:
+  year: Год
+  month: Месяц
+  service: Услуга
+  debit: Задолженность
+  reading: Показания
+  consumption: Расход
+  subscription: Подписка
+  next_date: "Следующая дата"
+  cost: Стоимость
+  balance: Баланс
+
+header:
+  transaction: Транзакции
+  receipt: Поступление
+  spend: Расход
+  transfer: Перевод
+  account: Счет
+  meter_reading: "Показания счетчиков"
+  payment: Оплата
+  subscriptions: Подписки
+
+action:
+  add: Добавить
+  filtred: Фильтровать
+
+month:
+  January: Январь
+  February: Февраль
+  March: Март
+  April: Апрель
+  May: Май
+  June: Июнь
+  July: Июль
+  August: Август
+  September: Сентябрь
+  October: Октябрь
+  November: Ноябрь
+  December: Декабрь
+
+choose:
+  year: "Выберите год"
+  month: "Выберите месяц"
+  select: Выбери
+
+messages:
+  not_found:
+    receipts: "Поступления не найдены."
+    spends: "Расходы не найден."
+    transfers: "Переводы не найден."
 
 chart:
   expenses:
