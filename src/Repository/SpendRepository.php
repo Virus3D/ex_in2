@@ -106,6 +106,11 @@ final class SpendRepository extends ServiceEntityRepository
                 $comment = 'Service';
             }
 
+            // Объединяем комментарии, начинающиеся с "Sub".
+            if (0 === mb_stripos($comment, 'Sub')) {
+                $comment = 'Sub';
+            }
+
             if (isset($expenses[$comment])) {
                 $expenses[$comment] += (int) $row['total_amount'];
             } else {

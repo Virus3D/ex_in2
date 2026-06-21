@@ -71,4 +71,82 @@ final class ReceiptRepository extends ServiceEntityRepository
 
         return array_column($result, 'comment');
     }// end getUniqueComments()
+
+    /**
+     * Получить данные для диаграммы поступлений по комментариям.
+     *
+     * @return array<string, int>
+     */
+    public function getReceiptsByComment(DateTime $startDate, DateTime $endDate, ?Card $card): array
+    {
+        $queryBuilder = $this->createQueryBuilder('r')
+            ->select('r.comment as comment_name, SUM(r.balance) as total_amount')
+            ->andWhere('r.date BETWEEN :startDate AND :endDate')
+            ->andWhere('r.comment IS NOT NULL')
+            ->andWhere('r.comment != :empty')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('empty', '')
+            ->groupBy('r.comment')
+            ->orderBy('total_amount', 'DESC');
+
+        if ($card) {
+            $queryBuilder->andWhere('r.card = :card')
+                ->setParameter('card', $card);
+        }
+
+        $result = $queryBuilder->getQuery()->getScalarResult();
+
+        $receipts = [];
+        foreach ($result as $row) {
+            $comment = $row['comment_name'] ?: 'Без комментария';
+
+            if (isset($receipts[$comment])) {
+                $receipts[$comment] += (int) $row['total_amount'];
+            } else {
+                $receipts[$comment] = (int) $row['total_amount'];
+            }
+        }
+
+        // Сортируем по убыванию суммы.
+        arsort($receipts);
+
+        return $receipts;
+    }// end getReceiptsByComment()
+
+    /**
+     * Получить данные для диаграммы поступлений по дням.
+     *
+     * @return array<string, int>
+     */
+    public function getReceiptsByDay(DateTime $startDate, DateTime $endDate, ?Card $card): array
+    {
+        $queryBuilder = $this->createQueryBuilder('r')
+            ->select("r.date, SUM(r.balance) as total_amount")
+            ->andWhere('r.date BETWEEN :startDate AND :endDate')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->groupBy('r.date')
+            ->orderBy('r.date', 'ASC');
+
+        if ($card) {
+            $queryBuilder->andWhere('r.card = :card')
+                ->setParameter('card', $card);
+        }
+
+        $result = $queryBuilder->getQuery()->getScalarResult();
+
+        $receipts = [];
+        foreach ($result as $row) {
+            $date   = new DateTime($row['date']);
+            $dayKey = $date->format('d.m');
+
+            if (!isset($receipts[$dayKey])) {
+                $receipts[$dayKey] = 0;
+            }
+            $receipts[$dayKey] += (int) $row['total_amount'];
+        }
+
+        return $receipts;
+    }// end getReceiptsByDay()
 }// end class

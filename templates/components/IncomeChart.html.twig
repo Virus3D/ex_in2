@@ -1,9 +1,9 @@
 <details class="card mb-3">
     <summary class="card-header">
-        <i class="fas fa-chart-pie me-2"></i>
-        {{ 'chart.expenses.title'|trans }}
+        <i class="fas fa-chart-line me-2"></i>
+        {{ 'chart.income.title'|trans }}
         <small class="text-muted">
-            ({{ this.getFormattedTotalExpenses() }} ₽)
+            ({{ this.getFormattedTotalReceipts() }} ₽)
         </small>
     </summary>
     <div class="card-body">
@@ -13,7 +13,7 @@
                  data-chart-type-value="pie"
                  data-chart-data-value="{{ this.getCommentData()|json_encode }}"
                  data-chart-currency-value="₽">
-                <h6 class="text-center mb-3">{{ 'chart.expenses.by_comments'|trans }}</h6>
+                <h6 class="text-center mb-3">{{ 'chart.income.by_comments'|trans }}</h6>
                 <div class="chartBlock">
                     <canvas data-chart-target="chart"></canvas>
                 </div>
@@ -24,7 +24,7 @@
                  data-chart-type-value="line"
                  data-chart-data-value="{{ this.getDailyData()|json_encode }}"
                  data-chart-currency-value="₽">
-                <h6 class="text-center mb-3">{{ 'chart.expenses.by_days'|trans }}</h6>
+                <h6 class="text-center mb-3">{{ 'chart.income.by_days'|trans }}</h6>
                 <div class="chartBlock">
                     <canvas data-chart-target="chart"></canvas>
                 </div>
