@@ -14,29 +14,62 @@ namespace App\Form;
 use App\Entity\Place;
 use App\Entity\Service;
 use App\Enum\Months;
+use App\Helper\FilterDataHelper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractServiceFormType extends AbstractType
 {
+    public function __construct(
+        private FilterDataHelper $filterDataHelper,
+    ) {
+    }// end __construct()
+
     /**
-     * Add common fields to the form builder.
+     * Добавление общих полей в построитель формы.
      *
-     * @param FormBuilderInterface $builder The form builder
-     * @param Place                $place   The place entity
+     * Метод добавляет три основных поля:
+     * - month - выбор месяца из перечисления Months
+     * - amount - поле для ввода суммы (в копейках)
+     * - service - выбор услуги из списка доступных для данного места
+     *
+     * @param FormBuilderInterface $builder      Построитель формы
+     * @param Place                $place        Место (площадка/филиал), для которого создается запись
+     * @param int|null             $defaultMonth Значение месяца по умолчанию (если не указан - предыдущий месяц)
+     * @param int|null             $defaultYear  Значение года по умолчанию (если не указан - вычисляется автоматически)
      */
-    protected function addCommonFields(FormBuilderInterface $builder, Place $place): void
-    {
+    protected function addCommonFields(
+        FormBuilderInterface $builder,
+        Place $place,
+        ?int $defaultMonth = null,
+        ?int $defaultYear = null,
+    ): void {
+        // Определяем значения по умолчанию для месяца и года.
+        $monthData = $defaultMonth ?? $this->filterDataHelper->monthPrev;
+        $yearData  = $defaultYear ?? $this->filterDataHelper->yearPrev;
+
         $builder
+            ->add(
+                'year',
+                ChoiceType::class,
+                [
+                    'choices'                   => $this->getYearChoices(),
+                    'data'                      => $yearData,
+                    'placeholder'               => 'Choose a year',
+                    'choice_translation_domain' => false,
+                ]
+            )
             ->add(
                 'month',
                 ChoiceType::class,
                 [
                     'choices'     => Months::getChoices(),
                     'placeholder' => 'Select a month',
+                    'data'        => $monthData,
                 ]
             )
             ->add(
@@ -59,4 +92,40 @@ abstract class AbstractServiceFormType extends AbstractType
                 ]
             );
     }// end addCommonFields()
+
+    /**
+     * {@inheritDoc}
+     */
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults(
+            [
+                'default_month' => null,
+                'default_year'  => null,
+            ]
+        );
+        $resolver->setRequired('place');
+        $resolver->setAllowedTypes('place', Place::class);
+    }// end configureOptions()
+
+    /**
+     * Получение списка годов для выбора.
+     *
+     * Создает диапазон годов: от (текущий год - 5) до (текущий год + 1).
+     * Это позволяет вводить данные за прошлые годы и на год вперед.
+     *
+     * @return array<string, int> Ассоциативный массив [год => год]
+     */
+    protected function getYearChoices(): array
+    {
+        $currentYear = (int) (new \DateTime())->format('Y');
+        $years = [];
+
+        // Создаем диапазон от текущего года - 5 до текущего года.
+        for ($year = $currentYear - 5; $year <= $currentYear; $year++) {
+            $years[(string) $year] = $year;
+        }
+
+        return $years;
+    }// end getYearChoices()
 }// end class

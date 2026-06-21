@@ -12,9 +12,14 @@ declare(strict_types=1);
 namespace App\Enum;
 
 /**
- * Months enumeration for form choices.
+ * Перечисление месяцев года.
+ *
+ * Используется для выбора месяца в формах и фильтрации данных.
+ * Обеспечивает единый источник истины для всех месяцев.
+ *
+ * @package App\Enum
  */
-final class Months
+enum Months: int
 {
     public const JANUARY = 1;
 
@@ -41,9 +46,9 @@ final class Months
     public const DECEMBER = 12;
 
     /**
-     * Get months as choices array for forms.
+     * Получение массива для выпадающего списка.
      *
-     * @return array<string, int>
+     * @return array<string, int> Ассоциативный массив [название => значение]
      */
     public static function getChoices(): array
     {
@@ -62,4 +67,35 @@ final class Months
             'December'  => self::DECEMBER,
         ];
     }// end getChoices()
-}// end class
+
+    /**
+     * Получение предыдущего месяца.
+     *
+     * @return self Предыдущий месяц
+     */
+    public function getPrevious(): self
+    {
+        $value = $this->value === 1 ? 12 : $this->value - 1;
+        return self::from($value);
+    }// end getPrevious()
+
+    /**
+     * Получение текущего месяца.
+     *
+     * @return self Текущий месяц
+     */
+    public static function getCurrent(): self
+    {
+        return self::from((int) (new \DateTime())->format('n'));
+    }// end getCurrent()
+
+    /**
+     * Получение предыдущего месяца относительно текущего.
+     *
+     * @return self Предыдущий месяц
+     */
+    public static function getPreviousMonth(): self
+    {
+        return self::getCurrent()->getPrevious();
+    }// end getPreviousMonth()
+}// end enum

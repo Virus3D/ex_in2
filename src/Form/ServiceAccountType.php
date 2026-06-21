@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-use App\Entity\Place;
 use App\Entity\ServiceAccount;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -48,12 +47,8 @@ final class ServiceAccountType extends AbstractServiceFormType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setRequired('place');
-        $resolver->setAllowedTypes('place', Place::class);
-        $resolver->setDefaults(
-            [
-                'data_class' => ServiceAccount::class,
-            ]
-        );
+        parent::configureOptions($resolver);
+
+        $resolver->setDefaults(['data_class' => ServiceAccount::class]);
     }// end configureOptions()
 }// end class

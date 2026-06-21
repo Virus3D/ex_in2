@@ -11,18 +11,14 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-use App\Entity\Place;
 use App\Entity\ServiceMeterReading;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\Service;
-use App\Enum\Months;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-final class ServiceMeterReadingType extends AbstractType
+final class ServiceMeterReadingType extends AbstractServiceFormType
 {
     /**
      * @inheritDoc
@@ -31,15 +27,10 @@ final class ServiceMeterReadingType extends AbstractType
     {
         $place = $options['place'];
 
+        $this->addCommonFields($builder, $place);
+
         $builder
-            ->add(
-                'month',
-                ChoiceType::class,
-                [
-                    'choices'     => Months::getChoices(),
-                    'placeholder' => 'Select a month',
-                ]
-            )
+            ->remove('amount')
             ->add(
                 'reading',
                 IntegerType::class,
@@ -66,12 +57,8 @@ final class ServiceMeterReadingType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setRequired('place');
-        $resolver->setAllowedTypes('place', Place::class);
-        $resolver->setDefaults(
-            [
-                'data_class' => ServiceMeterReading::class,
-            ]
-        );
+        parent::configureOptions($resolver);
+
+        $resolver->setDefaults(['data_class' => ServiceMeterReading::class]);
     }// end configureOptions()
 }// end class

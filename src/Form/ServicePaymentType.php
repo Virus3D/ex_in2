@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Entity\Card;
-use App\Entity\Place;
 use App\Entity\ServicePayment;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -61,12 +60,8 @@ final class ServicePaymentType extends AbstractServiceFormType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setRequired('place');
-        $resolver->setAllowedTypes('place', Place::class);
-        $resolver->setDefaults(
-            [
-                'data_class' => ServicePayment::class,
-            ]
-        );
+        parent::configureOptions($resolver);
+
+        $resolver->setDefaults(['data_class' => ServicePayment::class]);
     }// end configureOptions()
 }// end class
