@@ -4,13 +4,13 @@
 
 {% block body %}
 <div class="container">
-    <div class="row row-cols-1 row-cols-md-2 g-4" id="card_block">
-        <div class="alert alert-default mb-3">
+    <div class="row row-cols-1 row-cols-md-2" id="card_block">
+        <div class="alert alert-default mb-0">
             {% include "form/formFilter.html.twig" %}
         </div>
     </div>
 
-    <div class="row row-cols-1 row-cols-md-2 g-4" id="card_block">
+    <div class="row row-cols-1 row-cols-md-2" id="card_block">
         {% for category in categories %}
         {{ component('Category', {'categoryID': category.id}) }}
         {% endfor %}
@@ -23,7 +23,7 @@
         <summary class="card-header">
             {{ 'header.transaction'|trans }}
         </summary>
-        <div class="card-body">
+        <div class="card-body p-2">
             {{ component('ReceiptForm') }}
             {{ component('SpendForm') }}
             {{ component('TransferForm') }}
