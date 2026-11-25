@@ -55,12 +55,11 @@ final class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkTo(CardCategoryCrudController::class, 'Card Category', self::ICON_LIST);
         yield MenuItem::linkTo(CardCrudController::class, 'Card', self::ICON_LIST);
-        yield MenuItem::subMenu('Communal services', 'fas fa-cogs')->setSubItems(
-            [
-                MenuItem::linkTo(PlaceCrudController::class, 'Place', self::ICON_LIST),
-                MenuItem::linkTo(ServiceCrudController::class, 'Services', self::ICON_LIST),
-            ]
-        );
+        yield MenuItem::linkTo(ProductCategoryCrudController::class, 'Product Categories', self::ICON_LIST);
+        yield MenuItem::linkTo(FnsReceiptCrudController::class, 'FNS Receipts', 'fas fa-receipt');
+        yield MenuItem::linkTo(FnsReceiptItemCrudController::class, 'Receipt Items', 'fas fa-tag');
+        yield MenuItem::linkTo(PlaceCrudController::class, 'Place', self::ICON_LIST);
+        yield MenuItem::linkTo(ServiceCrudController::class, 'Services', self::ICON_LIST);
         yield MenuItem::linkTo(SubscriptionCrudController::class, 'Subscriptions', self::ICON_LIST);
     }// end configureMenuItems()
 }// end class

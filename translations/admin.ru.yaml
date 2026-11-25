@@ -1,10 +1,12 @@
 Subscriptions: Подписки
 Dashboard: Дашборд
-Card Category: Категория карты
+Card Category: "Категория карты"
 Card: Карта
-Communal services: Коммунальные услуги
+Communal services: "Коммунальные услуги"
 Place: Объект
 Services: Сервисы
+Product Categories: "Категории товаров"
+FNS Receipts: Чеки
 
 entities:
   App\Entity\CardCategory:
@@ -52,6 +54,36 @@ entities:
       period: Период
       nextPaymentDate: "Дата следующего платежа"
       active: Активный
+
+  App\Entity\ProductCategory:
+    plural: Категории
+    singular: Категория
+    properties:
+      id: ID
+      name: Название
+      keywords: "Ключевые слова (через запятую)"
+
+  App\Entity\FnsReceipt:
+    plural: Чеки
+    singular: Чек
+    properties:
+      id: ID
+      receiptKey: Ключ ФНС
+      kktOwner: Владелец ККТ
+      fiscalDate: Дата фискализации
+      totalSum: Итого (коп.)
+      items: Товары
+
+  App\Entity\FnsReceiptItem:
+    plural: "Товары/услуги"
+    singular: "Товар/услуга"
+    properties:
+      id: ID
+      name: Наименование
+      price: Цена
+      quantity: Колличество
+      sum: Сумма
+      category: Категория
 
 type:
   debit_card: "Дебетовая карта"

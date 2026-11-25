@@ -131,6 +131,105 @@ final class ExpensesChart
     }// end getFormattedTotalExpenses()
 
     /**
+     * Получить данные для диаграммы по категориям товаров.
+     *
+     * @return array<string, mixed>
+     */
+    public function getCategoryData(?Card $card = null): array
+    {
+        try {
+            $expenses = $this->spendRepository->getExpensesByCategory(
+                $this->filterDataHelper->startDate,
+                $this->filterDataHelper->endDate,
+                $card
+            );
+
+            if (empty($expenses)) {
+                return [
+                    'labels' => ['Нет данных'],
+                    'data'   => [0],
+                    'colors' => ['#6c758d'],
+                ];
+            }
+
+            $labels = array_keys($expenses);
+            $data   = array_values($expenses);
+            $colors = $this->generateColors(count($expenses));
+
+            return [
+                'labels' => $labels,
+                'data'   => $data,
+                'colors' => $colors,
+            ];
+        } catch (Exception $e) {
+            return [
+                'labels' => ['Ошибка загрузки'],
+                'data'   => [0],
+                'colors' => ['#dc3545'],
+            ];
+        }// end try
+    }// end getCategoryData()
+
+    /**
+     * Получить данные для диаграммы по дням с разбивкой по категориям.
+     *
+     * @return array<string, mixed>
+     */
+    public function getDailyCategoryData(?Card $card = null): array
+    {
+        try {
+            $data = $this->spendRepository->getExpensesByDayAndCategory(
+                $this->filterDataHelper->startDate,
+                $this->filterDataHelper->endDate,
+                $card
+            );
+
+            if (empty($data)) {
+                return [
+                    'labels' => ['Нет данных'],
+                    'datasets' => [],
+                ];
+            }
+
+            // Собираем уникальные категории
+            $categories = [];
+            foreach ($data as $dayData) {
+                foreach (array_keys($dayData) as $category) {
+                    $categories[$category] = true;
+                }
+            }
+            $categories = array_keys($categories);
+            $colors     = $this->generateColors(count($categories));
+
+            $datasets = [];
+            foreach ($categories as $index => $category) {
+                $values = [];
+                foreach ($data as $dayData) {
+                    $values[] = $dayData[$category] ?? 0;
+                }
+
+                $datasets[] = [
+                    'label'   => $category,
+                    'data'    => $values,
+                    'borderColor' => $colors[$index % count($colors)],
+                    'backgroundColor' => $colors[$index % count($colors)] . '33',
+                    'fill'    => false,
+                ];
+            }
+
+            return [
+                'labels'   => array_keys($data),
+                'datasets' => $datasets,
+            ];
+        } catch (Exception $e) {
+            return [
+                'labels' => ['Ошибка загрузки'],
+                'datasets' => [],
+            ];
+        }// end try
+    }// end getDailyCategoryData()
+
+    /**
      * Генерировать цвета для диаграммы.
      *
      * @return string[]

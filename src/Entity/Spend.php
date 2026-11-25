@@ -15,6 +15,12 @@ use App\Repository\SpendRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Table(
+    uniqueConstraints: [
+        new ORM\UniqueConstraint(name: 'fns_receipt_key', columns: ['fns_receipt_key']),
+    ]
+)]
+
 #[ORM\Entity(repositoryClass: SpendRepository::class)]
 class Spend
 {
@@ -35,6 +41,20 @@ class Spend
 
     #[ORM\Column(length: 100)]
     private ?string $comment = null;
+
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne]
+    private ?ProductCategory $category = null;
+
+    /**
+     * Ключ чека из ФНС API (для связи с импортированными чеками).
+     */
+    #[ORM\Column(length: 64, nullable: true)]
+    private ?string $fnsReceiptKey = null;
+
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(inversedBy: 'spends')]
+    private ?FnsReceipt $fnsReceipt = null;
 
     public function getId(): ?int
     {
@@ -88,4 +108,40 @@ class Spend
 
         return $this;
     }// end setComment()
+
+    public function getCategory(): ?ProductCategory
+    {
+        return $this->category;
+    }// end getCategory()
+
+    public function setCategory(?ProductCategory $category): static
+    {
+        $this->category = $category;
+
+        return $this;
+    }// end setCategory()
+
+    public function getFnsReceiptKey(): ?string
+    {
+        return $this->fnsReceiptKey;
+    }// end getFnsReceiptKey()
+
+    public function setFnsReceiptKey(?string $fnsReceiptKey): static
+    {
+        $this->fnsReceiptKey = $fnsReceiptKey;
+
+        return $this;
+    }// end setFnsReceiptKey()
+
+    public function getFnsReceipt(): ?FnsReceipt
+    {
+        return $this->fnsReceipt;
+    }// end getFnsReceipt()
+
+    public function setFnsReceipt(?FnsReceipt $fnsReceipt): static
+    {
+        $this->fnsReceipt = $fnsReceipt;
+
+        return $this;
+    }// end setFnsReceipt()
 }// end class

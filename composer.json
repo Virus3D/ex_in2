@@ -12,6 +12,7 @@
         "doctrine/doctrine-bundle": "^2.13",
         "doctrine/doctrine-migrations-bundle": "^3",
         "doctrine/orm": "^3",
+        "doctrine/orm-plugin-second-level-cache": "^1.0",
         "easycorp/easyadmin-bundle": "^5.0",
         "money/money": "^2.0",
         "phpdocumentor/reflection-docblock": "^5.4",

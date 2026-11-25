@@ -4,26 +4,33 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-    app.user_timezone: '%env(APP_TIMEZONE)%'
+    app.user_timezone: "%env(APP_TIMEZONE)%"
 
 services:
     # default configuration for services in *this* file
     _defaults:
-        autowire: true      # Automatically injects dependencies in your services.
+        autowire: true # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
-        resource: '../src/'
+        resource: "../src/"
         exclude:
-            - '../src/DependencyInjection/'
-            - '../src/Entity/'
-            - '../src/Kernel.php'
+            - "../src/DependencyInjection/"
+            - "../src/Entity/"
+            - "../src/Kernel.php"
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
     App\Twig\AppExtension:
-        tags: ['twig.extension']
+        tags: ["twig.extension"]
 
     Smalot\PdfParser\Parser: ~
+
+    App\Service\Client\MoiChekiClient:
+        arguments:
+            $apiUrl: "%env(FNS_API_URL)%"
+            $refreshToken: "%env(FNS_REFRESH_TOKEN)%"
+            $deviceId: "%env(FNS_DEVICE_ID)%"
+            $userAgent: "%env(FNS_USER_AGENT)%"
